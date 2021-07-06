@@ -1,0 +1,49 @@
+﻿@using RumarApp.Helpers
+
+<style type="text/css">
+    #side-menu > li.active > a {
+        background-color: #19aa8d !important;
+    }
+
+    #side-menu > li.active > ul.nav-second-level > li.active > a {
+        background-color: #19aa8d !important;
+    }
+
+    .nav-third-level > li.active > a {
+        background-color: #19aa8d !important;
+    }
+</style>
+<li class="">
+    <a id="nav-section-general" href="#"><i class="fa fa-cogs"></i> <span class="nav-label">General</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse" style="height: 0px;">
+        <li class="@Html.IsSelected(controller: "Loans")">
+            <a href='@Url.Action("Index", "Loans")'>Prestamos</a>
+        </li>
+        <li class="@Html.IsSelected(controller: "Client")">
+            <a href='@Url.Action("Index", "Client")'>Clientes</a>
+        </li>
+        @*<li class="">
+            <a href="@Url.Action("Index", "Loans")">
+                <i class="fa fa-user"></i> <span class="nav-label">Prestamos </span>
+            </a>
+        </li>
+        <li class="">
+            <a href="@Url.Action("Index", "Client")">
+                <i class="fa fa-user"></i> <span class="nav-label">Clientes </span>
+            </a>
+        </li>*@
+    </ul>
+</li>
+<script>
+    $(document).ready(function() {
+        $("li.active").parent().addClass("in");
+        $("li.active").parent().parent().addClass("active");
+
+        $(".nav-third-level > li.active").parent().addClass("in")
+            .parent().addClass("active").parent().parent().addClass("active");
+
+        if (!$("table").parent().hasClass("table-responsive")) {
+            $("table").parent().addClass("table-responsive");
+        }
+    })
+</script>

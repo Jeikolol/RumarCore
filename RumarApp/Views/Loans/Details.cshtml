@@ -1,0 +1,101 @@
+﻿@model RumarApp.Models.Loan
+
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<h1>Detalle</h1>
+
+<div>
+    <h4>Prestamo</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Capital
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Capital)
+        </dd>
+        <dt class = "col-sm-2">
+            Interes(%)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Interest)
+        </dd>
+        <dt class = "col-sm-2">
+            Cuotas
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quote)
+        </dd>
+        <dt class = "col-sm-2">
+            Cliente
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Clients.FullName)
+        </dd>
+    </dl>
+</div>
+<div class="card bg-primary">
+    <div class="card-header">
+        <h1>Tabla Amortización</h1>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fechas de Pago</th>
+                    <th class="text-right">Cuota</th>
+                    <th class="text-right">Interés Mensual</th>
+                    <th class="text-right">Amortización Principal</th>
+                    <th class="text-right">Amortización Total</th>
+                    <th class="text-right">Capital Pendiente</th>
+                </tr>
+            </thead>
+            @{
+                double capital = Model.Capital;
+                double interest = Convert.ToDouble(Model.Interest) / 1200;
+                double plazo = Convert.ToDouble(Model.Quote);
+                DateTime paymentDate = Model.CreationTime;
+                DateTime nextDate = DateTime.UtcNow;
+
+                //Generate QuoteNumber
+
+                double quote = capital * (interest / (double)(1 - Math.Pow(1 + (double)interest, -plazo)));
+
+                double interest_monthly = 0;
+                double amortization = 0;
+                double amortization_total = 0;
+                int i = 1;
+
+                for (i = 1; i <= plazo; i++)
+                {
+                    interest_monthly = (interest * capital);
+                    capital = (capital - quote + interest_monthly);
+
+                    //Amortizacion totales y principales
+
+                    amortization_total += (quote - interest_monthly);
+                    amortization = quote - interest_monthly;
+                    paymentDate = nextDate.AddMonths(i);
+
+                    <tbody>
+                        <tr>
+                            <td>@i</td>
+                            <td>@paymentDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-right">@quote.ToString("C2")</td>
+                            <td class="text-right">@interest_monthly.ToString("C2")</td>
+                            <td class="text-right">@amortization.ToString("C2")</td>
+                            <td class="text-right">@amortization_total.ToString("C2")</td>
+                            <td class="text-right">@capital.ToString("C2")</td>
+                        </tr>
+                    </tbody>
+                }
+
+            }
+        </table>
+    </div>
+</div>
+
+

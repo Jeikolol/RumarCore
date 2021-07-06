@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RumarApp.Models
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<style type="text/css">
+    .circle-logo {
+        border-radius: 50%;
+        margin-left: 10%;
+        background-color: #fff;
+        min-height: 100px;
+        min-width: 100px;
+        width: 70% !important;
+        background-color: #fff;
+        position: relative;
+    }
+
+    .no-a {
+        padding: 0 !important;
+        display: inline !important;
+    }
+
+    #side-menu > li.active > a {
+        background-color: #c4813f !important;
+    }
+
+    #side-menu > li.active > ul.nav-second-level > li.active > a {
+        background-color: #c4813f !important;
+    }
+
+    .nav-third-level > li.active > a {
+        background-color: #c4813f !important;
+    }
+
+    .activeSubmenu {
+        background: #3a4459;
+        border: solid 1px #6F7FA0;
+    }
+</style>
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header bg-primary-important">
+                <div class="dropdown profile-element">
+                    <a data-toggle="dropdown" class="dropdown-toggle text-center" href="#">
+                        <div class="circle-logo" style="vertical-align: middle;">
+                            @*<img src="~/Content/img/CustomerLogo/Logo.png" alt="" class="img-circle" width="95px" height="70px" style="margin-top: 15px">*@
+                        </div>
+                    </a>
+                </div>
+            </li>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li class="">
+                    <a href="@Url.Action("Index", "Loans")">
+                        <i class="fa fa-user"></i> <span class="nav-label">Prestamos </span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="@Url.Action("Index", "Loans")">
+                        <i class="fa fa-user"></i> <span class="nav-label">Clientes </span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,26 @@
+﻿
+ .select2-close-mask {
+     z-index: 3099;
+ }
+
+.select2-dropdown {
+    z-index: 3051;
+}
+
+.select2-container {
+    height: 34px;
+}
+
+.text-primary-important {
+    color: #18a689 !important;
+}
+
+.img-custom {
+    height: auto;
+    width: 90% !important;
+}
+
+ #clear-cf-widget {
+     font-size: 15px !important;
+     font-weight: normal !important;
+ }

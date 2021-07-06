@@ -1,0 +1,61 @@
+﻿@model IEnumerable<RumarApp.Models.Loan>
+
+@{
+    ViewData["Title"] = "Consulta";
+}
+
+<h1>Prestamo</h1>
+
+<p>
+    <a asp-action="Create">Crear Prestamo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Capital
+            </th>
+            <th>
+                Interes(%)
+            </th>
+            <th>
+               Cuota
+            </th>
+            <th>
+                Nombre del Cliente
+            </th>
+            <th>
+                Acciones
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capital)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Interest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quote)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Clients.FullName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">
+                    <i class="fa fa-eye"></i>
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

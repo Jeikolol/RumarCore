@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RumarApp</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css.map" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css.map" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <link rel="stylesheet" href="~/Content/style.css" />
+
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <style>
+        .pagination {
+            margin: 0;
+            float: right !important;
+        }
+    </style>
+</head>
+<body class="skin-1 pace-done">
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <partial name="_Navigation">
+
+        <!-- Page wraper -->
+            <div id="page-wrapper" class="gray-bg">
+                <!-- Top Navbar -->
+                <partial name="_TopNavbar">
+
+                    <!-- Main view  -->
+                    @RenderBody()
+
+                    <!-- Footer -->
+                    <footer class="border-top footer text-muted">
+                        <div class="container">
+                            &copy; 2021 - demo - <a asp-area="" asp-page="/Privacy">Privacy</a>
+                        </div>
+                    </footer>
+                    @*@Html.Partial("_Footer")*@
+
+            </div>
+        <!-- End page wrapper-->
+
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿#container-info {
+    border: 1px solid #e0dada;
+    background-color: #f1f1f2;
+    padding: 15px;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+#new-record-container {
+    border: 1px solid #e0dada;
+    background-color: #f1f1f2;
+    padding: 15px;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.element-info {
+    padding: 5px;
+    border-radius: 2px;
+    margin-top: 10px;
+    background-color: #fff;
+    text-align: center;
+    line-height: 10px;
+    border: 2px dashed #e0dada;
+    cursor: pointer;
+}
+
+.element-info-selected {
+    border: 3px dashed #23c6c8;
+    font-weight: bold;
+}
+
+select[readonly].select2-hidden-accessible + .select2-container {
+    pointer-events: none;
+    touch-action: none;
+}
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+        background: #eee;
+        box-shadow: none;
+    }
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow,
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
+        display: none;
+    }

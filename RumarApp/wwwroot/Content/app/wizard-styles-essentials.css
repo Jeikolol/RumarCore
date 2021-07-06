@@ -1,0 +1,35 @@
+﻿.sw-theme-circles > ul.step-anchor > li > a > i {
+    color: #fff;
+}
+.justify-content-center {
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.bg-white-important {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+.step-content {
+    background-color: transparent !important;
+}
+    
+.sw-theme-circles .sw-toolbar {
+    background: none !important;
+}
+
+.sw-theme-circles > ul.step-anchor {
+    background: none !important;
+    display: flex;
+}
+.sw-theme-circles > ul.step-anchor > li > a > i {
+    color: #fff;
+}
+
+.sw-theme-circles > ul.step-anchor > li > a > small {
+    position: relative;
+    margin-top: 30px;
+    text-align: center;
+    bottom: 0;
+}
