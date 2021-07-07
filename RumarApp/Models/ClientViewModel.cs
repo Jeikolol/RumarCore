@@ -24,6 +24,9 @@ namespace RumarApp.Models
         [Required(ErrorMessage = "El Campo es {0} Obligatorio")]
         [StringLength(200)]
         public string Address { get; set; }
+        [Required(ErrorMessage = "El Campo es {0} Obligatorio")]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
         public virtual ICollection<Loan> Loans { get; set; }
     }
 }

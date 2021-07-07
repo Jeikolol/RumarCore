@@ -54,7 +54,7 @@ namespace RumarApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FisrtName,LastName,Identification,Address")] ClientViewModel clientViewModel)
+        public async Task<IActionResult> Create([Bind("Id,FisrtName,LastName,Identification,Address,PhoneNumber")] ClientViewModel clientViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace RumarApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FisrtName,LastName,Identification,Address")] ClientViewModel clientViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FisrtName,LastName,Identification,Address,PhoneNumber")] ClientViewModel clientViewModel)
         {
             if (id != clientViewModel.Id)
             {
@@ -126,12 +126,13 @@ namespace RumarApp.Controllers
 
             var clientViewModel = await _context.ClientViewModel
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (clientViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(clientViewModel);
+            return PartialView("_DeleteModal", clientViewModel);
         }
 
         // POST: Client/Delete/5

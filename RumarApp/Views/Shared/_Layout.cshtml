@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="~/Content/bootstrap.min.css.map" />
     <link rel="stylesheet" href="~/Content/Site.css" />
     <link rel="stylesheet" href="~/Content/style.css" />
-    <link rel="stylesheet" href="~/Content/sitet.scss" />
 
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
@@ -19,7 +18,8 @@
             margin: 0;
             float: right !important;
         }
-        .span-babckground {
+
+        .span-background {
             background-color: #dad9d9
         }
 
@@ -56,6 +56,27 @@
         .show > .btn-secondary.dropdown-toggle:focus {
             box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
         }
+
+        .table-striped-even-light-blue > tbody tr:nth-of-type(even) {
+            background-color: #1ce32b38;
+        }
+
+        .table-striped-even-light-blue > thead > tr {
+            background-color: white;
+            color: #1ab394;
+            border-bottom: 2px solid;
+            border-top: 2px solid;
+        }
+
+        .panel-primary > .panel-heading .badge {
+            color: #1ab394;
+            background-color: #fff;
+        }
+
+        .form-control.span-background.notes {
+            height: 60px;
+        }
+
     </style>
 </head>
 <body class="skin-1 pace-done">
@@ -65,7 +86,7 @@
         <partial name="_Navigation">
 
         <!-- Page wraper -->
-            <div id="page-wrapper" class="gray-bg">
+            <div id="page-wrapper" class="gray-bg container-fluid">
                 <!-- Top Navbar -->
                 <partial name="_TopNavbar">
 
@@ -78,17 +99,26 @@
                             &copy; 2021 - demo - <a asp-area="" asp-page="/Privacy">Privacy</a>
                         </div>
                     </footer>
-                    @*@Html.Partial("_Footer")*@
-
             </div>
         <!-- End page wrapper-->
 
     </div>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="~/Scripts/plugins/pace/pace.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script src="~/Scripts/jquery.highlight.js"></script>
+    <script src="~/Scripts/plugins/jquery-idle/jquery.idle.min.js"></script>
+
+    <script src="~/Scripts/bootstrap.js"></script>
+
+    <script src="~/Scripts/plugins/ladda/spin.min.js"></script>
+    <script src="~/Scripts/plugins/ladda/ladda.min.js"></script>
+    <script src="~/Scripts/plugins/ladda/ladda.jquery.min.js"></script>
 
 
     @RenderSection("Scripts", required: false)
