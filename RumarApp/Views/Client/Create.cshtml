@@ -1,10 +1,10 @@
 ﻿@model RumarApp.Models.ClientViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear";
 }
 
-<h1 class="text-center text-bold">Nuevo Cliente</h1>
+<h1 class="text-center font-bold">Nuevo Cliente</h1>
 
 <hr />
 <div class="panel panel-primary">
@@ -12,27 +12,32 @@
     <div class="panel-body row">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label asp-for="FisrtName" class="control-label">Nombre</label>
                 <input asp-for="FisrtName" class="form-control" />
                 <span asp-validation-for="FisrtName" class="text-danger"></span>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label asp-for="LastName" class="control-label">Apellido</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label asp-for="Identification" class="control-label">Identificacion</label>
                 <input asp-for="Identification" class="form-control" />
                 <span asp-validation-for="Identification" class="text-danger"></span>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
+                <label asp-for="PhoneNumber" class="control-label">Telefono</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-8">
                 <label asp-for="Address" class="control-label">Direccion</label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-12">
                 <input type="submit" value="Crear" class="btn btn-primary" />
             </div>
         </form>
@@ -40,7 +45,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Volver a la Consulta</a>
 </div>
 
 @section Scripts {

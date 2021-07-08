@@ -10,11 +10,12 @@ namespace RumarApp.Models
     {
         public int Id { get; set; }
         [DataType(DataType.Currency)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public long Capital { get; set; }
         [DataType(DataType.Currency)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Interest { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n0}")]
         public decimal Quote { get; set; }
         public DateTime CreationTime { get; set; }
         public string Notes { get; set; }

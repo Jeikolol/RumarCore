@@ -4,39 +4,56 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="text-center font-bold">Detalles del Cliente</h1>
 
-<div>
-    <h4>ClientViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FisrtName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FisrtName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Identification)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Identification)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading"></div>
+            <div class="panel-body row">
+                <div class="col-md-4">
+                    <label>Nombre</label>
+                    <input class="form-control" type="text" value="@Html.DisplayFor(model => model.FisrtName)" />
+                </div>
+                <div class="col-md-4">
+                    <label>Apellido</label>
+                    <input class="form-control" type="text" value="@Html.DisplayFor(model => model.LastName)" />
+                </div>
+                <div class="col-md-4">
+                    <label>Identificacion</label>
+                    <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Identification)" />
+                </div>
+                <div class="col-md-4">
+                    <label>Telefono</label>
+                    <input class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" />
+                </div>
+                <div class="col-md-4">
+                    <label>Direccion</label>
+                    <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Address)" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading" style="font-size: 15px">
+                <i class="fa fa-fw fa-cog"></i>Acciones
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item no-borders no-padding">
+                        <a class="btn btn-link text-left" asp-action="Edit" asp-route-id="@Model.Id">
+                            <i class="fa fa-pencil fa-fw"></i>Editar
+                        </a>
+                    </li>
+                    <li class="list-group-item no-borders no-padding">
+                        <a class="btn btn-link text-left" asp-action="Index">
+                            <i class="fa fa-list fa-fw"></i>Consulta
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

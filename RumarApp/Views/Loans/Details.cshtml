@@ -6,89 +6,120 @@
 
 <h1 class="text-center font-bold">Detalles del Prestamo</h1>
 
-<div class="panel panel-primary">
-    <div class="panel-heading">
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="DownloadReport" asp-route-id="@Model.Id">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="h2">
+                        Prestamo <span class="badge badge-primary" style="font-size: 20px">#@Model.Id</span>
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-10">
+                            <label>Creacion</label>
+                            <span class="form-control span-background"> @Model.CreationTime.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <div class="col-md-4 mb-10">
+                            <label>Cliente</label>
+                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Clients.FullName)</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-right mb-10">
+                            <label class="text-right">Capital</label>
+                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Capital)</span>
+                        </div>
+                        <div class="col-md-4 text-right mb-10">
+                            <label>Interes(%)</label>
+                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Interest)</span>
+                        </div>
+                        <div class="col-md-4 text-right mb-10">
+                            <label>Cuotas(Meses)</label>
+                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Quote)</span>
+                        </div>
+                        <div class="col-md-8 mb-10">
+                            <label>Notas</label>
+                            <span class="form-control span-background notes"> @Html.DisplayFor(model => model.Notes)</span>
+                        </div>
+                        @*<button class="btn btn-primary" type="submit">
+                            <i class="fa fa-file-excel"></i>
+                            Descargar Reporte Excel
+                        </button>*@
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-4 mb-10">
-                <label>Cliente</label>
-                <span class="form-control span-babckground"> @Html.DisplayFor(model => model.Clients.FullName)</span>
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span class="h2">Tabla Amortización</span>
             </div>
-            <div class="col-md-4 text-right mb-10">
-                <label class="text-right">Capital</label>
-                <span class="form-control span-babckground"> @Html.DisplayFor(model => model.Capital)</span>
-            </div>
-            <div class="col-md-4 text-right mb-10">
-                <label>Interes(%)</label>
-                <span class="form-control span-babckground"> @Html.DisplayFor(model => model.Interest)</span>
-            </div>
-            <div class="col-md-4 text-right mb-10">
-                <label>Cuotas</label>
-                <span class="form-control span-babckground"> @Html.DisplayFor(model => model.Quote)</span>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped-even-light-blue">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha de Pago</th>
+                                <th class="text-right">Cuota</th>
+                                <th class="text-right">Mora</th>
+                                <th class="text-right">Interés Mensual</th>
+                                <th class="text-right">Amortización Principal</th>
+                                <th class="text-right">Amortización Total</th>
+                                <th class="text-right">Capital Pendiente</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                double capital = Model.Capital;
+                                double interest = Convert.ToDouble(Model.Interest) / 1200;
+                                double plazo = Convert.ToDouble(Model.Quote);
+                                DateTime paymentDate = Model.CreationTime;
+                                DateTime nextDate = DateTime.UtcNow;
+
+                                //Generate QuoteNumber
+
+                                double quote = capital * (interest / (double)(1 - Math.Pow(1 + (double)interest, -plazo)));
+
+                                double interest_monthly = 0;
+                                double amortization = 0;
+                                double amortization_total = 0;
+                                double mora = 0;
+                                int i = 1;
+
+                                for (i = 1; i <= plazo; i++)
+                                {
+                                    interest_monthly = (interest * capital);
+                                    capital = (capital - quote + interest_monthly);
+
+                                    //Amortizacion totales y principales
+
+                                    amortization_total += (quote - interest_monthly);
+                                    amortization = quote - interest_monthly;
+                                    paymentDate = nextDate.AddMonths(i);
+                                    mora = quote * (double)CalculatorHelper.percentageOneValue(0.05m);
+
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@paymentDate.ToString("dd/MM/yyyy")</td>
+                                        <td class="text-right">@quote.ToString("C2")</td>
+                                        <td class="text-right">@mora.ToString("C2")</td>
+                                        <td class="text-right">@interest_monthly.ToString("C2")</td>
+                                        <td class="text-right">@amortization.ToString("C2")</td>
+                                        <td class="text-right">@amortization_total.ToString("C2")</td>
+                                        <td class="text-right">@capital.ToString("C2")</td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="panel panel-primary table-responsive">
-    <div class="panel-heading">
-        <h1>Tabla Amortización</h1>
-    </div>
-    <div class="panel-body">
-        <table class="table table-striped table-primary">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Fecha de Pago</th>
-                    <th class="text-right">Cuota</th>
-                    <th class="text-right">Interés Mensual</th>
-                    <th class="text-right">Amortización Principal</th>
-                    <th class="text-right">Amortización Total</th>
-                    <th class="text-right">Capital Pendiente</th>
-                </tr>
-            </thead>
-            @{
-                double capital = Model.Capital;
-                double interest = Convert.ToDouble(Model.Interest) / 1200;
-                double plazo = Convert.ToDouble(Model.Quote);
-                DateTime paymentDate = Model.CreationTime;
-                DateTime nextDate = DateTime.UtcNow;
-
-                //Generate QuoteNumber
-
-                double quote = capital * (interest / (double)(1 - Math.Pow(1 + (double)interest, -plazo)));
-
-                double interest_monthly = 0;
-                double amortization = 0;
-                double amortization_total = 0;
-                int i = 1;
-
-                for (i = 1; i <= plazo; i++)
-                {
-                    interest_monthly = (interest * capital);
-                    capital = (capital - quote + interest_monthly);
-
-                    //Amortizacion totales y principales
-
-                    amortization_total += (quote - interest_monthly);
-                    amortization = quote - interest_monthly;
-                    paymentDate = nextDate.AddMonths(i);
-
-                    <tbody>
-                        <tr>
-                            <td>@i</td>
-                            <td>@paymentDate.ToString("dd/MM/yyyy")</td>
-                            <td class="text-right">@quote.ToString("C2")</td>
-                            <td class="text-right">@interest_monthly.ToString("C2")</td>
-                            <td class="text-right">@amortization.ToString("C2")</td>
-                            <td class="text-right">@amortization_total.ToString("C2")</td>
-                            <td class="text-right">@capital.ToString("C2")</td>
-                        </tr>
-                    </tbody>
-                }
-
-            }
-        </table>
     </div>
 </div>
 

@@ -222,7 +222,6 @@ C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\zh-CN
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\zh-Hans\Humanizer.resources.dll
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\zh-Hant\Humanizer.resources.dll
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Client\Create.cshtml.g.cs
-C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Client\Delete.cshtml.g.cs
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Client\Details.cshtml.g.cs
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Client\Edit.cshtml.g.cs
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Client\Index.cshtml.g.cs
@@ -232,3 +231,11 @@ C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Loans\Edit.cshtml.g.cs
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Loans\Index.cshtml.g.cs
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_SideMenu.cshtml.g.cs
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Client\_DeleteModal.cshtml.g.cs
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Loans\_DeleteModal.cshtml.g.cs
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\ClosedXML.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\DocumentFormat.OpenXml.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\EPPlus.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\ExcelNumberFormat.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\System.Xml.XPath.XmlDocument.dll
