@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using RumarApp.Models;
 
 namespace RumarApp.Controllers
 {
+    [Authorize]
     public class LoansController : Controller
     {
         private readonly ApplicationDbContext _context;

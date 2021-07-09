@@ -239,3 +239,4 @@ C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\EPPlu
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\ExcelNumberFormat.dll
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\System.Xml.XPath.XmlDocument.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\web.config

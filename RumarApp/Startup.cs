@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,6 +74,7 @@ namespace RumarApp
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 options.LoginPath = "/Security/Login";
                 options.LogoutPath = "/Security/Logout";
+                options.ReturnUrlParameter = "/Home/Index";
                 options.AccessDeniedPath = "/Security/AccessDenied";
                 options.SlidingExpiration = true;
             });
@@ -87,7 +90,12 @@ namespace RumarApp
             });
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorPagesOptions(options=>
+            {
+                options.Conventions.AuthorizeFolder("/Loans");
+                options.Conventions.AuthorizeFolder("/Client");
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,8 +112,10 @@ namespace RumarApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
