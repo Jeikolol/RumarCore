@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
@@ -25,10 +26,36 @@ namespace RumarApp.Controllers
         }
 
         // GET: Loans
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string currentFilter,
+                                                string searchString,
+                                                int? pageNumber)
         {
-            var applicationDbContext = _context.Loan.Include(l => l.Clients);
-            return View(await applicationDbContext.ToListAsync());
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var loans = from l in _context.Loan
+                                          .Include(l => l.Clients)
+                                          .Include(l => l.TransactionPayment)
+                                          .Include(l => l.TransactionType) select l;
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                loans = loans.Where(s => s.Clients.FullName.Contains(searchString));
+            }
+
+            loans = loans.OrderBy(s => s.Clients.FisrtName);
+
+            int pageSize = 5;
+
+            return View(await PaginatedList<Loan>.CreateAsync(loans.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Loans/Details/5
@@ -41,7 +68,10 @@ namespace RumarApp.Controllers
 
             var loan = await _context.Loan
                 .Include(l => l.Clients)
+                .Include(l => l.TransactionPayment)
+                .Include(l => l.TransactionType)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (loan == null)
             {
                 return NotFound();
@@ -53,7 +83,9 @@ namespace RumarApp.Controllers
         // GET: Loans/Create
         public IActionResult Create()
         {
-            ViewData["ClientsId"] = new SelectList(_context.ClientViewModel, "Id", "FisrtName");
+            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FullName");
+            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionType, "Id", "Name");
+            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayment, "Id", "Name");
             return View();
         }
 
@@ -62,16 +94,21 @@ namespace RumarApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Capital,Interest,Quote,ClientsId")] Loan loan)
+        public async Task<IActionResult> Create(Loan loan)
         {
             if (ModelState.IsValid)
             {
                 loan.CreationTime = DateTime.UtcNow;
+                loan.RemainingPayments = loan.Quote;
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientsId"] = new SelectList(_context.ClientViewModel, "Id", "FisrtName", loan.ClientsId);
+
+            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FisrtName", loan.ClientsId);
+            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionType, "Id", "Name", loan.TransactionTypeId);
+            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayment, "Id", "Name", loan.TransactionPaymentId);
+
             return View(loan);
         }
 
@@ -84,12 +121,16 @@ namespace RumarApp.Controllers
             }
 
             var loan = await _context.Loan.FindAsync(id);
+            
             if (loan == null)
             {
                 return NotFound();
             }
 
-            loan.Clients = await _context.ClientViewModel.FirstOrDefaultAsync(m=>m.Id == loan.ClientsId);
+            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FullName");
+            loan.Clients = await _context.Client.FirstOrDefaultAsync(m=>m.Id == loan.ClientsId);
+            loan.TransactionPayment = await _context.TransactionPayment.FirstOrDefaultAsync(m=>m.Id == loan.TransactionPaymentId);
+            loan.TransactionType = await _context.TransactionType.FirstOrDefaultAsync(m=>m.Id == loan.TransactionTypeId);
 
             return View(loan);
         }
@@ -99,9 +140,9 @@ namespace RumarApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Capital,Interest,Quote,Clients,ClientsId")] Loan loan)
+        public async Task<IActionResult> Edit(int id, Loan param)
         {
-            if (id != loan.Id)
+            if (id != param.Id)
             {
                 return NotFound();
             }
@@ -110,24 +151,30 @@ namespace RumarApp.Controllers
             {
                 try
                 {
-                    _context.Update(loan);
+                    var loanToUpdate = await _context.Loan.FindAsync(id);
+                    param.ClientsId = loanToUpdate.ClientsId;
+
+                    _context.Update(param);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    if (!LoanExists(loan.Id))
+                    if (!LoanExists(param.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
-                        throw;
+                        throw ex;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientsId"] = new SelectList(_context.ClientViewModel, "Id", "FisrtName", loan.ClientsId);
-            return View(loan);
+
+            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FisrtName", param.ClientsId);
+            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionType, "Id", "Name", param.TransactionTypeId);
+            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayment, "Id", "Name", param.TransactionPaymentId);
+            return View(param);
         }
 
         // GET: Loans/Delete/5
@@ -141,6 +188,7 @@ namespace RumarApp.Controllers
             var loan = await _context.Loan
                 .Include(l => l.Clients)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (loan == null)
             {
                 return NotFound();
@@ -149,7 +197,6 @@ namespace RumarApp.Controllers
             return PartialView("_DeleteModal", loan);
         }
 
-        // POST: Loans/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -157,6 +204,55 @@ namespace RumarApp.Controllers
             var loan = await _context.Loan.FindAsync(id);
             _context.Loan.Remove(loan);
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> PayLoan(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var loan = await _context.Loan
+                .Include(l => l.Clients)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (loan == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_PaymentLoanModal", loan);
+        }
+
+        [HttpPost, ActionName("Pay")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Pay(int id, Loan loanPay)
+        {
+            if (id != loanPay.Id)
+            {
+                return NotFound();
+            }
+
+            var loanToPay = await _context.Loan
+                .Include(l => l.Clients)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (loanToPay == null)
+            {
+                return NotFound();
+            }
+
+            var capitalRemaining = Decimal.Subtract(loanToPay.Capital, loanPay.Capital);
+
+            loanToPay.Capital = (long)capitalRemaining;
+            loanToPay.RemainingPayments--;
+
+            _context.Loan.Update(loanToPay);
+            
+            await _context.SaveChangesAsync();
+            
             return RedirectToAction(nameof(Index));
         }
 

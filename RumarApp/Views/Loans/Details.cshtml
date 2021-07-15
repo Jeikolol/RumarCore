@@ -1,4 +1,5 @@
 ﻿@model RumarApp.Models.Loan
+@using RumarApp.Enums
 
 @{
     ViewData["Title"] = "Detalle";
@@ -7,9 +8,8 @@
 <h1 class="text-center font-bold">Detalles del Prestamo</h1>
 
 <div class="row">
-    <div class="col-md-12">
-        <form asp-action="DownloadReport" asp-route-id="@Model.Id">
-            <div class="panel panel-primary">
+    <div class="col-md-9">
+         <div class="panel panel-primary">
                 <div class="panel-heading">
                     <span class="h2">
                         Prestamo <span class="badge badge-primary" style="font-size: 20px">#@Model.Id</span>
@@ -19,106 +19,307 @@
                     <div class="row">
                         <div class="col-md-4 mb-10">
                             <label>Creacion</label>
-                            <span class="form-control span-background"> @Model.CreationTime.ToString("dd/MM/yyyy")</span>
+                            <span class="form-control span-background mx-wi"> @Model.CreationTime.ToString("dd/MM/yyyy")</span>
                         </div>
                         <div class="col-md-4 mb-10">
                             <label>Cliente</label>
-                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Clients.FullName)</span>
+                            <span class="form-control span-background mx-wi"> @Html.DisplayFor(model => model.Clients.FullName)</span>
                         </div>
                     </div>
                     <div class="row">
+                    @{
+                        var transactionTypeNames = EnumExtension.GetEnumDescription((TransactionTypeEnum)Model?.TransactionTypeId);
+
+                        <div class="col-md-4 mb-10">
+                            <label class="text-right">Metodo de Pago</label>
+                            <span class="form-control span-background mx-wi">@transactionTypeNames</span>
+                        </div>
+
+                        var transactionPaymentNames = EnumExtension.GetEnumDescription((TransactionPaymentEnum)Model?.TransactionPaymentId);
+
+                        <div class="col-md-4 mb-10">
+                            <label class="text-right">Tipo de Pago</label>
+                            <span class="form-control span-background mx-wi">@transactionPaymentNames</span>
+                        </div>
+                    }
+                        <div class="col-md-4 text-right mb-10">
+                            <label>Cuotas de Pago</label>
+                            <span class="form-control span-background mx-wi"> @Html.DisplayFor(model => model.Quote)</span>
+                        </div>
                         <div class="col-md-4 text-right mb-10">
                             <label class="text-right">Capital</label>
-                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Capital)</span>
+                            <span class="form-control span-background mx-wi"> @Html.DisplayFor(model => model.Capital)</span>
                         </div>
                         <div class="col-md-4 text-right mb-10">
                             <label>Interes(%)</label>
-                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Interest)</span>
-                        </div>
-                        <div class="col-md-4 text-right mb-10">
-                            <label>Cuotas(Meses)</label>
-                            <span class="form-control span-background"> @Html.DisplayFor(model => model.Quote)</span>
+                            <span class="form-control span-background mx-wi"> @Html.DisplayFor(model => model.Interest)</span>
                         </div>
                         <div class="col-md-8 mb-10">
                             <label>Notas</label>
-                            <span class="form-control span-background notes"> @Html.DisplayFor(model => model.Notes)</span>
+                            <span class="form-control span-background mx-wi notes"> @Html.DisplayFor(model => model.Notes)</span>
                         </div>
                         @*<button class="btn btn-primary" type="submit">
-                            <i class="fa fa-file-excel"></i>
-                            Descargar Reporte Excel
-                        </button>*@
+                                <i class="fa fa-file-excel"></i>
+                                Descargar Reporte Excel
+                            </button>*@
                     </div>
                 </div>
             </div>
-        </form>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-3">
         <div class="panel panel-primary">
-            <div class="panel-heading">
-                <span class="h2">Tabla Amortización</span>
+            <div class="panel-heading" style="font-size: 15px">
+                <i class="fa fa-fw fa-cog"></i>Acciones
             </div>
             <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-striped-even-light-blue">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Fecha de Pago</th>
-                                <th class="text-right">Cuota</th>
-                                <th class="text-right">Mora</th>
-                                <th class="text-right">Interés Mensual</th>
-                                <th class="text-right">Amortización Principal</th>
-                                <th class="text-right">Amortización Total</th>
-                                <th class="text-right">Capital Pendiente</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                double capital = Model.Capital;
-                                double interest = Convert.ToDouble(Model.Interest) / 1200;
-                                double plazo = Convert.ToDouble(Model.Quote);
-                                DateTime paymentDate = Model.CreationTime;
-                                DateTime nextDate = DateTime.UtcNow;
-
-                                //Generate QuoteNumber
-
-                                double quote = capital * (interest / (double)(1 - Math.Pow(1 + (double)interest, -plazo)));
-
-                                double interest_monthly = 0;
-                                double amortization = 0;
-                                double amortization_total = 0;
-                                double mora = 0;
-                                int i = 1;
-
-                                for (i = 1; i <= plazo; i++)
-                                {
-                                    interest_monthly = (interest * capital);
-                                    capital = (capital - quote + interest_monthly);
-
-                                    //Amortizacion totales y principales
-
-                                    amortization_total += (quote - interest_monthly);
-                                    amortization = quote - interest_monthly;
-                                    paymentDate = nextDate.AddMonths(i);
-                                    mora = quote * (double)CalculatorHelper.percentageOneValue(0.05m);
-
-                                    <tr>
-                                        <td>@i</td>
-                                        <td>@paymentDate.ToString("dd/MM/yyyy")</td>
-                                        <td class="text-right">@quote.ToString("C2")</td>
-                                        <td class="text-right">@mora.ToString("C2")</td>
-                                        <td class="text-right">@interest_monthly.ToString("C2")</td>
-                                        <td class="text-right">@amortization.ToString("C2")</td>
-                                        <td class="text-right">@amortization_total.ToString("C2")</td>
-                                        <td class="text-right">@capital.ToString("C2")</td>
-                                    </tr>
-                                }
-
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <ul class="list-group">
+                    <li class="list-group-item no-borders no-padding">
+                        <a class="btn btn-link text-left" asp-action="Edit" asp-route-id="@Model.Id">
+                            <i class="fa fa-pencil fa-fw"></i>Editar
+                        </a>
+                    </li>
+                    <li class="list-group-item no-borders no-padding">
+                        <a class="btn btn-link text-left" asp-action="Index">
+                            <i class="fa fa-list fa-fw"></i>Consulta
+                        </a>
+                    </li>
+                    <li class="list-group-item no-borders no-padding">
+                        <button class="btn btn-link text-left" data-toggle="modal" data-target="@("#paymentModal-"+Model.Id)">
+                            <i class="fa fa-check fa-fw"></i>Pagar Prestamo
+                        </button>
+                    </li>                   
+                </ul>
             </div>
+        </div>
+    </div>
+    @{
+        switch (Model.TransactionPaymentId)
+        {
+            case (int)TransactionPaymentEnum.DailyPayment:
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="h2">Tabla Amortización</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped-even-light-blue">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Fecha de Pago</th>
+                                            <th class="text-right">Cuota</th>
+                                            <th class="text-right">Mora</th>
+                                            <th class="text-right">Interés Mensual</th>
+                                            <th class="text-right">Amortización Principal</th>
+                                            <th class="text-right">Amortización Total</th>
+                                            <th class="text-right">Capital Pendiente</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            double capital = Model.Capital;
+                                            double interest = Convert.ToDouble(Model.Interest) / 1200;
+                                            double plazo = Convert.ToDouble(Model.RemainingPayments);
+                                            DateTime paymentDate = Model.CreationTime;
+                                            DateTime nextDate = DateTime.UtcNow;
+
+                                            //Generate QuoteNumber
+
+                                            double quote = capital * (interest / (double)(1 - Math.Pow(1 + (double)interest, -plazo)));
+
+                                            double interest_monthly = 0;
+                                            double amortization = 0;
+                                            double amortization_total = 0;
+                                            double mora = 0;
+                                            int i = 1;
+
+                                            for (i = 1; i <= plazo; i++)
+                                            {
+                                                interest_monthly = (interest * capital);
+                                                capital = (capital - quote + interest_monthly);
+
+                                                //Amortizacion totales y principales
+
+                                                amortization_total += (quote - interest_monthly);
+                                                amortization = quote - interest_monthly;
+                                                paymentDate = nextDate.AddDays(i);
+                                                mora = quote * (double)CalculatorHelper.percentageOneValue(0.05m);
+
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>@paymentDate.ToString("dd/MM/yyyy")</td>
+                                                    <td class="text-right">@quote.ToString("C2")</td>
+                                                    <td class="text-right">@mora.ToString("C2")</td>
+                                                    <td class="text-right">@interest_monthly.ToString("C2")</td>
+                                                    <td class="text-right">@amortization.ToString("C2")</td>
+                                                    <td class="text-right">@amortization_total.ToString("C2")</td>
+                                                    <td class="text-right">@capital.ToString("C2")</td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case (int)TransactionPaymentEnum.BiweeklyPayment:
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="h2">Tabla Amortización</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped-even-light-blue">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Fecha de Pago</th>
+                                            <th class="text-right">Cuota</th>
+                                            <th class="text-right">Mora</th>
+                                            <th class="text-right">Interés Mensual</th>
+                                            <th class="text-right">Amortización Principal</th>
+                                            <th class="text-right">Amortización Total</th>
+                                            <th class="text-right">Capital Pendiente</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            double capitalBiweekly = Model.Capital;
+                                            double interestBiweekly = Convert.ToDouble(Model.Interest) / 1200;
+                                            double plazoBiweekly = Convert.ToDouble(Model.Quote);
+                                            DateTime paymentDateBiweekly = Model.CreationTime;
+                                            DateTime nextDateBiweekly = DateTime.UtcNow;
+
+                                            //Generate QuoteNumber
+                                            double quoteBiweekly = capitalBiweekly * (interestBiweekly / (double)(1 - Math.Pow(1 + (double)interestBiweekly, -plazoBiweekly)));
+
+                                            double interest_monthlyBiweekly = 0;
+                                            double amortizationBiweekly = 0;
+                                            double amortization_totalBiweekly = 0;
+                                            double moraBiweekly = 0;
+                                            int iBiweekly = 1;
+                                            int days = 15;
+
+                                            for (iBiweekly = 1; iBiweekly <= plazoBiweekly; iBiweekly++, days+=15)
+                                            {
+                                                interest_monthlyBiweekly = (interestBiweekly * capitalBiweekly);
+                                                capitalBiweekly = (capitalBiweekly - quoteBiweekly + interest_monthlyBiweekly);
+
+                                                //Amortizacion totales y principales
+
+                                                amortization_totalBiweekly += (quoteBiweekly - interest_monthlyBiweekly);
+                                                amortizationBiweekly = quoteBiweekly - interest_monthlyBiweekly;
+                                                paymentDateBiweekly = nextDateBiweekly.AddDays(days);
+                                                moraBiweekly = quoteBiweekly * (double)CalculatorHelper.percentageOneValue(0.05m);
+
+                                                <tr>
+                                                    <td>@iBiweekly</td>
+                                                    <td>@paymentDateBiweekly.ToString("dd/MM/yyyy")</td>
+                                                    <td class="text-right">@quoteBiweekly.ToString("C2")</td>
+                                                    <td class="text-right">@moraBiweekly.ToString("C2")</td>
+                                                    <td class="text-right">@interest_monthlyBiweekly.ToString("C2")</td>
+                                                    <td class="text-right">@amortizationBiweekly.ToString("C2")</td>
+                                                    <td class="text-right">@amortization_totalBiweekly.ToString("C2")</td>
+                                                    <td class="text-right">@capitalBiweekly.ToString("C2")</td>
+                                                </tr>
+
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case (int)TransactionPaymentEnum.MonthlyPayment:
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="h2">Tabla Amortización</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped-even-light-blue">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Fecha de Pago</th>
+                                            <th class="text-right">Cuota</th>
+                                            <th class="text-right">Mora</th>
+                                            <th class="text-right">Interés Mensual</th>
+                                            <th class="text-right">Amortización Principal</th>
+                                            <th class="text-right">Amortización Total</th>
+                                            <th class="text-right">Capital Pendiente</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            double capitalByMonth = Model.Capital;
+                                            double interestByMonth = Convert.ToDouble(Model.Interest) / 1200;
+                                            double plazoByMonth = Convert.ToDouble(Model.Quote);
+                                            DateTime paymentDateByMonth = Model.CreationTime;
+                                            DateTime nextDateByMonth = DateTime.UtcNow;
+
+                                            //Generate QuoteNumber
+                                            double quoteByMonth = capitalByMonth * (interestByMonth / (double)(1 - Math.Pow(1 + (double)interestByMonth, -plazoByMonth)));
+
+                                            double interest_monthlyByMonth = 0;
+                                            double amortizationByMonth = 0;
+                                            double amortization_totalByMonth = 0;
+                                            double moraByMonth = 0;
+                                            int iByMonth = 1;
+
+                                            for (iByMonth = 1; iByMonth <= plazoByMonth; iByMonth++)
+                                            {
+                                                interest_monthlyByMonth = (interestByMonth * capitalByMonth);
+                                                capitalByMonth = (capitalByMonth - quoteByMonth + interest_monthlyByMonth);
+
+                                                //Amortizacion totales y principales
+
+                                                amortization_totalByMonth += (quoteByMonth - interest_monthlyByMonth);
+                                                amortizationByMonth = quoteByMonth - interest_monthlyByMonth;
+                                                paymentDateByMonth = nextDateByMonth.AddMonths(iByMonth);
+                                                moraByMonth = quoteByMonth * (double)CalculatorHelper.percentageOneValue(0.05m);
+
+                                                <tr>
+                                                    <td>@iByMonth</td>
+                                                    <td>@paymentDateByMonth.ToString("dd/MM/yyyy")</td>
+                                                    <td class="text-right">@quoteByMonth.ToString("C2")</td>
+                                                    <td class="text-right">@moraByMonth.ToString("C2")</td>
+                                                    <td class="text-right">@interest_monthlyByMonth.ToString("C2")</td>
+                                                    <td class="text-right">@amortizationByMonth.ToString("C2")</td>
+                                                    <td class="text-right">@amortization_totalByMonth.ToString("C2")</td>
+                                                    <td class="text-right">@capitalByMonth.ToString("C2")</td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                break;
+            default:
+                break;
+        }
+    }
+
+</div>
+<div id="@("paymentModal-"+Model.Id)" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <partial name="_PaymentLoanModal" model="@Model" />
         </div>
     </div>
 </div>

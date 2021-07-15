@@ -4,24 +4,18 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<div class="row border-bottom">
-    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-        @*<div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-        </div>*@
-        <ul class="nav navbar-top-links navbar-right">
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <li>
-                    <partial name="_LoginPartial" />
-                </li>
-            }
-            else
-            {
-                <li>
-                    <a asp-controller="Security" asp-action="Login">Iniciar Sesion</a>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>
+@if (SignInManager.IsSignedIn(User))
+ {
+    <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            </div>
+            <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <partial name="_LoginPartial" />
+                    </li>
+            </ul>
+        </nav>
+    </div>
+ }

@@ -23,13 +23,19 @@ namespace RumarApp.Data
             builder.Entity<IdentityRole>().ToTable("Roles");
             builder.Entity<ClientViewModel>().ToTable("Clients");
             builder.Entity<Loan>().ToTable("Loans");
+            builder.Entity<TransactionType>().ToTable("TransactionTypes");
+            builder.Entity<TransactionPayment>().ToTable("TransactionPayments");
+            builder.Entity<ClientType>().ToTable("ClientTypes");
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<RumarApp.Models.ClientViewModel> ClientViewModel { get; set; }
+        public DbSet<RumarApp.Models.ClientViewModel> Client { get; set; }
 
         public DbSet<RumarApp.Models.Loan> Loan { get; set; }
+        public DbSet<RumarApp.Models.TransactionType> TransactionType { get; set; }
+        public DbSet<RumarApp.Models.TransactionPayment> TransactionPayment { get; set; }
+        public DbSet<RumarApp.Models.ClientType> ClientType { get; set; }
     }
 }

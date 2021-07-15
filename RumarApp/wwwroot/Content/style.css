@@ -7812,7 +7812,7 @@ body.skin-1 {
     background: transparent;
     border-bottom: none !important;
     border-top: none;
-    padding: 35px 60px 25px 60px;
+    padding: 35px 30px 25px 60px;
 }
 .fixed-nav.skin-1 .navbar-fixed-top {
   background: #fff;
@@ -7834,7 +7834,7 @@ body.skin-1 {
   border: none;
 }
 .skin-1 .nav-header {
-  padding: 35px 60px 25px 60px !important;
+  padding: 35px 30px 25px 30px !important;
 }
 .skin-1 .nav-header a.dropdown-toggle {
   color: #fff;
@@ -7860,6 +7860,9 @@ body.skin-1 {
 }
 .skin-1 .nav.nav-tabs > li.active {
   background: transparent;
+}
+.skin-1 ul.nav-second-level {
+    background-color: inherit;
 }
 /*
  *

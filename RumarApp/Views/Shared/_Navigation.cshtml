@@ -39,31 +39,49 @@
     }
 </style>
 
-<nav class="navbar-default navbar-static-side" role="navigation">
-    <div class="sidebar-collapse">
-        <ul class="nav" id="side-menu">
-            <li class="nav-header bg-primary-important">
-                <div class="dropdown profile-element">
-                    <a data-toggle="dropdown" class="dropdown-toggle text-center" href="#">
-                        <div class="circle-logo" style="vertical-align: middle;">
-                            @*<img src="~/Content/img/CustomerLogo/Logo.png" alt="" class="img-circle" width="95px" height="70px" style="margin-top: 15px">*@
-                        </div>
-                    </a>
-                </div>
-            </li>
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <li class="">
-                    <a href="@Url.Action("Index", "Loans")">
-                        <i class="fa fa-money"></i> <span class="nav-label">Prestamos </span>
-                    </a>
+@if (SignInManager.IsSignedIn(User))
+ {
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header bg-primary-important">
+                    <div class="dropdown profile-element">
+                        <a data-toggle="dropdown" class="dropdown-toggle text-center" onclick="navigateTo('@Url.Action("Index", "Home")')">
+                            <div class="circle-logo" style="vertical-align: middle;">
+                                @*<img src="~/Content/img/CustomerLogo/Logo.png" alt="" class="img-circle" width="95px" height="70px" style="margin-top: 15px">*@
+                            </div>
+                        </a>
+                    </div>
                 </li>
-                <li class="">
-                    <a href="@Url.Action("Index", "Client")">
-                        <i class="fa fa-user"></i> <span class="nav-label">Clientes </span>
-                    </a>
-                </li>
-            }
-        </ul>
-    </div>
-</nav>
+                    <li class="@Html.IsSelected(controller: "Loans")">
+                        <a href="@Url.Action("Index", "Loans")">
+                            <i class="fa fa-money"></i> <span class="nav-label">Prestamos </span>
+                        </a>
+                    </li>
+                    <li class="@Html.IsSelected(controller: "Client")">
+                        <a href="@Url.Action("Index", "Client")">
+                            <i class="fa fa-users"></i> <span class="nav-label">Clientes </span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="">
+                            <i class="fa fa-cog"></i> 
+                            <span class="nav-label">Seguridad </span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level collapse" style="height: 0px;">
+                            <li class="@Html.IsSelected(controller: "Security")">
+                                <a href="@Url.Action("Roles","Security")">Roles</a>
+                            </li>
+                        </ul>
+                    </li>
+            </ul>
+        </div>
+    </nav>
+ }
+
+<script>
+    function navigateTo(url) {
+        window.location = url;
+    }
+</script>

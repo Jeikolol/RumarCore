@@ -1,4 +1,5 @@
 ﻿@model RumarApp.Models.Loan
+@using RumarApp.Enums
 
 @{
     ViewData["Title"] = "Crear";
@@ -23,9 +24,17 @@
                 <span asp-validation-for="Interest" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="Quote" class="control-label">Cuota(Meses)</label>
+                <label asp-for="Quote" class="control-label">Cuotas de Pagos</label>
                 <input asp-for="Quote" class="form-control" />
                 <span asp-validation-for="Quote" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="TransactionTypeId" class="control-label">Metodo de Pago</label>
+                <select asp-for="TransactionTypeId" class ="form-control" asp-items="ViewBag.TransactionTypeId"></select>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="TransactionPaymentId" class="control-label">Cuota de Pago</label>
+                <select asp-for="TransactionPaymentId" class ="form-control" asp-items="ViewBag.TransactionPaymentId"></select>
             </div>
             <div class="form-group col-md-4">
                 <label asp-for="ClientsId" class="control-label">Cliente</label>
@@ -33,7 +42,7 @@
             </div>
             <div class="form-group col-md-8">
                 <label asp-for="Notes" class="control-label">Notas</label>
-                <textarea asp-for="Notes" class="form-control"></textarea>
+                <textarea asp-for="Notes" class="form-control mx-wi" style="width: 680px"></textarea>
             </div>
             <div class="form-group col-md-12">
                 <input type="submit" value="Crear" class="btn btn-primary" />

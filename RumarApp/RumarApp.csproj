@@ -10,40 +10,19 @@
     <Compile Remove="Migrations\20210705132411_create_clients_table.Designer.cs" />
     <Compile Remove="Migrations\20210705225513_create_clients_loans_tables.cs" />
     <Compile Remove="Migrations\20210705225513_create_clients_loans_tables.Designer.cs" />
+    <Compile Remove="Migrations\20210727015132_add_fields_transationtypeid_transactionpayment_loans_table.cs" />
+    <Compile Remove="Migrations\20210727015132_add_fields_transationtypeid_transactionpayment_loans_table.Designer.cs" />
+    <Compile Remove="Migrations\20210727232821_add_foreign_key_loans_table.cs" />
+    <Compile Remove="Migrations\20210727232821_add_foreign_key_loans_table.Designer.cs" />
+    <Compile Remove="Migrations\20210727233435_add_foreign_key_loans_table.cs" />
+    <Compile Remove="Migrations\20210727233435_add_foreign_key_loans_table.Designer.cs" />
+    <Compile Remove="Migrations\20210727233746_add_foreign_key_loans_table.cs" />
+    <Compile Remove="Migrations\20210727233746_add_foreign_key_loans_table.Designer.cs" />
+    <Compile Remove="Migrations\20210727235013_add_transactiontypeid_transactionpaymentid_loans_table.cs" />
+    <Compile Remove="Migrations\20210727235013_add_transactiontypeid_transactionpaymentid_loans_table.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Scripts\app\appIdleSetup.js" />
-    <None Include="wwwroot\Scripts\app\bankSelector.js" />
-    <None Include="wwwroot\Scripts\app\bankSwiftSelector.js" />
-    <None Include="wwwroot\Scripts\app\bankTransactionTypeConstants.js" />
-    <None Include="wwwroot\Scripts\app\businessOpportunitySmartWizardReuse.js" />
-    <None Include="wwwroot\Scripts\app\businessOpportunityStatusConstants.js" />
-    <None Include="wwwroot\Scripts\app\businessRequestReviewer.js" />
-    <None Include="wwwroot\Scripts\app\cardHelper.js" />
-    <None Include="wwwroot\Scripts\app\checkLocalStorageManager.js" />
-    <None Include="wwwroot\Scripts\app\customDataTable.js" />
-    <None Include="wwwroot\Scripts\app\customer-check-beneficiary-datatable-selector.js" />
-    <None Include="wwwroot\Scripts\app\customer-check-holder-beneficiary-datatable-selector.js" />
-    <None Include="wwwroot\Scripts\app\customer-check-holder-datatable-selector.js" />
-    <None Include="wwwroot\Scripts\app\customerCheckHolderManager.js" />
-    <None Include="wwwroot\Scripts\app\customerFinderWidget.js" />
-    <None Include="wwwroot\Scripts\app\customerFinderWidgetSearch.js" />
-    <None Include="wwwroot\Scripts\app\exchangeBusinessRequestReviewer.js" />
-    <None Include="wwwroot\Scripts\app\htmlHelper.js" />
-    <None Include="wwwroot\Scripts\app\identificationTypeConstants.js" />
-    <None Include="wwwroot\Scripts\app\inspinia.js" />
-    <None Include="wwwroot\Scripts\app\instrumentTypeConstants.js" />
-    <None Include="wwwroot\Scripts\app\localStorageCacheHelper.js" />
-    <None Include="wwwroot\Scripts\app\modalHelperFunctions.js" />
-    <None Include="wwwroot\Scripts\app\PasswordValidationHelper.js" />
-    <None Include="wwwroot\Scripts\app\saleBusinessRequestReviewer.js" />
-    <None Include="wwwroot\Scripts\app\transference-beneficiary-selector.js" />
-    <None Include="wwwroot\Scripts\app\transference-sender-selector.js" />
-    <None Include="wwwroot\Scripts\app\UrlSwalHelper.js" />
-    <None Include="wwwroot\Scripts\app\wizard-common-form-helper.js" />
-    <None Include="wwwroot\Scripts\app\wizard-list-selector.js" />
-    <None Include="wwwroot\Scripts\app\wizard-submit-helper.js" />
     <None Include="wwwroot\Scripts\bootstrap.js" />
     <None Include="wwwroot\Scripts\bootstrap.min.js" />
     <None Include="wwwroot\Scripts\jquery-3.2.1.intellisense.js" />
@@ -90,8 +69,9 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.4" />
-    <PackageReference Include="EPPlus" Version="4.5.3.3" />
+    <PackageReference Include="EPPlus" Version="5.0.3" />
     <PackageReference Include="Humanizer" Version="2.11.10" />
+    <PackageReference Include="ladda-bootstrap" Version="0.9.8" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.15" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -101,6 +81,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.15" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="System.Reactive.Windows.Forms" Version="4.4.1" />
   </ItemGroup>
 
 </Project>

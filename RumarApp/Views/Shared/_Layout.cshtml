@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="~/Content/bootstrap.min.css.map" />
     <link rel="stylesheet" href="~/Content/Site.css" />
     <link rel="stylesheet" href="~/Content/style.css" />
-
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
     <style>
         .pagination {
@@ -77,6 +75,10 @@
             height: 60px;
         }
 
+        .mx-wi {
+            max-width: none !important;
+        }
+
     </style>
 </head>
 <body class="skin-1 pace-done">
@@ -94,7 +96,7 @@
                     @RenderBody()
 
                     <!-- Footer -->
-                    <footer class="border-top footer text-muted">
+                    <footer class="footer fixed_full" style="z-index: 9999">
                         <div class="container">
                             &copy; 2021 - RumarCore - <a asp-area="" asp-page="/Privacy">Privacy</a>
                         </div>
@@ -105,12 +107,12 @@
     </div>
 
 
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
     <script src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/Scripts/plugins/metisMenu/metisMenu.min.js"></script>
     <script src="~/Scripts/plugins/pace/pace.min.js"></script>
+    <script src="~/Scripts/inspinia.js"></script>
 
-    <script src="~/Scripts/jquery-3.2.1.js"></script>
     <script src="~/Scripts/jquery.highlight.js"></script>
     <script src="~/Scripts/plugins/jquery-idle/jquery.idle.min.js"></script>
 
@@ -118,8 +120,7 @@
 
     <script src="~/Scripts/plugins/ladda/spin.min.js"></script>
     <script src="~/Scripts/plugins/ladda/ladda.min.js"></script>
-    <script src="~/Scripts/plugins/ladda/ladda.jquery.min.js"></script>
-
+    <script src="~/Scripts/plugins/ladda/ladda.jquery.min.js"></script>  
 
     @RenderSection("Scripts", required: false)
 </body>

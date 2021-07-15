@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using RumarApp.Data;
 using RumarApp.Models;
 using System;
 using System.Collections.Generic;
@@ -19,21 +21,21 @@ namespace RumarApp.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        //private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<SecurityController> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public SecurityController(SignInManager<User> signInManager,
             ILogger<SecurityController> logger,
             UserManager<User> userManager,
-            //RoleManager<IdentityRole> roleManager,
-            IEmailSender emailSender)
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext applicationDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            //_roleManager = roleManager;
+            _roleManager = roleManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _context = applicationDbContext;
         }
 
         [AllowAnonymous]
@@ -139,50 +141,86 @@ namespace RumarApp.Controllers
             return View();
         }
 
-        //private async Task CreateRolesandUsers()
-        //{
-        //    bool x = await _roleManager.RoleExistsAsync("Admin");
-        //    if (!x)
-        //    {
-        //        // first we create Admin rool    
-        //        var role = new IdentityRole();
-        //        role.Name = "Admin";
-        //        await _roleManager.CreateAsync(role);
+        public async Task<IActionResult> Roles(string currentFilter,
+                                                string searchString,
+                                                int? pageNumber)
+        {
 
-        //        //Here we create a Admin super user who will maintain the website                   
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
 
-        //        var user = new User();
-        //        user.UserName = "default";
-        //        user.Email = "default@default.com";
+            ViewData["CurrentFilter"] = searchString;
 
-        //        string userPWD = "somepassword";
+            var roles = from s in _context.Roles
+                          select s;
 
-        //        IdentityResult chkUser = await _userManager.CreateAsync(user, userPWD);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                roles = roles.Where(s => s.Name.Contains(searchString) || s.NormalizedName.Contains(searchString));
+            }
 
-        //        //Add default User to Role Admin    
-        //        if (chkUser.Succeeded)
-        //        {
-        //            var result1 = await _userManager.AddToRoleAsync(user, "Admin");
-        //        }
-        //    }
+            roles = roles.OrderBy(s => s.Name);
 
-        //    // creating Creating Manager role     
-        //    x = await _roleManager.RoleExistsAsync("Manager");
-        //    if (!x)
-        //    {
-        //        var role = new IdentityRole();
-        //        role.Name = "Manager";
-        //        await _roleManager.CreateAsync(role);
-        //    }
+            int pageSize = 5;
 
-        //    // creating Creating Employee role     
-        //    x = await _roleManager.RoleExistsAsync("Employee");
-        //    if (!x)
-        //    {
-        //        var role = new IdentityRole();
-        //        role.Name = "Employee";
-        //        await _roleManager.CreateAsync(role);
-        //    }
-        //}
+            return View(await PaginatedList<IdentityRole>.CreateAsync(roles.AsNoTracking(), pageNumber ?? 1, pageSize));
+        }
+
+        public async Task<IActionResult> CreateRole(RoleModel param, string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var role = new IdentityRole { Name = param.Name, NormalizedName = param.Description };
+                var result = await _roleManager.CreateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Role creado.");
+
+                    return LocalRedirect(returnUrl);
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            IdentityRole role = await _roleManager.FindByIdAsync(id);
+
+            if (role != null)
+            {
+                IdentityResult result = await _roleManager.DeleteAsync(role);
+                
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                } 
+                else
+                {
+                    ModelState.AddModelError("", "Error al borrar Rol");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Este Rol no Existe.");
+            }
+
+            return View("Index", _roleManager.Roles);
+        }
+
     }
 }

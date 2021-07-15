@@ -7,6 +7,11 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .gray-bg.container-fluid {
+            margin-left: 0px !important;
+        }
+    </style>
 
     <title>RumarApp | Login</title>
 
@@ -93,7 +98,7 @@
                                 <small>Olvidé mi contraseña</small>
                             </a>*@
 
-                        <button type="submit" class="btn btn-outline m-t btn-primary" data-style="expand-right">
+                        <button type="submit" class="ladda-button btn btn-outline m-t btn-primary" data-style="expand-right">
                             Iniciar sesión
                         </button>
                         <br />
@@ -106,7 +111,6 @@
     </div>
 </body>
 </html>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
