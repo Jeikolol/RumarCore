@@ -1,11 +1,11 @@
-﻿@model RumarApp.Models.Loan
+﻿@model RumarApp.Models.ClientViewModel
 
 @{
     ViewData["Title"] = "Borrar";
 }
 
 
-@using (Html.BeginForm("Delete", "Loan", FormMethod.Post))
+@using (Html.BeginForm("Delete", "Client", FormMethod.Post))
 {
     <div class="modal-header bg-danger">
         <h5 class="modal-title">
@@ -20,13 +20,12 @@
         <div class="form-group text-center row">
             <div class="col-md-12">
                 <span class="h3">
-                    Seguro que desea eliminar el Prestamo del  Cliente
-
+                    Seguro que desea eliminar al cliente
                 </span>
             </div>
             <div class="col-md-12">
                 <span class="h3 font-bold">
-                    @Html.DisplayFor(model => model.Clients.FullName)?
+                    @Html.DisplayFor(model => model.FullName)?
                 </span>
             </div>
         </div>

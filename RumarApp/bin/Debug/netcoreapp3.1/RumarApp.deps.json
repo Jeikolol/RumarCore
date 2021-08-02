@@ -32,7 +32,7 @@
       "RumarApp/1.0.0": {
         "dependencies": {
           "ClosedXML": "0.95.4",
-          "EPPlus": "4.5.3.3",
+          "EPPlus": "5.0.3",
           "Humanizer": "2.11.10",
           "Microsoft.AspNet.Mvc": "5.2.7",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "3.1.15",
@@ -43,6 +43,8 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.15",
           "Microsoft.EntityFrameworkCore.Tools": "3.1.15",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.5",
+          "System.Reactive.Windows.Forms": "4.4.1",
+          "ladda-bootstrap": "0.9.8",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions.Reference": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies.Reference": "3.1.0.0",
@@ -346,7 +348,7 @@
           "lib/netstandard1.3/DocumentFormat.OpenXml.dll": {}
         }
       },
-      "EPPlus/4.5.3.3": {
+      "EPPlus/5.0.3": {
         "dependencies": {
           "Microsoft.Extensions.Configuration.Json": "3.1.0",
           "System.ComponentModel.TypeConverter": "4.3.0",
@@ -362,8 +364,8 @@
         },
         "runtime": {
           "lib/netstandard2.1/EPPlus.dll": {
-            "assemblyVersion": "4.5.3.3",
-            "fileVersion": "4.5.3.3"
+            "assemblyVersion": "5.0.3.0",
+            "fileVersion": "5.0.3.0"
           }
         },
         "compile": {
@@ -911,6 +913,11 @@
           "lib/netstandard2.0/zh-Hant/Humanizer.resources.dll": {
             "locale": "zh-Hant"
           }
+        }
+      },
+      "ladda-bootstrap/0.9.8": {
+        "dependencies": {
+          "Spin.js": "2.0.1"
         }
       },
       "Microsoft.AspNet.Mvc/5.2.7": {
@@ -2230,6 +2237,7 @@
           }
         }
       },
+      "Spin.js/2.0.1": {},
       "System.AppContext/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
@@ -2779,6 +2787,17 @@
           "System.Xml.XDocument": "4.3.0",
           "System.Xml.XmlDocument": "4.3.0",
           "System.Xml.XmlSerializer": "4.3.0"
+        }
+      },
+      "System.Reactive.Windows.Forms/4.4.1": {
+        "runtime": {
+          "lib/net46/System.Reactive.Windows.Forms.dll": {
+            "assemblyVersion": "3.0.3000.0",
+            "fileVersion": "3.0.3000.0"
+          }
+        },
+        "compile": {
+          "lib/net46/System.Reactive.Windows.Forms.dll": {}
         }
       },
       "System.Reflection/4.3.0": {
@@ -4882,12 +4901,12 @@
       "path": "documentformat.openxml/2.7.2",
       "hashPath": "documentformat.openxml.2.7.2.nupkg.sha512"
     },
-    "EPPlus/4.5.3.3": {
+    "EPPlus/5.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-aZnWmrQNRQuV/2Kwu+pTv1HVX1ZBvoGKw2GuzUOmBRpOD09sYJFGHww8NVQd3IIeb1vqosPDFZgND/1nxTzFKQ==",
-      "path": "epplus/4.5.3.3",
-      "hashPath": "epplus.4.5.3.3.nupkg.sha512"
+      "sha512": "sha512-fNNsH2aQjLvVJgh6fUqaWUyLcc1MciKpAO1S+P++ZGixy14u8ATJAziMax/kcSOH70KdJ5cn7Ii2TSaRR0fZFA==",
+      "path": "epplus/5.0.3",
+      "hashPath": "epplus.5.0.3.nupkg.sha512"
     },
     "ExcelNumberFormat/1.0.10": {
       "type": "package",
@@ -5238,6 +5257,13 @@
       "sha512": "sha512-z/ueYQZCf9SeZIObV2XrHGZIplMPdBmOJHzT13+rcGCOE209X7IoeKgXnWCJVMSHBxW8C5qYrWV/E7+YELnbyA==",
       "path": "humanizer.core.zh-hant/2.11.10",
       "hashPath": "humanizer.core.zh-hant.2.11.10.nupkg.sha512"
+    },
+    "ladda-bootstrap/0.9.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yle+36EcN162yaMu67gSuo1J3zVeTBBvJd2AoS9QqDyUMDEcs1y3QLOdbiWUh4UdeFQqcLfcIkwZUVLz7yVDvw==",
+      "path": "ladda-bootstrap/0.9.8",
+      "hashPath": "ladda-bootstrap.0.9.8.nupkg.sha512"
     },
     "Microsoft.AspNet.Mvc/5.2.7": {
       "type": "package",
@@ -6016,6 +6042,13 @@
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
     },
+    "Spin.js/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kfradF9CwvLQ67cB+CDSX+Vo1eNXPsFRMgVE+RJV1xCSLDhNGKXamhZVRDaNQaqGU0O1PEMcB2DAXzB4zLozyQ==",
+      "path": "spin.js/2.0.1",
+      "hashPath": "spin.js.2.0.1.nupkg.sha512"
+    },
     "System.AppContext/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -6323,6 +6356,13 @@
       "sha512": "sha512-yDaJ2x3mMmjdZEDB4IbezSnCsnjQ4BxinKhRAaP6kEgL6Bb6jANWphs5SzyD8imqeC/3FxgsuXT6ykkiH1uUmA==",
       "path": "system.private.datacontractserialization/4.3.0",
       "hashPath": "system.private.datacontractserialization.4.3.0.nupkg.sha512"
+    },
+    "System.Reactive.Windows.Forms/4.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-k7fdk88WXeesdIKOw6WEVXLe5iAWx45o2xt2LhGHShJZWqwCsa8qmo6h/cdhIEhv7ao12w7sjd67hBX0jX+k5A==",
+      "path": "system.reactive.windows.forms/4.4.1",
+      "hashPath": "system.reactive.windows.forms.4.4.1.nupkg.sha512"
     },
     "System.Reflection/4.3.0": {
       "type": "package",

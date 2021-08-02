@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "SmbDPkmk7j99Q36P2FJRtu/NstPQfcl93h+DSiFDXgIfV6dfJIz73p6OTFMWORH650a82JOKiQImEplDDtCOnw==",
+  "dgSpecHash": "j4rSldkaWja2YCtkHhtHBqfrKL0At3Uz7gIkX1eE0P7o6PrhGffdUCqS0stF33lamcV/sd0FpWZ07XdMmkYBoA==",
   "success": true,
   "projectFilePath": "C:\\Users\\DEVELOPER04\\Desktop\\App\\RumarApp\\RumarApp\\RumarApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\closedxml\\0.95.4\\closedxml.0.95.4.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\documentformat.openxml\\2.7.2\\documentformat.openxml.2.7.2.nupkg.sha512",
-    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\epplus\\4.5.3.3\\epplus.4.5.3.3.nupkg.sha512",
+    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\epplus\\5.0.3\\epplus.5.0.3.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\excelnumberformat\\1.0.10\\excelnumberformat.1.0.10.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\humanizer\\2.11.10\\humanizer.2.11.10.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\humanizer.core\\2.11.10\\humanizer.core.2.11.10.nupkg.sha512",
@@ -57,6 +57,7 @@
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\humanizer.core.zh-cn\\2.11.10\\humanizer.core.zh-cn.2.11.10.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\humanizer.core.zh-hans\\2.11.10\\humanizer.core.zh-hans.2.11.10.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\humanizer.core.zh-hant\\2.11.10\\humanizer.core.zh-hant.2.11.10.nupkg.sha512",
+    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\ladda-bootstrap\\0.9.8\\ladda-bootstrap.0.9.8.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\microsoft.aspnet.mvc\\5.2.7\\microsoft.aspnet.mvc.5.2.7.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\microsoft.aspnet.razor\\3.2.7\\microsoft.aspnet.razor.3.2.7.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\microsoft.aspnet.webpages\\3.2.7\\microsoft.aspnet.webpages.3.2.7.nupkg.sha512",
@@ -168,6 +169,7 @@
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\spin.js\\2.0.1\\spin.js.2.0.1.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
@@ -212,6 +214,7 @@
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.net.sockets\\4.3.0\\system.net.sockets.4.3.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.objectmodel\\4.3.0\\system.objectmodel.4.3.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.private.datacontractserialization\\4.3.0\\system.private.datacontractserialization.4.3.0.nupkg.sha512",
+    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.reactive.windows.forms\\4.4.1\\system.reactive.windows.forms.4.4.1.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.reflection.emit\\4.3.0\\system.reflection.emit.4.3.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.3.0\\system.reflection.emit.ilgeneration.4.3.0.nupkg.sha512",
@@ -301,6 +304,16 @@
       "warningLevel": 1,
       "message": "Package 'Microsoft.Web.Infrastructure 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.Web.Infrastructure",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Reactive.Windows.Forms 4.4.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "System.Reactive.Windows.Forms",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"
       ]

@@ -1,4 +1,5 @@
 ﻿@model RumarApp.Models.Loan
+@using RumarApp.Enums
 
 @{
     ViewData["Title"] = "Editar";
@@ -23,13 +24,21 @@
                 <span asp-validation-for="Interest" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="Quote" class="control-label">Cuota(Meses)</label>
+                <label asp-for="Quote" class="control-label">Cuotas de Pago</label>
                 <input asp-for="Quote" class="form-control" />
                 <span asp-validation-for="Quote" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4">
-                <label class="control-label">Cliente</label>
-                <span class="form-control span-background">@Model.Clients.FullName</span>
+                <label asp-for="TransactionTypeId" class="control-label">Metodo de Pago</label>
+                <select asp-for="TransactionTypeId" class="form-control" asp-items="Html.GetEnumSelectList<TransactionTypeEnum>()"></select>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="TransactionPaymentId" class="control-label">Tipo de Pago</label>
+                <select asp-for="TransactionPaymentId" class="form-control" asp-items="Html.GetEnumSelectList<TransactionPaymentEnum>()"></select>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="ClientsId" class="control-label">Cliente</label>
+                <span asp-validation-for="ClientsId" class="form-control span-background">@Model.Clients.FullName</span>
             </div>
             <div class="form-group col-md-8">
                 <label asp-for="Notes" class="control-label">Notas</label>

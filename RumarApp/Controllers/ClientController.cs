@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reactive;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RumarApp.Data;
+using RumarApp.Helpers;
 using RumarApp.Models;
 
 namespace RumarApp.Controllers
@@ -22,9 +25,37 @@ namespace RumarApp.Controllers
         }
 
         // GET: Client
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string currentFilter,
+                                                string searchString,
+                                                int? pageNumber)
         {
-            return View(await _context.ClientViewModel.ToListAsync());
+           
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+           
+            ViewData["CurrentFilter"] = searchString;
+
+            var clients = from s in _context.Client
+                           select s;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                clients = clients.Where(s => s.FisrtName.Contains(searchString) ||
+                                        s.LastName.Contains(searchString) || s.Identification.Contains(searchString) ||
+                                        s.Address.Contains(searchString) || s.PhoneNumber.Contains(searchString));
+            }
+
+            clients = clients.OrderBy(s => s.FisrtName);
+
+            int pageSize = 5;
+
+            return View(await PaginatedList<ClientViewModel>.CreateAsync(clients.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Client/Details/5
@@ -35,7 +66,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var clientViewModel = await _context.ClientViewModel
+            var clientViewModel = await _context.Client
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (clientViewModel == null)
             {
@@ -56,8 +87,14 @@ namespace RumarApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FisrtName,LastName,Identification,Address,PhoneNumber")] ClientViewModel clientViewModel)
+        public async Task<IActionResult> Create(ClientViewModel clientViewModel)
         {
+            if (!ValidateHelper.IsValidDrCedula(clientViewModel.Identification))
+            {
+                ModelState.AddModelError(nameof(clientViewModel.Identification), "La cedula ingresada no es valida");
+                return View(clientViewModel);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(clientViewModel);
@@ -75,7 +112,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var clientViewModel = await _context.ClientViewModel.FindAsync(id);
+            var clientViewModel = await _context.Client.FindAsync(id);
             if (clientViewModel == null)
             {
                 return NotFound();
@@ -88,7 +125,7 @@ namespace RumarApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FisrtName,LastName,Identification,Address,PhoneNumber")] ClientViewModel clientViewModel)
+        public async Task<IActionResult> Edit(int id, ClientViewModel clientViewModel)
         {
             if (id != clientViewModel.Id)
             {
@@ -126,7 +163,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var clientViewModel = await _context.ClientViewModel
+            var clientViewModel = await _context.Client
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (clientViewModel == null)
@@ -142,15 +179,15 @@ namespace RumarApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var clientViewModel = await _context.ClientViewModel.FindAsync(id);
-            _context.ClientViewModel.Remove(clientViewModel);
+            var clientViewModel = await _context.Client.FindAsync(id);
+            _context.Client.Remove(clientViewModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ClientViewModelExists(int id)
         {
-            return _context.ClientViewModel.Any(e => e.Id == id);
+            return _context.Client.Any(e => e.Id == id);
         }
     }
 }

@@ -30,7 +30,7 @@
           "lib/netstandard1.3/DocumentFormat.OpenXml.dll": {}
         }
       },
-      "EPPlus/4.5.3.3": {
+      "EPPlus/5.0.3": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Json": "3.1.0",
@@ -637,6 +637,12 @@
           "lib/netstandard2.0/zh-Hant/Humanizer.resources.dll": {
             "locale": "zh-Hant"
           }
+        }
+      },
+      "ladda-bootstrap/0.9.8": {
+        "type": "package",
+        "dependencies": {
+          "Spin.js": "2.0.1"
         }
       },
       "Microsoft.AspNet.Mvc/5.2.7": {
@@ -2250,6 +2256,9 @@
           }
         }
       },
+      "Spin.js/2.0.1": {
+        "type": "package"
+      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -3015,6 +3024,15 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Private.DataContractSerialization.dll": {}
+        }
+      },
+      "System.Reactive.Windows.Forms/4.4.1": {
+        "type": "package",
+        "compile": {
+          "lib/net46/System.Reactive.Windows.Forms.dll": {}
+        },
+        "runtime": {
+          "lib/net46/System.Reactive.Windows.Forms.dll": {}
         }
       },
       "System.Reflection/4.3.0": {
@@ -3943,24 +3961,27 @@
         "lib/netstandard1.3/DocumentFormat.OpenXml.xml"
       ]
     },
-    "EPPlus/4.5.3.3": {
-      "sha512": "aZnWmrQNRQuV/2Kwu+pTv1HVX1ZBvoGKw2GuzUOmBRpOD09sYJFGHww8NVQd3IIeb1vqosPDFZgND/1nxTzFKQ==",
+    "EPPlus/5.0.3": {
+      "sha512": "fNNsH2aQjLvVJgh6fUqaWUyLcc1MciKpAO1S+P++ZGixy14u8ATJAziMax/kcSOH70KdJ5cn7Ii2TSaRR0fZFA==",
       "type": "package",
-      "path": "epplus/4.5.3.3",
+      "path": "epplus/5.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "epplus.4.5.3.3.nupkg.sha512",
+        "EPPlusLogo.png",
+        "epplus.5.0.3.nupkg.sha512",
         "epplus.nuspec",
-        "lgpl-3.0.txt",
         "lib/net35/EPPlus.dll",
         "lib/net35/EPPlus.xml",
         "lib/net40/EPPlus.dll",
         "lib/net40/EPPlus.xml",
+        "lib/net45/EPPlus.dll",
+        "lib/net45/EPPlus.xml",
         "lib/netstandard2.0/EPPlus.dll",
         "lib/netstandard2.0/EPPlus.xml",
         "lib/netstandard2.1/EPPlus.dll",
         "lib/netstandard2.1/EPPlus.xml",
+        "license.md",
         "readme.txt"
       ]
     },
@@ -4710,6 +4731,23 @@
         "lib/netstandard1.0/zh-Hant/Humanizer.resources.dll",
         "lib/netstandard2.0/zh-Hant/Humanizer.resources.dll",
         "logo.png"
+      ]
+    },
+    "ladda-bootstrap/0.9.8": {
+      "sha512": "yle+36EcN162yaMu67gSuo1J3zVeTBBvJd2AoS9QqDyUMDEcs1y3QLOdbiWUh4UdeFQqcLfcIkwZUVLz7yVDvw==",
+      "type": "package",
+      "path": "ladda-bootstrap/0.9.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Content/ladda-themeless.css",
+        "content/Content/ladda-themeless.min.css",
+        "content/Content/ladda.css",
+        "content/Content/ladda.min.css",
+        "content/Scripts/ladda.js",
+        "content/Scripts/ladda.min.js",
+        "ladda-bootstrap.0.9.8.nupkg.sha512",
+        "ladda-bootstrap.nuspec"
       ]
     },
     "Microsoft.AspNet.Mvc/5.2.7": {
@@ -7074,6 +7112,19 @@
         "version.txt"
       ]
     },
+    "Spin.js/2.0.1": {
+      "sha512": "kfradF9CwvLQ67cB+CDSX+Vo1eNXPsFRMgVE+RJV1xCSLDhNGKXamhZVRDaNQaqGU0O1PEMcB2DAXzB4zLozyQ==",
+      "type": "package",
+      "path": "spin.js/2.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Scripts/spin.js",
+        "content/Scripts/spin.min.js",
+        "spin.js.2.0.1.nupkg.sha512",
+        "spin.js.nuspec"
+      ]
+    },
     "System.AppContext/4.3.0": {
       "sha512": "fKC+rmaLfeIzUhagxY17Q9siv/sPrjjKcfNg1Ic8IlQkZLipo8ljcaZQu4VtI4Jqbzjc2VTjzGLF6WmsRXAEgA==",
       "type": "package",
@@ -9071,6 +9122,19 @@
         "runtimes/aot/lib/netcore50/System.Private.DataContractSerialization.dll",
         "system.private.datacontractserialization.4.3.0.nupkg.sha512",
         "system.private.datacontractserialization.nuspec"
+      ]
+    },
+    "System.Reactive.Windows.Forms/4.4.1": {
+      "sha512": "k7fdk88WXeesdIKOw6WEVXLe5iAWx45o2xt2LhGHShJZWqwCsa8qmo6h/cdhIEhv7ao12w7sjd67hBX0jX+k5A==",
+      "type": "package",
+      "path": "system.reactive.windows.forms/4.4.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/System.Reactive.Windows.Forms.dll",
+        "lib/net46/System.Reactive.Windows.Forms.xml",
+        "system.reactive.windows.forms.4.4.1.nupkg.sha512",
+        "system.reactive.windows.forms.nuspec"
       ]
     },
     "System.Reflection/4.3.0": {
@@ -11614,7 +11678,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "ClosedXML >= 0.95.4",
-      "EPPlus >= 4.5.3.3",
+      "EPPlus >= 5.0.3",
       "Humanizer >= 2.11.10",
       "Microsoft.AspNet.Mvc >= 5.2.7",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 3.1.15",
@@ -11624,7 +11688,9 @@
       "Microsoft.AspNetCore.Routing >= 2.2.2",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.15",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.15",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.5"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.5",
+      "System.Reactive.Windows.Forms >= 4.4.1",
+      "ladda-bootstrap >= 0.9.8"
     ]
   },
   "packageFolders": {
@@ -11677,7 +11743,7 @@
           },
           "EPPlus": {
             "target": "Package",
-            "version": "[4.5.3.3, )"
+            "version": "[5.0.3, )"
           },
           "Humanizer": {
             "target": "Package",
@@ -11718,6 +11784,14 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[3.1.5, )"
+          },
+          "System.Reactive.Windows.Forms": {
+            "target": "Package",
+            "version": "[4.4.1, )"
+          },
+          "ladda-bootstrap": {
+            "target": "Package",
+            "version": "[0.9.8, )"
           }
         },
         "imports": [
@@ -11779,6 +11853,16 @@
       "warningLevel": 1,
       "message": "Package 'Microsoft.Web.Infrastructure 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.Web.Infrastructure",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Reactive.Windows.Forms 4.4.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "System.Reactive.Windows.Forms",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"
       ]

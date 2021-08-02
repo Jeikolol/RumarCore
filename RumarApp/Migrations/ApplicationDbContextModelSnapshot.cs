@@ -97,12 +97,10 @@ namespace RumarApp.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -139,12 +137,10 @@ namespace RumarApp.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -152,6 +148,24 @@ namespace RumarApp.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("RumarApp.Models.ClientType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientTypes");
                 });
 
             modelBuilder.Entity("RumarApp.Models.ClientViewModel", b =>
@@ -181,6 +195,9 @@ namespace RumarApp.Migrations
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
 
+                    b.Property<string>("MobileNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -200,6 +217,12 @@ namespace RumarApp.Migrations
                     b.Property<long>("Capital")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("CapitalToShow")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ClientTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ClientsId")
                         .HasColumnType("int");
 
@@ -215,11 +238,62 @@ namespace RumarApp.Migrations
                     b.Property<decimal>("Quote")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("RemainingPayments")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TransactionPaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientTypeId");
 
                     b.HasIndex("ClientsId");
 
+                    b.HasIndex("TransactionPaymentId");
+
+                    b.HasIndex("TransactionTypeId");
+
                     b.ToTable("Loans");
+                });
+
+            modelBuilder.Entity("RumarApp.Models.TransactionPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionPayments");
+                });
+
+            modelBuilder.Entity("RumarApp.Models.TransactionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionTypes");
                 });
 
             modelBuilder.Entity("RumarApp.Models.User", b =>
@@ -346,9 +420,27 @@ namespace RumarApp.Migrations
 
             modelBuilder.Entity("RumarApp.Models.Loan", b =>
                 {
+                    b.HasOne("RumarApp.Models.ClientType", "ClientType")
+                        .WithMany()
+                        .HasForeignKey("ClientTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RumarApp.Models.ClientViewModel", "Clients")
                         .WithMany("Loans")
                         .HasForeignKey("ClientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RumarApp.Models.TransactionPayment", "TransactionPayment")
+                        .WithMany()
+                        .HasForeignKey("TransactionPaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RumarApp.Models.TransactionType", "TransactionType")
+                        .WithMany()
+                        .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

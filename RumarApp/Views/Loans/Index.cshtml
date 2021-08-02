@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RumarApp.Models.Loan>
+﻿@model PaginatedList<RumarApp.Models.Loan>
 
 @{
     ViewData["Title"] = "Consulta";
@@ -16,9 +16,25 @@
     </div>
     <div class="panel-body">
         <div class="table-responsive">
+            <form asp-action="Index" method="get">
+                <div class="input-group">
+                    <span class="input-group-addon" id="inputGroup-sizing-default">
+                        <i class="fa fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-primary mx-wi"
+                           name="SearchString" value="@ViewData["CurrentFilter"]"
+                           placeholder="Buscar en la lista..." />
+                    <span class="input-group-btn">
+                        <input type="submit" value="Buscar" class="btn btn-secondary" />
+                    </span>
+                </div>
+            </form>
             <table class="table table-striped-even-light-blue">
                 <thead>
                     <tr>
+                        <th>
+                            Codigo
+                        </th> 
                         <th>
                             Capital
                         </th>
@@ -26,7 +42,10 @@
                             Interes(%)
                         </th>
                         <th>
-                            Cuota(Meses)
+                            Cuotas de Pago
+                        </th>
+                        <th>
+                            Tipos de Pago
                         </th>
                         <th>
                             Nombre del Cliente
@@ -41,6 +60,9 @@
                     {
                         <tr>
                             <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.Capital)
                             </td>
                             <td>
@@ -48,6 +70,8 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Quote)
+                            </td><td>
+                                @Html.DisplayFor(modelItem => item.TransactionPayment.Description)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Clients.FullName)
@@ -65,7 +89,7 @@
                                 <div id="@("deleteModal-"+item.Id)" class="modal" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <partial name="_DeleteModal" model="@item" />
+                                            <partial name="_DeleteLoanModal" model="@item" />
                                         </div>
                                     </div>
                                 </div>
@@ -74,6 +98,25 @@
                     }
                 </tbody>
             </table>
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-primary @prevDisabled">
+                <<
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-primary @nextDisabled">
+                >>
+            </a>
         </div>
     </div>
 </div>
