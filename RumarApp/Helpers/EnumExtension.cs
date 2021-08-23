@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Html;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -28,6 +30,13 @@ namespace RumarApp.Helpers
             }
 
             return displayName;
+        }
+        
+        public static HtmlString EnumToString<T>()
+        {
+            var values = Enum.GetValues(typeof(T)).Cast<int>();
+            var enumDictionary = values.ToDictionary(value => Enum.GetName(typeof(T), value));
+            return new HtmlString(JsonConvert.SerializeObject(enumDictionary));
         }
     }
 }

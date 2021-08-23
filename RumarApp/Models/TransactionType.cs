@@ -1,6 +1,6 @@
 ﻿namespace RumarApp.Models
 {
-    public class TransactionType
+    public class TransactionType : Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }

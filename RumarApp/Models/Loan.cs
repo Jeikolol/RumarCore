@@ -1,39 +1,46 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using RumarApp.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RumarApp.Models
 {
     [Authorize]
-    public class Loan
+    public class Loan : Entity
     {
         public int Id { get; set; }
         [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:c}")]
-        public long Capital { get; set; } 
+        public long Capital { get; set; }
         [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:c}")]
         public long CapitalToShow { get; set; }
         [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal Interest { get; set; }
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:n0}")]
         public decimal Quote { get; set; }
         public decimal RemainingPayments { get; set; }
         public DateTime CreationTime { get; set; }
         public string Notes { get; set; }
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         public int ClientsId { get; set; }
         public virtual ClientViewModel Clients { get; set; }
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         public int TransactionTypeId { get; set; } 
         public virtual TransactionType TransactionType { get; set; }
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         public int TransactionPaymentId { get; set; }
         public virtual TransactionPayment TransactionPayment { get; set; }
+        [Required(ErrorMessage = "Este campo es Obligatorio")]
         public int ClientTypeId { get; set; }
         public virtual ClientType ClientType { get; set; }
+        public virtual ICollection<Beneficiary> Beneficiary { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsFullPaid { get; set; }
     }
 }

@@ -141,35 +141,11 @@ namespace RumarApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Roles(string currentFilter,
-                                                string searchString,
-                                                int? pageNumber)
+        public async Task<IActionResult> Roles()
         {
+            var roles = await _context.Roles.ToListAsync();
 
-            if (searchString != null)
-            {
-                pageNumber = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewData["CurrentFilter"] = searchString;
-
-            var roles = from s in _context.Roles
-                          select s;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                roles = roles.Where(s => s.Name.Contains(searchString) || s.NormalizedName.Contains(searchString));
-            }
-
-            roles = roles.OrderBy(s => s.Name);
-
-            int pageSize = 5;
-
-            return View(await PaginatedList<IdentityRole>.CreateAsync(roles.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(roles);
         }
 
         public async Task<IActionResult> CreateRole(RoleModel param, string returnUrl = null)
