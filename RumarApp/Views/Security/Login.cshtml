@@ -1,117 +1,79 @@
 ﻿@model LoginModel
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .gray-bg.container-fluid {
-            margin-left: 0px !important;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rumar | Login </title>
 
-    <title>RumarApp | Login</title>
-
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
-    <link href="~/Fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="~/Content/animate.css" rel="stylesheet">
-    <link href="~/Content/style.css" rel="stylesheet">
-    <style>
-        body {
-            background: url(../../Content/img/backgrond-login.jpg) no-repeat center center;
-            background-size: cover;
-        }
-
-        .only-b {
-            border: none !important;
-            border-bottom: 1px solid #1ab394 !important;
-        }
-
-            .only-b:focus {
-                border-bottom: 2px solid #1ab394 !important;
-            }
-
-        .border {
-            border: 1px solid #dcdbdb;
-            opacity: 1;
-        }
-
-        .side {
-            display: flex;
-            align-items: center;
-            opacity: 1;
-        }
-
-        .mini-logo {
-            max-width: 100px;
-        }
-
-        .border:hover {
-            opacity: 1;
-        }
-
-        .validation-summary-errors {
-            color: red;
-        }
-    </style>
+    @*<link rel="stylesheet" href="/css/site.css">*@
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/adminlte.min.css">
 </head>
-<body class="gray-bg vsc-initialized">
-    <div class="loginColumns animated fadeInDown">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="ibox-content border">
-                    <div class="row side">
-                        <div class="col-md-offset-2 col-md-8">
-                            @*<img src="~/Content/img/CustomerLogo/Logo-loging.png" class="img-responsive" height="auto" width="100%" />*@
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a class="h1"><b>Rumar</b>App</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Ingresa los datos para iniciar sesion.</p>
+
+                <form role="form" method="post" action="/Security/Login">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.ReturnUrl)
+                    <div class="input-group mb-3">
+                        <input  asp-for="UserName" class="form-control" placeholder="Usuario" name="UserName" type="text">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
                         </div>
                     </div>
-                    <hr>
-
-                    <form class="m-t" role="form" method="post" action="/Security/Login">
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(m => m.ReturnUrl)
-                        <div class="form-group">
-                            <label asp-for="UserName" class="text-muted ">@Html.DisplayNameFor(m => m.UserName)</label>
-                            <input asp-for="UserName" class="form-control only-b" placeholder="username" name="UserName" type="text">
-                            <span asp-validation-for="UserName" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input  asp-for="Password" class="form-control" placeholder="********" name="Password" type="password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label asp-for="Password" class="text-muted">@Html.DisplayNameFor(m => m.Password)</label>
-                            <input asp-for="Password" class="form-control only-b" placeholder="********" name="Password" type="password">
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="checkbox">
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" asp-for="RememberMe">
                                 <label asp-for="RememberMe">
-                                    <input asp-for="RememberMe" />
                                     @Html.DisplayNameFor(m => m.RememberMe)
                                 </label>
                             </div>
                         </div>
-
-                        @*<a href="#" class="pull-right">
-                                <small>Olvidé mi contraseña</small>
-                            </a>*@
-
-                        <button type="submit" class="ladda-button btn btn-outline m-t btn-primary" data-style="expand-right">
-                            Iniciar sesión
-                        </button>
-                        <br />
-                        <br />
-                        @Html.ValidationSummary()
-                    </form>
-                </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+                            @Html.ValidationSummary()
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
             </div>
+            <!-- /.card-body -->
         </div>
+        <!-- /.card -->
     </div>
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/js/adminlte.min.js"></script>
 </body>
 </html>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
-

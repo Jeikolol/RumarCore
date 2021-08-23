@@ -25,37 +25,11 @@ namespace RumarApp.Controllers
         }
 
         // GET: Client
-        public async Task<IActionResult> Index(string currentFilter,
-                                                string searchString,
-                                                int? pageNumber)
+        public async Task<IActionResult> Index()
         {
-           
-            if (searchString != null)
-            {
-                pageNumber = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-           
-            ViewData["CurrentFilter"] = searchString;
+            var clients = await _context.Client.ToListAsync();
 
-            var clients = from s in _context.Client
-                           select s;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                clients = clients.Where(s => s.FisrtName.Contains(searchString) ||
-                                        s.LastName.Contains(searchString) || s.Identification.Contains(searchString) ||
-                                        s.Address.Contains(searchString) || s.PhoneNumber.Contains(searchString));
-            }
-
-            clients = clients.OrderBy(s => s.FisrtName);
-
-            int pageSize = 5;
-
-            return View(await PaginatedList<ClientViewModel>.CreateAsync(clients.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(clients);
         }
 
         // GET: Client/Details/5
@@ -68,6 +42,7 @@ namespace RumarApp.Controllers
 
             var clientViewModel = await _context.Client
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (clientViewModel == null)
             {
                 return NotFound();
@@ -87,21 +62,21 @@ namespace RumarApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ClientViewModel clientViewModel)
+        public async Task<IActionResult> Create(ClientBeneficiaryParameter param)
         {
-            if (!ValidateHelper.IsValidDrCedula(clientViewModel.Identification))
+            if (!ValidateHelper.IsValidDrCedula(param.Identification))
             {
-                ModelState.AddModelError(nameof(clientViewModel.Identification), "La cedula ingresada no es valida");
-                return View(clientViewModel);
+                ModelState.AddModelError(nameof(param.Identification), "La cedula ingresada no es valida");
+                return View(param);
             }
 
             if (ModelState.IsValid)
             {
-                _context.Add(clientViewModel);
+                _context.Add(param);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(clientViewModel);
+            return View(param);
         }
 
         // GET: Client/Edit/5

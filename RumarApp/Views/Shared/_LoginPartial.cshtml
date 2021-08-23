@@ -1,26 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using RumarApp.Models
-
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<span class=" text-muted welcome-message" data-i18n="topnav.welcometext">
-    <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-            <img src="~/Content/img/administrator-user.jpg" width="30px" height="auto" /> @User.Identity.Name     <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-            @*<li><a href="@Url.Action("ChangePassword", "Security")">Cambiar Contraseña</a></li>*@
-            <li class="divider"></li>
-            <li>
-                @using (Html.BeginForm("LogOut", "Security", FormMethod.Post, new { id = "logoutForm", name = "logoutForm" }))
-                {
-                    @Html.AntiForgeryToken()
-                }
-                <a href="javascript:document.getElementById('logoutForm').submit()" href="#">
-                    <i class="fa fa-sign-out"></i> Salir
-                </a>
-            </li>
-        </ul>
-    </li>
-</span>
+@if (SignInManager.IsSignedIn(User))
+{
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+        <img src="/img/administrator-user.jpg" class="img-circle elevation-2" alt="User Image">
+    </div>
+    <div class="info">
+        <a class="d-block" title="Manage">@User.Identity.Name</a>    
+    </div>
+</div>
+}

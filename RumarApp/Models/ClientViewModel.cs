@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RumarApp.Models
 {
     [Authorize]
-    public class ClientViewModel
+    public class ClientViewModel : Entity
     {
         [Key]
         public int Id { get; set; }
@@ -32,5 +32,6 @@ namespace RumarApp.Models
         [DataType(DataType.PhoneNumber)]
         public string MobileNumber { get; set; }
         public virtual ICollection<Loan> Loans { get; set; }
+        public virtual ICollection<Beneficiary> Beneficiaries { get; set; }
     }
 }

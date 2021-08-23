@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RumarApp.Models
 {
-    public class TransactionPayment
+    public class TransactionPayment : Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }

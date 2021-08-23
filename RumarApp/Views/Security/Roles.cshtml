@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject RoleManager<IdentityRole> RoleManager;
 
-@model PaginatedList<IdentityRole>;
+@model List<IdentityRole>;
 
 @{
     ViewData["Title"] = "Consulta";
@@ -75,25 +75,6 @@
                     }
                 </tbody>
             </table>
-            @{
-                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-            }
-
-            <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
-               asp-route-pageNumber="@(Model.PageIndex - 1)"
-               asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               class="btn btn-primary @prevDisabled">
-                <<
-            </a>
-            <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
-               asp-route-pageNumber="@(Model.PageIndex + 1)"
-               asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               class="btn btn-primary @nextDisabled">
-                >>
-            </a>
         </div>
     </div>
 </div>

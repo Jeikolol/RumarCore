@@ -1,60 +1,150 @@
-﻿@model RumarApp.Models.Loan
+﻿@model RumarApp.Models.CreateLoansModel
 @using RumarApp.Enums
 
 @{
     ViewData["Title"] = "Crear";
 }
-
 <h1 class="text-center font-bold">Crear Prestamo</h1>
+<form asp-action="Create">
+    <section class="content col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">General</h3>
 
-<hr />
-<div class="panel panel-primary">
-    <div class="panel-heading"></div>
-    <div class="panel-body row">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group col-md-4">
-                <label asp-for="Capital" class="control-label">Capital</label>
-                <input asp-for="Capital" class="form-control" />
-                <span asp-validation-for="Capital" class="text-danger"></span>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Loan.Capital" class="control-label">Capital<span class="text-danger">(*)</span></label>
+                            <input asp-for="Loan.Capital" class="form-control" />
+                            <span asp-validation-for="Loan.Capital" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Loan.Interest" class="control-label">Interes(%)<span class="text-danger">(*)</span></label>
+                            <input asp-for="Loan.Interest" class="form-control" />
+                            <span asp-validation-for="Loan.Interest" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Loan.Quote" class="control-label">Cuotas de Pagos<span class="text-danger">(*)</span></label>
+                            <input asp-for="Loan.Quote" class="form-control" />
+                            <span asp-validation-for="Loan.Quote" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Loan.TransactionTypeId" class="control-label">Metodo de Pago</label>
+                            <select asp-for="Loan.TransactionTypeId" class="form-control" asp-items="ViewBag.TransactionTypeId"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Loan.TransactionPaymentId" class="control-label">Cuota de Pago</label>
+                            <select asp-for="Loan.TransactionPaymentId" class="form-control" asp-items="ViewBag.TransactionPaymentId"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Loan.ClientsId" class="control-label">Cliente</label>
+                            <select asp-for="Loan.ClientsId" class="form-control" asp-items="ViewBag.ClientsId"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Loan.ClientTypeId" class="control-label">Tipo de Cliente</label>
+                            <select asp-for="Loan.ClientTypeId" onchange="showBeneficiaryWidget()" id="clientType" class="form-control" asp-items="ViewBag.ClientTypeId"></select>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label asp-for="Loan.Notes" class="control-label">Notas</label>
+                            <textarea asp-for="Loan.Notes" class="form-control mx-wi" style="width: 650px"></textarea>
+                        </div>
+                    </div>                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
             </div>
-            <div class="form-group col-md-4">
-                <label asp-for="Interest" class="control-label">Interes(%)</label>
-                <input asp-for="Interest" class="form-control" />
-                <span asp-validation-for="Interest" class="text-danger"></span>
+            <div class="col-md-12" id="beneficiary">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Garante</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.FisrtName" class="control-label">Nombre<span class="text-danger">(*)</span></label>
+                            <input asp-for="Beneficiary.FisrtName" class="form-control" />
+                            <span asp-validation-for="Beneficiary.FisrtName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.LastName" class="control-label">Apellido<span class="text-danger">(*)</span></label>
+                            <input asp-for="Beneficiary.LastName" class="form-control" />
+                            <span asp-validation-for="Beneficiary.LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.Identification" class="control-label">Identificacion<span class="text-danger">(*)</span></label>
+                            <input asp-for="Beneficiary.Identification" class="form-control" />
+                            <span asp-validation-for="Beneficiary.Identification" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.Address" class="control-label">Direccion<span class="text-danger">(*)</span></label>
+                            <input asp-for="Beneficiary.Address" class="form-control" />
+                            <span asp-validation-for="Beneficiary.Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.PhoneNumber" class="control-label">Telefono<span class="text-danger">(*)</span></label>
+                            <input asp-for="Beneficiary.PhoneNumber" class="form-control" />
+                            <span asp-validation-for="Beneficiary.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.MobileNumber" class="control-label">Celular</label>
+                            <input asp-for="Beneficiary.MobileNumber" class="form-control" />
+                            <span asp-validation-for="Beneficiary.MobileNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
             </div>
-            <div class="form-group col-md-4">
-                <label asp-for="Quote" class="control-label">Cuotas de Pagos</label>
-                <input asp-for="Quote" class="form-control" />
-                <span asp-validation-for="Quote" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a asp-action="Index" class="btn btn-secondary">Volver a la Consulta</a>
+                <input type="submit" value="Crear" class="btn btn-success float-right submitButton">
             </div>
-            <div class="form-group col-md-4">
-                <label asp-for="TransactionTypeId" class="control-label">Metodo de Pago</label>
-                <select asp-for="TransactionTypeId" class ="form-control" asp-items="ViewBag.TransactionTypeId"></select>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="TransactionPaymentId" class="control-label">Cuota de Pago</label>
-                <select asp-for="TransactionPaymentId" class ="form-control" asp-items="ViewBag.TransactionPaymentId"></select>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="ClientsId" class="control-label">Cliente</label>
-                <select asp-for="ClientsId" class ="form-control" asp-items="ViewBag.ClientsId"></select>
-            </div>
-            <div class="form-group col-md-8">
-                <label asp-for="Notes" class="control-label">Notas</label>
-                <textarea asp-for="Notes" class="form-control mx-wi" style="width: 680px"></textarea>
-            </div>
-            <div class="form-group col-md-12">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+    </section>
+    <div hidden>
+        <div id="asp-validation-summary" asp-validation-summary="ModelOnly" class="text-danger"></div>
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index">Volver a la Consulta</a>
-</div>
 
 @section Scripts {
+    <script src="/plugins/toastr/toastr.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+        var clientTypes = @(EnumExtension.EnumToString<ClientTypeEnum>());
+
+        var select = document.getElementById('clientType');
+        var value = Number.parseInt(select.options[select.selectedIndex].value);       
+
+        if (value === clientTypes.RecurringCustomer) {
+            $("#beneficiary").hide();
+        } else {
+            $("#beneficiary").show();
+        }
+
+        function showBeneficiaryWidget() {
+            var select = document.getElementById('clientType');
+            var value = Number.parseInt(select.options[select.selectedIndex].value);
+
+            if (value === clientTypes.RecurringCustomer) {
+                $("#beneficiary").hide();
+            } else {
+                $("#beneficiary").show();
+            }
+
+        }
+</script>
 }

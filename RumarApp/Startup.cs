@@ -1,3 +1,6 @@
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
+using Blazored.Toast;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -37,6 +40,12 @@ namespace RumarApp
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddNotyf(config => 
+            { 
+                config.DurationInSeconds = 10; config.IsDismissable = true; 
+                config.Position = NotyfPosition.BottomRight; 
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -89,13 +98,16 @@ namespace RumarApp
                 options.Cookie.MaxAge = TimeSpan.FromDays(7);
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
+
             services.AddRazorPages().AddRazorPagesOptions(options=>
             {
                 options.Conventions.AuthorizeFolder("/Loans");
                 options.Conventions.AuthorizeFolder("/Client");
             });
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,6 +125,7 @@ namespace RumarApp
                 app.UseHsts();
             }
 
+            app.UseNotyf();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

@@ -1,6 +1,6 @@
 ﻿namespace RumarApp.Models
 {
-    public class ClientType
+    public class ClientType : Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }
