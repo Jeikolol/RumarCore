@@ -1,0 +1,80 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject RoleManager<IdentityRole> RoleManager;
+
+@model List<IdentityRole>;
+
+@{
+    ViewData["Title"] = "Consulta";
+}
+
+<h1 class="text-center font-bold">Consulta de Roles</h1>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <a type="button" class="btn btn-secondary" asp-action="Create">
+            <i class="fa fa-plus"></i>
+            Rol
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <form asp-action="Index" method="get">
+                <div class="input-group">
+                    <span class="input-group-addon" id="inputGroup-sizing-default">
+                        <i class="fa fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-primary mx-wi"
+                           name="SearchString" value="@ViewData["CurrentFilter"]"
+                           placeholder="Buscar en la lista..." />
+                    <span class="input-group-btn">
+                        <input type="submit" value="Buscar" class="btn btn-secondary" />
+                    </span>
+                </div>
+            </form>
+            <table class="table table-striped-even-light-blue">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Descripcion
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NormalizedName)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="@("#deleteModal-"+item.Id)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                @*<div id="@("deletemodal-"+item.id)" class="modal" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <partial name="_deleteloanmodal" model="@item" />
+                                        </div>
+                                    </div>
+                                </div>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

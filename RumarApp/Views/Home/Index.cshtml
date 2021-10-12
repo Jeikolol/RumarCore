@@ -1,8 +1,54 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model DashboardModel
+@{
+    ViewBag.Title = "Index";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h1 class="text-center font-bold">Dashboard</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small card -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@Model.LoansCount</h3>
+
+                        <h4>Prestamos</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-money-bill-alt"></i>
+                    </div>
+                    <a href="@Url.Action("Index", "Loans")" class="small-box-footer">
+                        Consulta <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small card -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@Model.ClientsCount</h3>
+
+                        <h4>Clientes</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a href="@Url.Action("Index", "Client")" class="small-box-footer">
+                        Consulta <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,79 +1,77 @@
-﻿@model IEnumerable<RumarApp.Models.Loan>
+﻿@model List<RumarApp.Models.LoanModel>
 
 @{
     ViewData["Title"] = "Consulta";
 }
-
+@Html.ValidationMessage("CancelledLoanError")
 <h1 class="text-center font-bold">Consulta de Prestamos</h1>
 
-
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <a type="button" class="btn btn-secondary" asp-action="Create">
-            <i class="fa fa-plus"></i>
-            Prestamo
-        </a>
-    </div>
-    <div class="panel-body">
-        <div class="table-responsive">
-            <table class="table table-striped-even-light-blue">
-                <thead>
+<div class="card">
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="dataTableIndexList" class="table table-striped-even-light-blue table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Codigo
+                    </th>
+                    <th>
+                        Capital
+                    </th>
+                    <th>
+                        Interes(%)
+                    </th>
+                    <th>
+                        Cuotas de Pago
+                    </th>
+                    <th>
+                        Tipos de Pago
+                    </th>
+                    <th>
+                        Nombre del Cliente
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>
-                            Capital
-                        </th>
-                        <th>
-                            Interes(%)
-                        </th>
-                        <th>
-                            Cuota(Meses)
-                        </th>
-                        <th>
-                            Nombre del Cliente
-                        </th>
-                        <th>
-                            Acciones
-                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Capital)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Interest)%
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quote)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransactionPayment.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clients.FullName)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Capital)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Interest)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Quote)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Clients.FullName)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-success">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="@("#deleteModal-"+item.Id)">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                                <div id="@("deleteModal-"+item.Id)" class="modal" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <partial name="_DeleteModal" model="@item" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
+<script type="text/javascript">
+    var body = document.body;
+    body.classList.add("sidebar-collapse");
+</script>

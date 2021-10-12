@@ -1,0 +1,41 @@
+﻿@model RumarApp.Models.ClientViewModel
+
+@{
+    ViewData["Title"] = "Borrar";
+}
+
+
+@using (Html.BeginForm("Delete", "Client", FormMethod.Post))
+{
+    <div class="modal-header bg-danger">
+        <h5 class="modal-title">
+            <i class="fa fa-trash fa-fw fa-2x pull-left"></i>
+            <span class="h2">Borrar Cliente</span>
+        </h5>
+        <button type="button" class="close mt-10" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group text-center row">
+            <div class="col-md-12">
+                <span class="h3">
+                    Seguro que desea eliminar al cliente
+                </span>
+            </div>
+            <div class="col-md-12">
+                <span class="h3 font-bold">
+                    @Html.DisplayFor(model => model.FullName)?
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <input type="submit" value="Borrar" class="btn btn-outline-danger" />
+        </form>
+    </div>
+
+}
