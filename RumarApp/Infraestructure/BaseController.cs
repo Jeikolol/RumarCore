@@ -1,12 +1,14 @@
 ﻿using System.IO;
+using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using RumarApp.Models;
 
 namespace RumarApp.Infraestructure
 {
-    public class BaseController : Controller
+    [Authorize]
+    public abstract class BaseController : Controller
     {
         protected void ShowNotification(string message, string title, NotificationType type)
         {
@@ -35,6 +37,5 @@ namespace RumarApp.Infraestructure
 
             return value;
         }
-
     }
 }

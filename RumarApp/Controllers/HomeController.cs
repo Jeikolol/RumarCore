@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RumarApp.Models;
+using RumarApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,17 +13,30 @@ namespace RumarApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IClientService _clientService;
+        private readonly IBeneficiaryService _beneficiaryService;
+        //private readonly ILoanService _beneficiaryService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IClientService clientService, 
+                              IBeneficiaryService beneficiaryService)
         {
-            _logger = logger;
+            _clientService = clientService;
+            _beneficiaryService = beneficiaryService;
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var clients = await _clientService.GetAllClients();
+
+            var model = new DashboardModel
+            {
+                ClientsCount = clients.Count(),
+                BeneficiaryCount = 0,
+                LoansCount = 0
+            };
+
+            return View(model);
         }
 
         [AllowAnonymous]

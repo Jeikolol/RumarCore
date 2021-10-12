@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace RumarApp.Controllers
         // GET: Beneficiaries
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = await _context.Beneficiary.ToListAsync();
+            var applicationDbContext = await _context.Beneficiaries.ToListAsync();
             return View(applicationDbContext);
         }
 
@@ -34,8 +35,8 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var beneficiary = await _context.Beneficiary
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var beneficiary = await _context.Beneficiaries
+                .FirstOrDefaultAsync((System.Linq.Expressions.Expression<Func<Beneficiary, bool>>)(m => m.Id == id));
 
             if (beneficiary == null)
             {
@@ -48,7 +49,7 @@ namespace RumarApp.Controllers
         // GET: Beneficiaries/Create
         public IActionResult Create()
         {
-            ViewData["RelationshipTypeId"] = new SelectList(_context.RelationshipType, "Id", "Id");
+            ViewData["RelationshipTypeId"] = new SelectList(_context.RelationshipTypes, "Id", "Id");
             return View();
         }
 
@@ -61,11 +62,13 @@ namespace RumarApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                beneficiary.CreationDateTime = DateTime.Today;
-                beneficiary.CreatedBy = User.Identity.Name;
+                //beneficiary.CreationDateTime = DateTime.Today;
+                //beneficiary.CreatedBy = User.Identity.Name;
 
                 _context.Add(beneficiary);
+
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(beneficiary);
@@ -79,7 +82,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var beneficiary = await _context.Beneficiary.FindAsync(id);
+            var beneficiary = await _context.Beneficiaries.FindAsync(id);
             if (beneficiary == null)
             {
                 return NotFound();
@@ -130,8 +133,8 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var beneficiary = await _context.Beneficiary
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var beneficiary = await _context.Beneficiaries
+                .FirstOrDefaultAsync((System.Linq.Expressions.Expression<Func<Beneficiary, bool>>)(m => m.Id == id));
 
             if (beneficiary == null)
             {
@@ -146,15 +149,15 @@ namespace RumarApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var beneficiary = await _context.Beneficiary.FindAsync(id);
-            _context.Beneficiary.Remove(beneficiary);
+            var beneficiary = await _context.Beneficiaries.FindAsync(id);
+            _context.Beneficiaries.Remove(beneficiary);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BeneficiaryExists(int id)
         {
-            return _context.Beneficiary.Any(e => e.Id == id);
+            return _context.Beneficiaries.Any((System.Linq.Expressions.Expression<Func<Beneficiary, bool>>)(e => e.Id == id));
         }
     }
 }

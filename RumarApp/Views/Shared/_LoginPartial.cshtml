@@ -1,16 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using RumarApp.Models
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@using Core.Entities
 
-@if (SignInManager.IsSignedIn(User))
+@if (User.Identity.IsAuthenticated)
 {
-<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-    <div class="image">
-        <img src="/img/administrator-user.jpg" class="img-circle elevation-2" alt="User Image">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+            <img src="/img/administrator-user.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+            <a class="d-block" title="Manage">@User.Identity.Name</a>
+        </div>
     </div>
-    <div class="info">
-        <a class="d-block" title="Manage">@User.Identity.Name</a>    
-    </div>
-</div>
 }

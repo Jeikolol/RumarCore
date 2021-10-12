@@ -1,71 +1,147 @@
 ﻿@model RegisterModel
 @{
-    ViewData["Title"] = "Crear Usuario";
+    Layout = null;
 }
 
-<h1>@ViewData["Title"]</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Banking | Registro</title>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Crear un Nuevo Usuario</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName">@Html.DisplayNameFor(m => m.UserName)</label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/adminlte.min.css">
+</head>
+<body class="hold-transition register-page">
+    <div class="register-box" style="width: 600px !important">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a class="h1"><b>Rumar</b>App</a>
             </div>
-            <div class="form-group">
-                <label asp-for="Password">@Html.DisplayNameFor(m => m.Password)</label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword">@Html.DisplayNameFor(m => m.ConfirmPassword)</label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Crear Usuario</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+            <div class="card-body">
+                <p class="login-box-msg">Crear un Nuevo Usuario</p>
+
+                <form action="/Security/Register" method="post">
+                    <div class="row">
+                        <div class="input-group mb-3 col-md-12">
+                            <input type="text" class="form-control" asp-for="UserName" placeholder="Usuario">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
-                    </form>
-                }
-            }
-        </section>
+                        <div class="input-group mb-3 col-md-6">
+                            <input type="password" class="form-control" asp-for="Password" placeholder="Contraseña">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-6">
+                            <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Repita la Contraseña">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-12">
+                            <input type="text" class="form-control" asp-for="FirstName" placeholder="Nombre">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-12">
+                            <input type="text" class="form-control" asp-for="LastName" placeholder="Apellido">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-12">
+                            <input type="text" class="form-control" asp-for="Identification" placeholder="Cedula">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-id-card"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Identification" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-12">
+                            <input type="email" class="form-control" asp-for="Email" placeholder="Email">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-envelope"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-6">
+                            <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Telefono">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-id-card"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-6">
+                            <input type="text" class="form-control" asp-for="MobileNumber" placeholder="Celular">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-id-card"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                        </div>
+                        <div class="input-group mb-3 col-md-12">
+                            @Html.TextAreaFor(m=> m.Address, new { @class="form-control", @placeholder="Direccion" })
+                            @*<textarea type="text" class="form-control" asp-for="Address" placeholder="Direccion"></textarea>*@
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-id-card"></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="input-group">
+                            <!-- /.col -->
+                            <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                            <!-- /.col -->
+                        </div>
+                    </div>
+                </form>
+                <a href="@Url.Action("Login")" class="text-center">Tengo una Cuenta de Usuario</a>
+            </div>
+            <!-- /.form-box -->
+        </div><!-- /.card -->
     </div>
-</div>
+    <!-- /.register-box -->
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/js/adminlte.min.js"></script>
+</body>
+</html>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

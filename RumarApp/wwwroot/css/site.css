@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 .table-striped-even-light-blue > tbody tr:nth-of-type(even) {
-    background-color: #1ce32b38;
+    background-color: #007bff;
 }
 
 .table-striped-even-light-blue > thead > tr {
@@ -27,6 +27,12 @@ a {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.btn-white {
+    color: black !important;
+    background-color: white !important;
+    border-color: white !important;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {

@@ -100,7 +100,6 @@
     <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <!-- Toastr -->
     <script src="/plugins/toastr/toastr.min.js"></script>
-    @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)
 <script>
          var url = '@Url.Action("Create")';

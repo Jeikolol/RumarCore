@@ -11,37 +11,41 @@ using Microsoft.EntityFrameworkCore;
 using RumarApp.Data;
 using RumarApp.Helpers;
 using RumarApp.Models;
+using RumarApp.Parameters;
+using RumarApp.Infraestructure;
+using RumarApp.Services;
+using Core.Entities;
 
 namespace RumarApp.Controllers
 {
     [Authorize]
-    public class ClientController : Controller
+    public class ClientController : BaseController
     {
+        private readonly IClientService _clientService;
+        private readonly IBeneficiaryService _beneficiaryService;
         private readonly ApplicationDbContext _context;
 
-        public ClientController(ApplicationDbContext context)
+        public ClientController(IClientService clientService, 
+                                IBeneficiaryService beneficiaryService,
+                                ApplicationDbContext context)
         {
+            _clientService = clientService;
+            _beneficiaryService = beneficiaryService;
             _context = context;
         }
 
         // GET: Client
         public async Task<IActionResult> Index()
         {
-            var clients = await _context.Client.ToListAsync();
+            var clients = await _clientService.GetAllClients();
 
             return View(clients);
         }
 
         // GET: Client/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var clientViewModel = await _context.Client
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var clientViewModel = await _clientService.GetClientById(id);
 
             if (clientViewModel == null)
             {
@@ -51,55 +55,62 @@ namespace RumarApp.Controllers
             return View(clientViewModel);
         }
 
-        // GET: Client/Create
         public IActionResult Create()
         {
+            ViewData["RelationshipTypeId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
             return View();
         }
 
-        // POST: Client/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ClientBeneficiaryParameter param)
+        public async Task<IActionResult> Create(ClientViewModel param)
         {
             if (!ValidateHelper.IsValidDrCedula(param.Identification))
             {
-                ModelState.AddModelError(nameof(param.Identification), "La cedula ingresada no es valida");
+                ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
                 return View(param);
+            }
+
+            foreach (var item in param.Beneficiaries)
+            {
+                if (!ValidateHelper.IsValidDrCedula(item.Identification))
+                {
+                    ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
+                    return View(param);
+                }
             }
 
             if (ModelState.IsValid)
             {
-                _context.Add(param);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    var client = await _clientService.Create(param);
+
+                    return View("Details", client);
+                }
+                catch (Exception ex)
+                {
+                    ShowNotification(ex.InnerException.Message, "Mantenimiento de Clientes", NotificationType.error);
+                    return View(param);
+                }
+              
             }
+
             return View(param);
         }
 
-        // GET: Client/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var clientViewModel = await _clientService.GetClientById(id);
 
-            var clientViewModel = await _context.Client.FindAsync(id);
             if (clientViewModel == null)
             {
                 return NotFound();
             }
+
             return View(clientViewModel);
         }
 
-        // POST: Client/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClientViewModel clientViewModel)
         {
             if (id != clientViewModel.Id)
@@ -111,12 +122,13 @@ namespace RumarApp.Controllers
             {
                 try
                 {
-                    _context.Update(clientViewModel);
-                    await _context.SaveChangesAsync();
+                    //await _clientService.Create(clientViewModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClientViewModelExists(clientViewModel.Id))
+                    var exist = await _clientService.GetClientById(clientViewModel.Id);
+                   
+                    if (exist == null)
                     {
                         return NotFound();
                     }
@@ -130,16 +142,9 @@ namespace RumarApp.Controllers
             return View(clientViewModel);
         }
 
-        // GET: Client/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var clientViewModel = await _context.Client
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var clientViewModel = await _clientService.GetClientById(id);
 
             if (clientViewModel == null)
             {
@@ -149,20 +154,12 @@ namespace RumarApp.Controllers
             return PartialView("_DeleteModal", clientViewModel);
         }
 
-        // POST: Client/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var clientViewModel = await _context.Client.FindAsync(id);
-            _context.Client.Remove(clientViewModel);
-            await _context.SaveChangesAsync();
+            await _clientService.DeleteClient(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ClientViewModelExists(int id)
-        {
-            return _context.Client.Any(e => e.Id == id);
         }
     }
 }

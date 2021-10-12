@@ -16,6 +16,7 @@ using RumarApp.Infraestructure;
 using System.Dynamic;
 using RumarApp.Enums;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Core.Entities;
 
 namespace RumarApp.Controllers
 {
@@ -32,7 +33,7 @@ namespace RumarApp.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            var loans = await _context.Loan
+            var loans = await _context.Loans
                     .Include(l => l.Clients)
                     .Include(l => l.TransactionPayment)
                     .Include(l => l.TransactionType)
@@ -49,7 +50,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var loan = await _context.Loan
+            var loan = await _context.Loans
                 .Include(l => l.Clients)
                 .Include(l => l.TransactionPayment)
                 .Include(l => l.TransactionType)
@@ -67,10 +68,10 @@ namespace RumarApp.Controllers
         // GET: Loans/Create
         public IActionResult Create()
         {
-            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FullName");
-            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionType, "Id", "Name");
-            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayment, "Id", "Name");
-            ViewData["ClientTypeId"] = new SelectList(_context.ClientType, "Id", "Name");
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FullName");
+            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionTypes, "Id", "Name");
+            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayments, "Id", "Name");
+            ViewData["ClientTypeId"] = new SelectList(_context.ClientTypes, "Id", "Name");
             
             return View();
         }
@@ -82,10 +83,10 @@ namespace RumarApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateLoansModel param)
         {
-            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FisrtName", param.Loan.ClientsId);
-            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionType, "Id", "Name", param.Loan.TransactionTypeId);
-            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayment, "Id", "Name", param.Loan.TransactionPaymentId);
-            ViewData["ClientTypeId"] = new SelectList(_context.ClientType, "Id", "Name", param.Loan.ClientTypeId);
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FisrtName", param.Loan.ClientsId);
+            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionTypes, "Id", "Name", param.Loan.TransactionTypeId);
+            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayments, "Id", "Name", param.Loan.TransactionPaymentId);
+            ViewData["ClientTypeId"] = new SelectList(_context.ClientTypes, "Id", "Name", param.Loan.ClientTypeId);
 
             if (ModelState.IsValid)
             {
@@ -118,15 +119,6 @@ namespace RumarApp.Controllers
                     loan.TransactionTypeId = param.Loan.TransactionTypeId;
                     loan.TransactionPaymentId = param.Loan.TransactionPaymentId;
                     loan.ClientTypeId = param.Loan.ClientTypeId;
-                    //loan.Beneficiary = new Beneficiary
-                    //{
-                    //    FisrtName = param.Beneficiary.FisrtName,
-                    //    LastName = param.Beneficiary.LastName,
-                    //    Identification = param.Beneficiary.Identification,
-                    //    Address = param.Beneficiary.Address,
-                    //    PhoneNumber = param.Beneficiary.PhoneNumber,
-                    //    MobileNumber = param.Beneficiary.MobileNumber
-                    //};
                 }
 
                 
@@ -181,7 +173,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var loan = await _context.Loan
+            var loan = await _context.Loans
                 .Include(l => l.Clients)
                 .Include(l => l.TransactionPayment)
                 .Include(l => l.TransactionType)
@@ -193,11 +185,11 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FullName");
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FullName");
             
-            loan.Clients = await _context.Client.FirstOrDefaultAsync(m=>m.Id == loan.ClientsId);
-            loan.TransactionPayment = await _context.TransactionPayment.FirstOrDefaultAsync(m=>m.Id == loan.TransactionPaymentId);
-            loan.TransactionType = await _context.TransactionType.FirstOrDefaultAsync(m=>m.Id == loan.TransactionTypeId);
+            loan.Clients = await _context.Clients.FirstOrDefaultAsync(m=>m.Id == loan.ClientsId);
+            loan.TransactionPayment = await _context.TransactionPayments.FirstOrDefaultAsync(m=>m.Id == loan.TransactionPaymentId);
+            loan.TransactionType = await _context.TransactionTypes.FirstOrDefaultAsync(m=>m.Id == loan.TransactionTypeId);
 
             return View(loan);
         }
@@ -215,7 +207,7 @@ namespace RumarApp.Controllers
             {
                 try
                 {
-                    var loanToUpdate = await _context.Loan.FindAsync(id);
+                    var loanToUpdate = await _context.Loans.FindAsync(id);
                   
                     param.ClientsId = loanToUpdate.ClientsId;
 
@@ -236,9 +228,9 @@ namespace RumarApp.Controllers
                 }
             }
 
-            ViewData["ClientsId"] = new SelectList(_context.Client, "Id", "FisrtName", param.ClientsId);
-            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionType, "Id", "Name", param.TransactionTypeId);
-            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayment, "Id", "Name", param.TransactionPaymentId);
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FisrtName", param.ClientsId);
+            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionTypes, "Id", "Name", param.TransactionTypeId);
+            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayments, "Id", "Name", param.TransactionPaymentId);
 
             return View(param);
         }
@@ -250,7 +242,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            var loan = await _context.Loan
+            var loan = await _context.Loans
                 .Include(l => l.Clients)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -272,7 +264,7 @@ namespace RumarApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Pay(int id, PayLoanParameter loanPay)
         {
-            var loanToPay = await _context.Loan
+            var loanToPay = await _context.Loans
                 .Include(l => l.Clients)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -284,7 +276,7 @@ namespace RumarApp.Controllers
             loanToPay.Capital = loanToPay.Capital - (long)loanPay.Quote;
             loanToPay.RemainingPayments--;
 
-            _context.Loan.Update(loanToPay);
+            _context.Loans.Update(loanToPay);
             
             await _context.SaveChangesAsync();
             
@@ -293,12 +285,12 @@ namespace RumarApp.Controllers
 
         private bool LoanExists(int id)
         {
-            return _context.Loan.Any(e => e.Id == id);
+            return _context.Loans.Any(e => e.Id == id);
         }
         
         private bool BeneficiaryExistByIdentification(string identification)
         {
-            return _context.Beneficiary.Any(e => e.Identification == identification);
+            return _context.Beneficiaries.Any((System.Linq.Expressions.Expression<Func<Beneficiary, bool>>)(e => e.Identification == identification));
         }
     }
 }

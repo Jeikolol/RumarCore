@@ -1,5 +1,10 @@
 ﻿@model LoginModel
 
+@{
+    Layout = null;
+}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +21,7 @@
     <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/css/adminlte.min.css">
+    <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">
@@ -31,7 +37,7 @@
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.ReturnUrl)
                     <div class="input-group mb-3">
-                        <input  asp-for="UserName" class="form-control" placeholder="Usuario" name="UserName" type="text">
+                        <input asp-for="UserName" class="form-control" placeholder="Usuario" name="UserName" type="text">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
@@ -39,30 +45,21 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input  asp-for="Password" class="form-control" placeholder="********" name="Password" type="password">
+                        <input asp-for="Password" class="form-control" placeholder="********" name="Password" type="password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" asp-for="RememberMe">
-                                <label asp-for="RememberMe">
-                                    @Html.DisplayNameFor(m => m.RememberMe)
-                                </label>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
-                            @Html.ValidationSummary()
-                        </div>
-                        <!-- /.col -->
+                    <div class="col-12 input-group">
+                        <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+                        @Html.ValidationSummary()
                     </div>
                 </form>
+                <p class="mb-0">
+                    <a href="@Url.Action("Register")" class="text-center">Crear Usuario</a>
+                </p>
             </div>
             <!-- /.card-body -->
         </div>
@@ -73,6 +70,7 @@
     <script src="/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/toastr/toastr.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/js/adminlte.min.js"></script>
 </body>

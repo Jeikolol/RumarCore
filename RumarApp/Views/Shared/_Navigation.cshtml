@@ -1,81 +1,111 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using RumarApp.Models
+@using Core.Entities
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-
-
-@if (SignInManager.IsSignedIn(User))
+@if (User.Identity.IsAuthenticated)
 {
     <!-- Main Sidebar Container -->
-<aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="@Url.Action("Index", "Home")" class="brand-link">
-        <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">RumarApp</span>
-    </a>
+    <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="@Url.Action("Index", "Home")" class="brand-link">
+            <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">RumarApp</span>
+        </a>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <!-- Sidebar user (optional) -->
-        <partial name="_LoginPartial" />
-        <!-- SidebarSearch Form -->
-        <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Buscar en el Menu" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user (optional) -->
+            <partial name="_LoginPartial" />
+            <!-- SidebarSearch Form -->
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Buscar en el Menu" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Sidebar Menu -->
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="@Url.Action("Index", "Client")" class="nav-link">
-                        <i class="fas fa-users nav-icon"></i>
-                        <p>Clientes</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("Index", "Loans")" class="nav-link">
-                        <i class="fas fa-money-bill-alt nav-icon"></i>
-                        <p>Prestamos</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-cog"></i>
-                        <p>
-                            Seguridad
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "Roles")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-    <div class="sidebar-custom">
-        @using (Html.BeginForm("LogOut", "Security", FormMethod.Post, new { id = "logoutForm", name = "logoutForm" }))
-        {
-            @Html.AntiForgeryToken()
-        }
-        <a class="btn btn-secondary hide-on-collapse pos-right" href="javascript:document.getElementById('logoutForm').submit()">
-            <i class="fas fa-sign-out-alt"></i> Cerrar Sesion
-        </a>
-    </div>
-</aside>
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Clientes
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Client")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Consulta</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Create", "Client")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Nuevo Ciente</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-money-bill-alt"></i>
+                            <p>
+                                Prestamos
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Loans")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Consulta</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Create", "Loans")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Nuevo Prestamo</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Seguridad
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Roles")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Roles</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+        <div class="sidebar-custom">
+            @using (Html.BeginForm("LogOut", "Security", FormMethod.Post, new { id = "logoutForm", name = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+            }
+            <a class="btn btn-secondary hide-on-collapse pos-right" href="javascript:document.getElementById('logoutForm').submit()">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesion
+            </a>
+        </div>
+    </aside>
 }

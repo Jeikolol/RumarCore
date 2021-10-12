@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DashboardModel
+@{
     ViewBag.Title = "Index";
 }
 
@@ -19,9 +20,9 @@
                 <!-- small card -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>Prestamos</h3>
+                        <h3>@Model.LoansCount</h3>
 
-                        @*<p>New Orders</p>*@
+                        <h4>Prestamos</h4>
                     </div>
                     <div class="icon">
                         <i class="fas fa-money-bill-alt"></i>
@@ -36,7 +37,9 @@
                 <!-- small card -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>Clientes</h3>
+                        <h3>@Model.ClientsCount</h3>
+
+                        <h4>Clientes</h4>
                     </div>
                     <div class="icon">
                         <i class="fas fa-users"></i>

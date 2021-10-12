@@ -32,6 +32,9 @@
       "RumarApp/1.0.0": {
         "dependencies": {
           "AspNetCoreHero.ToastNotification": "1.1.0",
+          "Autofac": "6.2.0",
+          "Autofac.Extensions.DependencyInjection": "7.1.0",
+          "Autofac.Mvc5": "6.0.0",
           "Blazored.Toast": "3.1.2",
           "ClosedXML": "0.95.4",
           "EPPlus": "5.0.3",
@@ -46,7 +49,13 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.15",
           "Microsoft.EntityFrameworkCore.Tools": "3.1.15",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.5",
+          "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.6",
+          "Microsoft.jQuery.Unobtrusive.Validation": "3.2.12",
+          "NLog": "4.7.7",
           "System.Reactive.Windows.Forms": "4.4.1",
+          "WebGrease": "1.6.0",
+          "jQuery": "3.6.0",
+          "jQuery.Validation": "1.19.3",
           "ladda-bootstrap": "0.9.8",
           "toastr": "2.1.1",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
@@ -314,6 +323,17 @@
           "RumarApp.dll": {}
         }
       },
+      "Antlr/3.4.1.9004": {
+        "runtime": {
+          "lib/Antlr3.Runtime.dll": {
+            "assemblyVersion": "3.4.1.9004",
+            "fileVersion": "3.4.1.9004"
+          }
+        },
+        "compile": {
+          "lib/Antlr3.Runtime.dll": {}
+        }
+      },
       "AspNetCoreHero.ToastNotification/1.1.0": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3"
@@ -331,6 +351,46 @@
         "compile": {
           "lib/netcoreapp3.1/AspNetCoreHero.ToastNotification.Views.dll": {},
           "lib/netcoreapp3.1/AspNetCoreHero.ToastNotification.dll": {}
+        }
+      },
+      "Autofac/6.2.0": {
+        "dependencies": {
+          "System.Diagnostics.DiagnosticSource": "4.7.1"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Autofac.dll": {
+            "assemblyVersion": "6.2.0.0",
+            "fileVersion": "6.2.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.1/Autofac.dll": {}
+        }
+      },
+      "Autofac.Extensions.DependencyInjection/7.1.0": {
+        "dependencies": {
+          "Autofac": "6.2.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.15"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Autofac.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "7.1.0.0",
+            "fileVersion": "7.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.1/Autofac.Extensions.DependencyInjection.dll": {}
+        }
+      },
+      "Autofac.Mvc5/6.0.0": {
+        "runtime": {
+          "lib/net472/Autofac.Integration.Mvc.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/net472/Autofac.Integration.Mvc.dll": {}
         }
       },
       "Blazored.Toast/3.1.2": {
@@ -948,7 +1008,12 @@
           }
         }
       },
-      "jQuery/1.6.3": {},
+      "jQuery/3.6.0": {},
+      "jQuery.Validation/1.19.3": {
+        "dependencies": {
+          "jQuery": "3.6.0"
+        }
+      },
       "ladda-bootstrap/0.9.8": {
         "dependencies": {
           "Spin.js": "2.0.1"
@@ -2063,6 +2128,17 @@
           "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.dll": {}
         }
       },
+      "Microsoft.jQuery.Unobtrusive.Ajax/3.2.6": {
+        "dependencies": {
+          "jQuery": "3.6.0"
+        }
+      },
+      "Microsoft.jQuery.Unobtrusive.Validation/3.2.12": {
+        "dependencies": {
+          "jQuery": "3.6.0",
+          "jQuery.Validation": "1.19.3"
+        }
+      },
       "Microsoft.JSInterop/3.1.4": {
         "runtime": {
           "lib/netcoreapp3.1/Microsoft.JSInterop.dll": {
@@ -2304,6 +2380,17 @@
         },
         "compile": {
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {}
+        }
+      },
+      "NLog/4.7.7": {
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.7.12472"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/NLog.dll": {}
         }
       },
       "NuGet.Frameworks/4.7.0": {
@@ -3468,7 +3555,22 @@
       },
       "toastr/2.1.1": {
         "dependencies": {
-          "jQuery": "1.6.3"
+          "jQuery": "3.6.0"
+        }
+      },
+      "WebGrease/1.6.0": {
+        "dependencies": {
+          "Antlr": "3.4.1.9004",
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "runtime": {
+          "lib/WebGrease.dll": {
+            "assemblyVersion": "1.6.5135.21930",
+            "fileVersion": "1.6.5135.21930"
+          }
+        },
+        "compile": {
+          "lib/WebGrease.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
@@ -5021,12 +5123,40 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Antlr/3.4.1.9004": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-c1S+HBE+KYA5EBxtn25LEK02hHPH/tDQ6RviUTTCJpZIPoputtn8ArsQJy9lVJWZOnw37ufByO2Fmf1M8wpr8Q==",
+      "path": "antlr/3.4.1.9004",
+      "hashPath": "antlr.3.4.1.9004.nupkg.sha512"
+    },
     "AspNetCoreHero.ToastNotification/1.1.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-bCAYeD+b2pRelcOrHMNtYGVtRq+J2u+SAaND33v3u6qZCatHf4XSZOEPhBfCKJAjMGvsggtPKaNFnrv4VhwOfA==",
       "path": "aspnetcorehero.toastnotification/1.1.0",
       "hashPath": "aspnetcorehero.toastnotification.1.1.0.nupkg.sha512"
+    },
+    "Autofac/6.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BX8IM0GANE38uSr4QwXL4PgA8vWWYt2P5cZzipn/vDnf0fDbPSGKSHEroJ09rB7ANxdyf7MdEgVs+pvL8kwYCg==",
+      "path": "autofac/6.2.0",
+      "hashPath": "autofac.6.2.0.nupkg.sha512"
+    },
+    "Autofac.Extensions.DependencyInjection/7.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nm6rZREZ9tjdKXu9cmT69zHkZODagjCPlRRCOhiS1VqFFis9LQnMl18L4OYr8yfCW1WAQkFDD2CNaK/kF5Eqeg==",
+      "path": "autofac.extensions.dependencyinjection/7.1.0",
+      "hashPath": "autofac.extensions.dependencyinjection.7.1.0.nupkg.sha512"
+    },
+    "Autofac.Mvc5/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0bW9vsRf4QZKTYBxyoKbQFuk6hn1yv9VFlVppVrqUyyLmB+jZLTiSriL5YjUXt8+hHlk/IHwjyd+IzkeB0xPQw==",
+      "path": "autofac.mvc5/6.0.0",
+      "hashPath": "autofac.mvc5.6.0.0.nupkg.sha512"
     },
     "Blazored.Toast/3.1.2": {
       "type": "package",
@@ -5406,12 +5536,19 @@
       "path": "humanizer.core.zh-hant/2.11.10",
       "hashPath": "humanizer.core.zh-hant.2.11.10.nupkg.sha512"
     },
-    "jQuery/1.6.3": {
+    "jQuery/3.6.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vb0p7+eRmc2evBCT9W7PCUupqWiDMi9/ofBHN99LraRzLY5jPKMeFzFYBoMgwA8TiwRoFDke5hiDDLsvae7qMg==",
-      "path": "jquery/1.6.3",
-      "hashPath": "jquery.1.6.3.nupkg.sha512"
+      "sha512": "sha512-sSzCTDWn15waSMjDrP21jjgG1j1pwISLaKiVCClwU4XGAmuZt+FScLkdyRvh9ppoIxAW/tJtJBYei+3CAwFQ7g==",
+      "path": "jquery/3.6.0",
+      "hashPath": "jquery.3.6.0.nupkg.sha512"
+    },
+    "jQuery.Validation/1.19.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Y9oA2cqUyuJYd+egyp/2VwsUT4mH1X31R7i74VTm1i/7XhnSK0iAWsPvQBXxXz6BhOnEDhAQ0u12Aj830/e1YA==",
+      "path": "jquery.validation/1.19.3",
+      "hashPath": "jquery.validation.1.19.3.nupkg.sha512"
     },
     "ladda-bootstrap/0.9.8": {
       "type": "package",
@@ -5987,6 +6124,20 @@
       "path": "microsoft.identitymodel.tokens/5.5.0",
       "hashPath": "microsoft.identitymodel.tokens.5.5.0.nupkg.sha512"
     },
+    "Microsoft.jQuery.Unobtrusive.Ajax/3.2.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-udg7ZBszgqxloQ+ShJRONKQAzPnJIlUhKZB+AIvZdKh7CDc5Nms69T9X0hN5i+NqMmQE6njkzdCcEb16lPdJTw==",
+      "path": "microsoft.jquery.unobtrusive.ajax/3.2.6",
+      "hashPath": "microsoft.jquery.unobtrusive.ajax.3.2.6.nupkg.sha512"
+    },
+    "Microsoft.jQuery.Unobtrusive.Validation/3.2.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zu4ELNl5KW5vVfEeqeTxYFg/VvVmogCQDxNXnPDT9MjbtNpNdZVoRkq0nQAbtRo031PEUQsz2+3Qlb8RSInDOw==",
+      "path": "microsoft.jquery.unobtrusive.validation/3.2.12",
+      "hashPath": "microsoft.jquery.unobtrusive.validation.3.2.12.nupkg.sha512"
+    },
     "Microsoft.JSInterop/3.1.4": {
       "type": "package",
       "serviceable": true,
@@ -6119,6 +6270,13 @@
       "sha512": "sha512-QYFyxhaABwmq3p/21VrZNYvCg3DaEoN/wUuw5nmfAf0X3HLjgupwhkEWdgfb9nvGAUIv3osmZoD3kKl4jxEmYQ==",
       "path": "newtonsoft.json.bson/1.0.2",
       "hashPath": "newtonsoft.json.bson.1.0.2.nupkg.sha512"
+    },
+    "NLog/4.7.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lCfAaKel4trne8Suf4/0aR9YPKDFLWKgqBupnHKNYx+cIjutF2BsVxfF2fAb+ObaYN3m5hDjx/ToVS15ouB+SA==",
+      "path": "nlog/4.7.7",
+      "hashPath": "nlog.4.7.7.nupkg.sha512"
     },
     "NuGet.Frameworks/4.7.0": {
       "type": "package",
@@ -6952,6 +7110,13 @@
       "sha512": "sha512-h/688XvzYk1xVYn213ryU+HCElE4n/drYzAHJkAi9LsSUPS3EbI6wGlvCglBUt7i4h5iESgAVarYaigjQmVpqg==",
       "path": "toastr/2.1.1",
       "hashPath": "toastr.2.1.1.nupkg.sha512"
+    },
+    "WebGrease/1.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1d29edoh4IZPLig82coowiPBS1ltxT97PwEIkOk0dHqtJwD9v5C7gPm6Ot1hKHT86otKm04oDQ00x5c+PyVyxw==",
+      "path": "webgrease/1.6.0",
+      "hashPath": "webgrease.1.6.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
       "type": "referenceassembly",

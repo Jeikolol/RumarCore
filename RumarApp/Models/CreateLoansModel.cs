@@ -2,7 +2,7 @@
 {
     public class CreateLoansModel
     {
-        public Loan Loan { get; set; }
-        public Beneficiary Beneficiary { get; set; }
+        public LoanModel Loan { get; set; }
+        public BeneficiaryModel Beneficiary { get; set; }
     }
 }

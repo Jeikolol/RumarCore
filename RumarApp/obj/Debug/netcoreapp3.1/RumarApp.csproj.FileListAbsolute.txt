@@ -260,3 +260,11 @@ C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Beneficiaries\Details.cshtml.g.cs
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Beneficiaries\Edit.cshtml.g.cs
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Beneficiaries\Index.cshtml.g.cs
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\Razor\Views\Client\_AddBeneficiaryModal.cshtml.g.cs
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\NLog.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\Autofac.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\Autofac.Integration.Mvc.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\Autofac.Extensions.DependencyInjection.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\Antlr3.Runtime.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\netcoreapp3.1\WebGrease.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\netcoreapp3.1\RumarApp.GeneratedMSBuildEditorConfig.editorconfig
