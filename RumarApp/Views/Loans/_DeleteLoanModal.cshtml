@@ -1,0 +1,41 @@
+﻿@model RumarApp.Models.LoanModel
+
+@{
+    ViewData["Title"] = "Borrar";
+}
+
+
+@using (Html.BeginForm("Delete", "Loans", FormMethod.Post))
+{
+    <div class="modal-header bg-danger">
+        <h5 class="modal-title">
+            <i class="fa fa-remove fa-fw fa-3x pull-left"></i>
+            <span class="h2">Cancelar Prestamo de Cliente</span>
+            <button type="button" class="close mt-10" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h5>
+    </div>
+    <div class="modal-body">
+        <div class="form-group text-center row">
+            <div class="col-md-12">
+                <span class="h3">
+                    Seguro que desea cancelar el Prestamo del Cliente
+                </span>
+            </div>
+            <div class="col-md-12">
+                <span class="h3 font-bold">
+                    @Html.DisplayFor(model => model.Clients.FullName)?
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Aceptar" class="btn btn-danger" />
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
+        </form>
+    </div>
+
+}

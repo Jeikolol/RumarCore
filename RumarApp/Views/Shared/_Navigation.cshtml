@@ -1,69 +1,111 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using RumarApp.Models
+@using Core.Entities
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="@Url.Action("Index", "Home")" class="brand-link">
+            <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">RumarApp</span>
+        </a>
 
-<style type="text/css">
-    .circle-logo {
-        border-radius: 50%;
-        margin-left: 10%;
-        background-color: #fff;
-        min-height: 100px;
-        min-width: 100px;
-        width: 70% !important;
-        background-color: #fff;
-        position: relative;
-    }
-
-    .no-a {
-        padding: 0 !important;
-        display: inline !important;
-    }
-
-    #side-menu > li.active > a {
-        background-color: #c4813f !important;
-    }
-
-    #side-menu > li.active > ul.nav-second-level > li.active > a {
-        background-color: #c4813f !important;
-    }
-
-    .nav-third-level > li.active > a {
-        background-color: #c4813f !important;
-    }
-
-    .activeSubmenu {
-        background: #3a4459;
-        border: solid 1px #6F7FA0;
-    }
-</style>
-
-<nav class="navbar-default navbar-static-side" role="navigation">
-    <div class="sidebar-collapse">
-        <ul class="nav" id="side-menu">
-            <li class="nav-header bg-primary-important">
-                <div class="dropdown profile-element">
-                    <a data-toggle="dropdown" class="dropdown-toggle text-center" href="#">
-                        <div class="circle-logo" style="vertical-align: middle;">
-                            @*<img src="~/Content/img/CustomerLogo/Logo.png" alt="" class="img-circle" width="95px" height="70px" style="margin-top: 15px">*@
-                        </div>
-                    </a>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user (optional) -->
+            <partial name="_LoginPartial" />
+            <!-- SidebarSearch Form -->
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Buscar en el Menu" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
                 </div>
-            </li>
-            @if (SignInManager.IsSignedIn(User))
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Clientes
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Client")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Consulta</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Create", "Client")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Nuevo Ciente</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-money-bill-alt"></i>
+                            <p>
+                                Prestamos
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Loans")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Consulta</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Create", "Loans")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Nuevo Prestamo</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Seguridad
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Roles")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Roles</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+        <div class="sidebar-custom">
+            @using (Html.BeginForm("LogOut", "Security", FormMethod.Post, new { id = "logoutForm", name = "logoutForm" }))
             {
-                <li class="">
-                    <a href="@Url.Action("Index", "Loans")">
-                        <i class="fa fa-money"></i> <span class="nav-label">Prestamos </span>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="@Url.Action("Index", "Client")">
-                        <i class="fa fa-user"></i> <span class="nav-label">Clientes </span>
-                    </a>
-                </li>
+                @Html.AntiForgeryToken()
             }
-        </ul>
-    </div>
-</nav>
+            <a class="btn btn-secondary hide-on-collapse pos-right" href="javascript:document.getElementById('logoutForm').submit()">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesion
+            </a>
+        </div>
+    </aside>
+}

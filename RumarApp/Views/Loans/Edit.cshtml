@@ -1,4 +1,5 @@
-﻿@model RumarApp.Models.Loan
+﻿@model RumarApp.Models.LoanModel
+@using RumarApp.Enums
 
 @{
     ViewData["Title"] = "Editar";
@@ -7,45 +8,116 @@
 <h1 class="text-center font-bold">Editar Prestamo</h1>
 
 <hr />
-<div class="panel panel-primary">
-    <div class="panel-heading"></div>
-    <div class="panel-body row">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group col-md-4">
-                <label asp-for="Capital" class="control-label">Capital</label>
-                <input asp-for="Capital" class="form-control" />
-                <span asp-validation-for="Capital" class="text-danger"></span>
+<form asp-action="Edit">
+    <section class="content col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <span class="h2">
+                            Prestamo <span class="badge badge-secondary" style="font-size: 20px">#@Model.Id</span>
+                        </span>
+                    </div>
+                    <div class="card-body row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Capital" class="control-label">Capital</label>
+                            <input asp-for="Capital" class="form-control" />
+                            <span asp-validation-for="Capital" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Interest" class="control-label">Interes(%)</label>
+                            <input asp-for="Interest" class="form-control" />
+                            <span asp-validation-for="Interest" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Quote" class="control-label">Cuotas de Pago</label>
+                            <input asp-for="Quote" class="form-control" />
+                            <span asp-validation-for="Quote" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="TransactionTypeId" class="control-label">Metodo de Pago</label>
+                            <select asp-for="TransactionTypeId" class="form-control" asp-items="Html.GetEnumSelectList<TransactionTypeEnum>()"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="TransactionPaymentId" class="control-label">Tipo de Pago</label>
+                            <select asp-for="TransactionPaymentId" class="form-control" asp-items="Html.GetEnumSelectList<TransactionPaymentEnum>()"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ClientsId" class="control-label">Cliente</label>
+                            <span asp-validation-for="ClientsId" class="form-control span-background">@Model.Clients.FullName</span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label asp-for="Notes" class="control-label">Notas</label>
+                            <textarea asp-for="Notes" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group col-md-4">
-                <label asp-for="Interest" class="control-label">Interes(%)</label>
-                <input asp-for="Interest" class="form-control" />
-                <span asp-validation-for="Interest" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="Quote" class="control-label">Cuota(Meses)</label>
-                <input asp-for="Quote" class="form-control" />
-                <span asp-validation-for="Quote" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label class="control-label">Cliente</label>
-                <span class="form-control span-background">@Model.Clients.FullName</span>
-            </div>
-            <div class="form-group col-md-8">
-                <label asp-for="Notes" class="control-label">Notas</label>
-                <textarea asp-for="Notes" class="form-control"></textarea>
-            </div>
-            <div class="form-group col-md-12">
-                <input type="submit" value="Editar" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+            <!--<div class="col-md-12" id="beneficiary">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Beneficiario</h3>
 
-<div>
-    <a asp-action="Index">Volver a la Consulta</a>
-</div>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.FisrtName" class="control-label">Nombre</label>
+                            <input asp-for="Beneficiary.FisrtName" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.LastName" class="control-label">Apellido</label>
+                            <input asp-for="Beneficiary.LastName" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.Identification" class="control-label">Identificacion</label>
+                            <input asp-for="Beneficiary.Identification" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.Address" class="control-label">Direccion</label>
+                            <input asp-for="Beneficiary.Address" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.PhoneNumber" class="control-label">Telefono</label>
+                            <input asp-for="Beneficiary.PhoneNumber" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Beneficiary.MobileNumber" class="control-label">Celular</label>
+                            <input asp-for="Beneficiary.MobileNumber" class="form-control"/>
+                        </div>
+                    </div>-->
+                    <!-- /.card-body -->
+                <!--</div>-->
+                <!-- /.card -->
+            <!--</div>-->
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a asp-action="Index" class="btn btn-secondary">Volver a la Consulta</a>
+                <input type="submit" value="Editar" class="btn btn-success float-right">
+            </div>
+        </div>
+    </section>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+    var body = document.body;
+    //var hasBeneficiary =Json.Serialize(Model.BeneficiaryId);
+
+    body.classList.add("sidebar-collapse");
+
+    //if (hasBeneficiary != 0 && hasBeneficiary != null) {
+    //    $("#beneficiary").show();
+    //} else {
+    //    $("#beneficiary").hide();
+    //}
+</script>
 }

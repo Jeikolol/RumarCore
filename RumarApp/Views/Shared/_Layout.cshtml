@@ -1,126 +1,200 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"] - RumarApp</title>
-    <link rel="stylesheet" href="~/Content/bootstrap.css" />
-    <link rel="stylesheet" href="~/Content/bootstrap.css.map" />
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css.map" />
-    <link rel="stylesheet" href="~/Content/Site.css" />
-    <link rel="stylesheet" href="~/Content/style.css" />
 
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
-    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
-    <style>
-        .pagination {
-            margin: 0;
-            float: right !important;
-        }
-
-        .span-background {
-            background-color: #dad9d9
-        }
-
-        .btn-secondary {
-            color: #333;
-            background-color: #f3f3f3;
-            border-color: #6c757d;
-        }
-
-        .btn-secondary:hover {
-            color: #fff;
-            background-color: #5a6268;
-            border-color: #545b62;
-        }
-
-        .btn-secondary:focus, .btn-secondary.focus {
-            box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
-        }
-
-        .btn-secondary.disabled, .btn-secondary:disabled {
-            color: #fff;
-            background-color: #6c757d;
-            border-color: #6c757d;
-        }
-
-        .btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
-        .show > .btn-secondary.dropdown-toggle {
-            color: #fff;
-            background-color: #545b62;
-            border-color: #4e555b;
-        }
-
-        .btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
-        .show > .btn-secondary.dropdown-toggle:focus {
-            box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
-        }
-
-        .table-striped-even-light-blue > tbody tr:nth-of-type(even) {
-            background-color: #1ce32b38;
-        }
-
-        .table-striped-even-light-blue > thead > tr {
-            background-color: white;
-            color: #1ab394;
-            border-bottom: 2px solid;
-            border-top: 2px solid;
-        }
-
-        .panel-primary > .panel-heading .badge {
-            color: #1ab394;
-            background-color: #fff;
-        }
-
-        .form-control.span-background.notes {
-            height: 60px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/site.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/adminlte.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
 </head>
-<body class="skin-1 pace-done">
-    <div id="wrapper">
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__wobble" src="/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
 
-        <!-- Navigation -->
-        <partial name="_Navigation">
+        <partial name="_TopNavBar" />
 
-        <!-- Page wraper -->
-            <div id="page-wrapper" class="gray-bg container-fluid">
-                <!-- Top Navbar -->
-                <partial name="_TopNavbar">
-
-                    <!-- Main view  -->
-                    @RenderBody()
-
-                    <!-- Footer -->
-                    <footer class="border-top footer text-muted">
-                        <div class="container">
-                            &copy; 2021 - demo - <a asp-area="" asp-page="/Privacy">Privacy</a>
-                        </div>
-                    </footer>
-            </div>
-        <!-- End page wrapper-->
-
+        <partial name="_Navigation" />
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+        <!-- /.content-wrapper -->
+        <partial name="_Footer" />
     </div>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="/plugins/moment/moment.min.js"></script>
+    <script src="/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/js/adminlte.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="/plugins/jszip/jszip.min.js"></script>
+    <script src="/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- Toastr -->
+    <script src="/plugins/toastr/toastr.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+<script>
+         var url = '@Url.Action("Create")';
+        $(function () {
+            $("#dataTableIndexList").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                //lengthMenu: [25, 50, 100, 200],
+                "autoWidth": false,
+                "buttons": {
+                    buttons: [
+                        {
+                            text: '<i class="fas fa-plus fa-fw"></i>Agregar',
+                            className: 'btn-outline-primary',
+                            action: function navigateTo() {
+                                window.location = url;
+                            }
+                        },
+                    ],
+                    dom: {
+                        button: {
+                            className: 'btn'
+                        },
+                        buttonLiner: {
+                            tag: null
+                        }
+                    }
+                },
+                "oLanguage": {
+                    "sSearch": "Filtrar en la Lista"
+                },
+                "language": {
+                    emptyTable: "No hay datos para mostrar",
+                    paginate: {
+                        "first": "Primera",
+                        "last": "Ultima",
+                        "next": "Proxima",
+                        "previous": "Anterior"
+                    },
+                    info: "Mostrando _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                }
+            }).buttons().container().appendTo('#dataTableIndexList_wrapper .col-md-6:eq(0)');
+        });
 
+        $(function () {
+            $("#dataTableAmotization").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                //lengthMenu: [25, 50, 100, 200],
+                "autoWidth": false,
+                //"buttons": {
+                //    buttons: [
+                //        {
+                //            text: '<i class="fas fa-plus fa-fw"></i>Agregar',
+                //            className: 'btn-outline-primary',
+                //            action: function navigateTo() {
+                //                window.location = url;
+                //            }
+                //        },
+                //    ],
+                //    dom: {
+                //        button: {
+                //            className: 'btn'
+                //        },
+                //        buttonLiner: {
+                //            tag: null
+                //        }
+                //    }
+                //},
+                //"oLanguage": {
+                //    "sSearch": "Filtrar en la Lista"
+                //},
+                "searching": false,
+                "language": {
+                    emptyTable: "No hay datos para mostrar",
+                    paginate: {
+                        "first": "Primera",
+                        "last": "Ultima",
+                        "next": "Proxima",
+                        "previous": "Anterior"
+                    },
+                    info: "Mostrando _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                }
+            }).buttons().container().appendTo('#dataTableIndexList_wrapper .col-md-6:eq(0)');
+        });
 
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/Scripts/plugins/metisMenu/metisMenu.min.js"></script>
-    <script src="~/Scripts/plugins/pace/pace.min.js"></script>
+         var msg = @(TempData["Message"]!=null? Html.Raw(TempData["Message"]) : Html.Raw("undefined"));
 
-    <script src="~/Scripts/jquery-3.2.1.js"></script>
-    <script src="~/Scripts/jquery.highlight.js"></script>
-    <script src="~/Scripts/plugins/jquery-idle/jquery.idle.min.js"></script>
-
-    <script src="~/Scripts/bootstrap.js"></script>
-
-    <script src="~/Scripts/plugins/ladda/spin.min.js"></script>
-    <script src="~/Scripts/plugins/ladda/ladda.min.js"></script>
-    <script src="~/Scripts/plugins/ladda/ladda.jquery.min.js"></script>
-
-
-    @RenderSection("Scripts", required: false)
+        if (msg != null) {
+            toastr[msg.type](msg.message, msg.title);
+        }
+</script>
 </body>
 </html>

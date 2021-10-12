@@ -5,49 +5,296 @@
 }
 
 <h1 class="text-center font-bold">Nuevo Cliente</h1>
+<form asp-action="Create" method="post" id="clientForm">
+    <section class="content col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h3 class="card-title">Cliente</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="FisrtName" class="control-label">Nombre<span class="text-danger">(*)</span></label>
+                            <input asp-for="FisrtName" class="form-control" />
+                            <span asp-for="FisrtName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="LastName" class="control-label">Apellido<span class="text-danger">(*)</span></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Identification" class="control-label">Identificacion<span class="text-danger">(*)</span></label>
+                            <input asp-for="Identification" id="identification" class="form-control" />
+                            <span asp-for="Identification" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="PhoneNumber" class="control-label">Telefono<span class="text-danger">(*)</span></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-for="PhoneNumber" class="text-danger"></span>
+                        </div><div class="form-group col-md-4">
+                            <label asp-for="MobileNumber" class="control-label">Celular</label>
+                            <input asp-for="MobileNumber" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Address" class="control-label">Direccion<span class="text-danger">(*)</span></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-for="Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="mb-0 m-t-10">
+                                    <i class="fas fa-list-ul fa-fw"></i> Garantes
+                                </h4>
+                            </div>
+                            <div class="col-6 text-right">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table id="beneficiaryList" class="table table-striped-even-light-blue">
+                                        <thead class="text-white">
+                                            <tr>
+                                                <th class="no-border">Nombre</th>
+                                                <th class="no-border">Identificacion</th>
+                                                <th class="no-border">Parentezco</th>
+                                                <td class="no-border" width="85"></td>
+                                                <td class="no-border" width="85"></td>
+                                                <td class="no-border" width="85"></td>
+                                                <td class="no-border" width="85"></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a asp-action="Index" class="btn btn-secondary">Volver a la Consulta</a>
+                <input type="submit" value="Crear" id="submitClient" class="btn btn-success float-right">
+            </div>
+        </div>
+    </section>
+</form>
 
-<hr />
-<div class="panel panel-primary">
-    <div class="panel-heading"></div>
-    <div class="panel-body row">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group col-md-4">
-                <label asp-for="FisrtName" class="control-label">Nombre</label>
-                <input asp-for="FisrtName" class="form-control" />
-                <span asp-validation-for="FisrtName" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="LastName" class="control-label">Apellido</label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="Identification" class="control-label">Identificacion</label>
-                <input asp-for="Identification" class="form-control" />
-                <span asp-validation-for="Identification" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="PhoneNumber" class="control-label">Telefono</label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-8">
-                <label asp-for="Address" class="control-label">Direccion</label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
-        </form>
+<div id="_AddBeneficiaryModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <partial name="_AddBeneficiaryModal" />
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver a la Consulta</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script src="~/js/site.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(function () {
+            $("#beneficiaryList").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                //lengthMenu: [25, 50, 100, 200],
+                "autoWidth": false,
+                "columnDefs": [
+                    {
+                        "targets": [3],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [4],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [5],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [6],
+                        "visible": false,
+                        "searchable": false
+                    },
+                ],
+                "buttons": {
+                    buttons: [
+                        {
+                            text: '<i class="fas fa-plus fa-fw"></i>Garante',
+                            className: 'btn-outline-primary',
+                            action: function (e, dt, node, config) {
+                                $('#_AddBeneficiaryModal').modal('show')
+                            }
+                        },
+                    ],
+                    dom: {
+                        button: {
+                            className: 'btn'
+                        },
+                        buttonLiner: {
+                            tag: null
+                        }
+                    }
+                },
+                "oLanguage": {
+                    "sSearch": "Filtrar en la Lista"
+                },
+                "language": {
+                    emptyTable: "No hay datos para mostrar",
+                    paginate: {
+                        "first": "Primera",
+                        "last": "Ultima",
+                        "next": "Proxima",
+                        "previous": "Anterior"
+                    },
+                    info: "Mostrando _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                }
+            }).buttons().container().appendTo('#beneficiaryList_wrapper .col-md-6:eq(0)');
+        });
+    });
+
+    $("#beneficiairySubmit").click(function (e) {
+        e.preventDefault();
+        var beneficiaryTable = $("#beneficiaryList").DataTable();
+        var param = $("#AddBeneficiaryForm");
+        var name = param.find('input[name = "FisrtName"]').val();
+        var lastName = param.find('input[name = "LastName"]').val();
+        var identification = param.find('input[name="Identification"]').val();
+        var relationshipName = $("#relationshipType option:selected").text();
+        var address = param.find('input[name = "Address"]').val();
+        var phoneNumber = param.find('input[name = "PhoneNumber"]').val();
+        var mobileNumber = param.find('input[name = "MobileNumber"]').val();
+        var relationshipTypeId = parseInt($("#relationshipType option:selected").val());
+
+        beneficiary = {
+            FisrtName: name,
+            LastName: lastName,
+            FullName: name + " " + lastName,
+            Identification: identification,
+            RelationshipName: relationshipName,
+            Address: address,
+            PhoneNumber: phoneNumber,
+            MobileNumber: mobileNumber,
+            RelationshipTypeId: relationshipTypeId
+        };
+
+        if (beneficiary.FullName == '' ||
+            beneficiary.LastName == '' ||
+            beneficiary.Identification == '' ||
+            beneficiary.Address == '' ||
+            beneficiary.PhoneNumber == '') {
+
+            return toastr.error("Debe completar todos los campos marcados", "Mantenimiento de Clientes");
+        }
+
+        beneficiaryTable.row.add([
+            beneficiary.FullName,
+            beneficiary.Identification,
+            beneficiary.RelationshipName,
+            beneficiary.Address,
+            beneficiary.PhoneNumber,
+            beneficiary.MobileNumber,
+            beneficiary.RelationshipTypeId
+        ]).draw();
+
+        //document.getElementById("#AddBeneficiaryForm").reset();
+        $("#AddBeneficiaryForm")[0].reset();
+    });
+
+    $("#submitClient").click(function (e) {
+        e.preventDefault();
+        var beneficiaryTable = $("#beneficiaryList").DataTable();
+        var clientParam = $("#clientForm");
+        var param = $("#AddBeneficiaryForm");
+        var name = param.find('input[name = "FisrtName"]').val();
+        var lastName = param.find('input[name = "LastName"]').val();
+
+        var rowData = beneficiaryTable.rows().data().toArray();
+
+        var garanteList = [];
+
+        rowData.map(function (value, index) {
+            var garanteData = {
+                FisrtName: name,
+                LastName: lastName,
+                FullName: value[0],
+                Identification: value[1],
+                RelationshipName: value[2],
+                Address: value[3],
+                PhoneNumber: value[4],
+                MobileNumber: value[5],
+                RelationshipTypeId: value[6]
+            };
+
+            garanteList.push(garanteData);
+        })
+
+        var client = {
+            FisrtName: clientParam.find('input[name = "FisrtName"]').val(),
+            LastName: clientParam.find('input[name = "LastName"]').val(),
+            Identification: clientParam.find('input[name = "Identification"]').val(),
+            Address: clientParam.find('input[name = "Address"]').val(),
+            PhoneNumber: clientParam.find('input[name = "PhoneNumber"]').val(),
+            MobileNumber: clientParam.find('input[name = "MobileNumber"]').val(),
+            Beneficiaries: garanteList
+        }
+        debugger
+        var userIsValid = validateLocalIdentification(client.Identification);
+        var beneficiaryIsValid = false;
+
+        garanteList.map(function (value, index) {
+            beneficiaryIsValid = validateLocalIdentification(value.Identification);
+        })
+
+        if (userIsValid && beneficiaryIsValid) {
+            $.post('@Url.Action("Create", "Client")', client)
+            .done(function (msg) {
+
+            })
+            .fail(function (xhr, status, error) {
+            })
+        }
+
+    });
+
+    function validateLocalIdentification(identification) {
+        var identificationIsValid = true;
+
+        if (!$.SDQ.validarCedula(identification)) {
+            toastr["error"](`La Cedula [${identification}] es invalida`);
+            identificationIsValid = false;
+        }
+
+        return identificationIsValid;
+    }
+
+</script>
 }

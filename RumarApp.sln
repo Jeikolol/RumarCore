@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RumarApp", "RumarApp\RumarApp.csproj", "{16EC0451-9919-469A-A969-1ACB44036BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{68D5A493-1E5A-4FB4-ADAA-05B8D7ED73F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrations", "DatabaseMigrations\DatabaseMigrations.csproj", "{E9B2EB14-735D-45C1-A0B5-11AF39506A3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{16EC0451-9919-469A-A969-1ACB44036BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16EC0451-9919-469A-A969-1ACB44036BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16EC0451-9919-469A-A969-1ACB44036BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D5A493-1E5A-4FB4-ADAA-05B8D7ED73F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D5A493-1E5A-4FB4-ADAA-05B8D7ED73F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D5A493-1E5A-4FB4-ADAA-05B8D7ED73F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D5A493-1E5A-4FB4-ADAA-05B8D7ED73F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9B2EB14-735D-45C1-A0B5-11AF39506A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9B2EB14-735D-45C1-A0B5-11AF39506A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9B2EB14-735D-45C1-A0B5-11AF39506A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9B2EB14-735D-45C1-A0B5-11AF39506A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
