@@ -190,7 +190,7 @@
             }).buttons().container().appendTo('#dataTableIndexList_wrapper .col-md-6:eq(0)');
         });
 
-         var msg = @(TempData["Message"]!=null? Html.Raw(TempData["Message"]) : Html.Raw("undefined"));
+        var msg = @(TempData["Message"]!=null? Html.Raw(TempData["Message"]) : Html.Raw("undefined"));
 
         if (msg != null) {
             toastr[msg.type](msg.message, msg.title);

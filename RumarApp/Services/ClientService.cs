@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Security;
 using Microsoft.EntityFrameworkCore;
 using RumarApp.Data;
 using RumarApp.Infraestructure;
@@ -18,8 +19,10 @@ namespace RumarApp.Services
         {
         }
        
-        public async Task<List<ClientViewModel>> GetAllClients()
+        public async Task<ServiceResult<List<ClientViewModel>>> GetAllClients()
         {
+            var result = ServiceResult<List<ClientViewModel>>.Create();
+
             var list = await Database.Clients
                 .Include(x => x.Loans)
                 .Include(x => x.Beneficiaries)
@@ -51,11 +54,92 @@ namespace RumarApp.Services
                 })
                 .ToListAsync();
 
-            return list;
+            result.Data = list;
+
+            return result;
         }
 
-        public async Task<ClientViewModel> GetClientById(int id)
+        public async Task<ServiceResult<ClientViewModel>> Create(ClientViewModel param)
         {
+            var result = ServiceResult<ClientViewModel>.Create();
+
+            var currentUser = ClaimsHelper.ClaimsIdentity.Name;
+            List<Beneficiary> beneficiaryList = new List<Beneficiary>();
+            List<Beneficiary> beneficiaries = new List<Beneficiary>();
+
+            foreach (var item in param.Beneficiaries)
+            {
+                if (param.Beneficiaries.Any(x => x.FullName == ""))
+                {
+                    result.AddErrorMessage("Los campos no se han enviado correctamente.");
+
+                    return result;
+                }
+
+                var beneficiary = new Beneficiary
+                {
+                    FisrtName = item.FisrtName,
+                    LastName = item.LastName,
+                    Identification = item.Identification,
+                    Address = item.Address,
+                    PhoneNumber = item.PhoneNumber,
+                    MobileNumber = item.MobileNumber,
+                    RelationshipTypeId = item.RelationshipTypeId,
+                    CreationDateTime = DateTime.UtcNow,
+                    CreatedBy = currentUser
+                };
+
+                beneficiaries.Add(beneficiary);
+            }
+
+            var client = new Client
+            {
+                FisrtName = param.FisrtName,
+                LastName = param.LastName,
+                Identification = param.Identification,
+                Address = param.Address,
+                PhoneNumber = param.PhoneNumber,
+                MobileNumber = param.MobileNumber,
+                Beneficiaries = beneficiaries,
+                CreatedBy = currentUser,
+                CreationDateTime = DateTime.UtcNow
+            };
+
+            Database.Add(client);
+            await Database.SaveChangesAsync();
+
+            foreach (var item in client.Beneficiaries)
+            {
+                var beneficiary = new Beneficiary
+                {
+                    FisrtName = item.FisrtName,
+                    LastName = item.LastName,
+                    Identification = item.Identification,
+                    Address = item.Address,
+                    PhoneNumber = item.PhoneNumber,
+                    MobileNumber = item.MobileNumber,
+                    RelationshipTypeId = item.RelationshipTypeId,
+                    ClientId = client.Id
+                };
+
+                beneficiaryList.Add(beneficiary);
+            }
+
+            Database.AddRange(beneficiaryList);
+            await Database.SaveChangesAsync();
+
+            var clientDetail = await GetClientById(client.Id);
+
+            result.Data = clientDetail.Data;
+
+            return result;
+        }
+
+
+        public async Task<ServiceResult<ClientViewModel>> GetClientById(int id)
+        {
+            var result = ServiceResult<ClientViewModel>.Create();
+
             var client = await Database.Clients
                 .Include(x => x.Loans)
                 .Include(x => x.Beneficiaries)
@@ -88,84 +172,57 @@ namespace RumarApp.Services
                 })
                 .FirstOrDefaultAsync();
 
-            return client;
+            result.Data = client;
+
+            return result;
         }
 
-        public async Task<ClientViewModel> Create(ClientViewModel param)
+        public async Task<ServiceResult<int>> EditClient(int clientId, ClientViewModel param)
         {
-            List<Beneficiary> beneficiaryList = new List<Beneficiary>();
-            List<Beneficiary> beneficiaries = new List<Beneficiary>();
+            var result = ServiceResult<int>.Create();
 
-            foreach (var item in param.Beneficiaries)
-            {
-                var beneficiary = new Beneficiary
-                {
-                    FisrtName = item.FisrtName,
-                    LastName = item.LastName,
-                    Identification = item.Identification,
-                    Address = item.Address,
-                    PhoneNumber = item.PhoneNumber,
-                    MobileNumber = item.MobileNumber,
-                    RelationshipTypeId = item.RelationshipTypeId,
-                };
+            var clientToUpdate = await Database.Clients
+                .Include(x => x.Beneficiaries)
+                .Where(x => x.Id == clientId)
+                .FirstOrDefaultAsync();
 
-                beneficiaries.Add(beneficiary);
-            }
+            clientToUpdate.FisrtName = param.FisrtName;
+            clientToUpdate.LastName = param.LastName;
+            clientToUpdate.PhoneNumber = param.PhoneNumber;
+            clientToUpdate.MobileNumber = param.MobileNumber;
+            clientToUpdate.Address = param.Address;
 
-            var client = new Client
-            {
-                FisrtName = param.FisrtName,
-                LastName = param.LastName,
-                Identification = param.Identification,
-                Address = param.Address,
-                PhoneNumber = param.PhoneNumber,
-                MobileNumber = param.MobileNumber,
-                Beneficiaries = beneficiaries
-            };
-            
-            Database.Add(client);
+            Database.Update(clientToUpdate);
+
             await Database.SaveChangesAsync();
 
-            foreach (var item in client.Beneficiaries)
-            {
-                var beneficiary = new Beneficiary
-                {
-                    FisrtName = item.FisrtName,
-                    LastName = item.LastName,
-                    Identification = item.Identification,
-                    Address = item.Address,
-                    PhoneNumber = item.PhoneNumber,
-                    MobileNumber = item.MobileNumber,
-                    RelationshipTypeId = item.RelationshipTypeId,
-                    ClientId = client.Id
-                };
+            result.Data = clientToUpdate.Id;
 
-                beneficiaryList.Add(beneficiary);
-            }
-
-            Database.AddRange(beneficiaryList);
-            await Database.SaveChangesAsync();
-
-            
-            return await GetClientById(client.Id);
+            return result;
         }
 
-        public async Task DeleteClient(int userId)
+
+        public async Task<ServiceResult> DeleteClient(int clientId)
         {
+            var result = ServiceResult.Create();
+
             var userToDelete = await Database.Clients
-                .Where(x => x.Id == userId)
+                .Where(x => x.Id == clientId)
                 .FirstOrDefaultAsync();
 
             Database.Remove(userToDelete);
             await Database.SaveChangesAsync();
+
+            return result;
         }
     }
 
     public interface IClientService : IService
     {
-        Task<List<ClientViewModel>> GetAllClients();
-        Task<ClientViewModel> GetClientById(int id);
-        Task<ClientViewModel> Create(ClientViewModel param);
-        Task DeleteClient(int userId);
+        Task<ServiceResult<List<ClientViewModel>>> GetAllClients();
+        Task<ServiceResult<ClientViewModel>> GetClientById(int id);
+        Task<ServiceResult<ClientViewModel>> Create(ClientViewModel param);
+        Task<ServiceResult<int>> EditClient(int clientId, ClientViewModel param);
+        Task<ServiceResult> DeleteClient(int clientId);
     }
 }

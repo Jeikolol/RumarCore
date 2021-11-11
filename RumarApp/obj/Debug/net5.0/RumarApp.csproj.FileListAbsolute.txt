@@ -259,3 +259,6 @@ C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\net5.0\DatabaseMigr
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\net5.0\RumarApp.Views.pdb
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\net5.0\RumarApp.csproj.CopyComplete
 C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\obj\Debug\net5.0\RumarApp.genruntimeconfig.cache
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\net5.0\FluentValidation.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
+C:\Users\DEVELOPER04\Desktop\App\RumarApp\RumarApp\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll

@@ -39,7 +39,7 @@ namespace RumarApp.Controllers
         {
             var clients = await _clientService.GetAllClients();
 
-            return View(clients);
+            return View(clients.Data);
         }
 
         // GET: Client/Details/5
@@ -52,7 +52,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            return View(clientViewModel);
+            return View(clientViewModel.Data);
         }
 
         public IActionResult Create()
@@ -81,18 +81,16 @@ namespace RumarApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var client = await _clientService.Create(param);
+                var client = await _clientService.Create(param);
 
-                    return View("Details", client);
-                }
-                catch (Exception ex)
+                if (!client.ExecutedSuccesfully)
                 {
-                    ShowNotification(ex.InnerException.Message, "Mantenimiento de Clientes", NotificationType.error);
+                    ShowNotification(client.Message, "Mantenimiento de Clientes", NotificationType.error);
                     return View(param);
                 }
-              
+
+                ShowNotification("Cliente Correctamente", "Mantenimiento de Clientes", NotificationType.success);
+                return View("Details", client.Data.Id);
             }
 
             return View(param);
@@ -102,44 +100,27 @@ namespace RumarApp.Controllers
         {
             var clientViewModel = await _clientService.GetClientById(id);
 
-            if (clientViewModel == null)
+            if (!clientViewModel.ExecutedSuccesfully)
             {
-                return NotFound();
+                ShowNotification(clientViewModel.Message, "Mantenimiento de Clientes", NotificationType.error);
+                return View(clientViewModel);
             }
 
-            return View(clientViewModel);
+            return View(clientViewModel.Data);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, ClientViewModel clientViewModel)
         {
-            if (id != clientViewModel.Id)
-            {
-                return NotFound();
-            }
+            var result = await _clientService.EditClient(id, clientViewModel);
 
-            if (ModelState.IsValid)
+            if (!result.ExecutedSuccesfully)
             {
-                try
-                {
-                    //await _clientService.Create(clientViewModel);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    var exist = await _clientService.GetClientById(clientViewModel.Id);
-                   
-                    if (exist == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ShowNotification(result.Message, "Mantenimiento de Clientes", NotificationType.error);
+                return View(clientViewModel);
             }
-            return View(clientViewModel);
+            
+            return RedirectToAction("Details", new {id = clientViewModel.Id });
         }
 
         public async Task<IActionResult> Delete(int id)

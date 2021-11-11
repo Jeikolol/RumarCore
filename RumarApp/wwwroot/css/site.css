@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 .table-striped-even-light-blue > tbody tr:nth-of-type(even) {
-    background-color: #007bff;
+    background-color: #1ab39461;
 }
 
 .table-striped-even-light-blue > thead > tr {

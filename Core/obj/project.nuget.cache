@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "2K3/zr4vb9q0vog9ctzBLENu7lD/BIn3zJjdHRUhXEa/BvHiUARFpXP3EV+S2VmvGgvZO2q43nD60yfR6JbVDA==",
+  "dgSpecHash": "FOMSZMVSm/lSMotME50dsscYmqnL90123KWCi313zbuPXW5f4xLcF5eLQp1zzcM/0/fBF5SCJ8cOtKZkQsBuFg==",
   "success": true,
   "projectFilePath": "C:\\Users\\DEVELOPER04\\Desktop\\App\\RumarApp\\Core\\Core.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\fluentvalidation\\10.3.3\\fluentvalidation.10.3.3.nupkg.sha512",
+    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\fluentvalidation.aspnetcore\\10.3.3\\fluentvalidation.aspnetcore.10.3.3.nupkg.sha512",
+    "C:\\Users\\DEVELOPER04\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\10.3.3\\fluentvalidation.dependencyinjectionextensions.10.3.3.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\DEVELOPER04\\.nuget\\packages\\microsoft.aspnetcore.authentication.cookies\\2.2.0\\microsoft.aspnetcore.authentication.cookies.2.2.0.nupkg.sha512",

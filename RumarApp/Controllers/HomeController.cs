@@ -31,7 +31,7 @@ namespace RumarApp.Controllers
 
             var model = new DashboardModel
             {
-                ClientsCount = clients.Count(),
+                ClientsCount = clients.Data.Count(),
                 BeneficiaryCount = 0,
                 LoansCount = 0
             };

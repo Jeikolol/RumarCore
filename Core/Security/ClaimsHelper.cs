@@ -7,7 +7,7 @@ namespace Core.Security
 {
     public static class ClaimsHelper
     {
-        public static ClaimsIdentity ClaimsIdentity { get; private set; }
+        public static ClaimsIdentity ClaimsIdentity { get; set; }
 
         public static void BuildClaimsIdentity(User result)
         {

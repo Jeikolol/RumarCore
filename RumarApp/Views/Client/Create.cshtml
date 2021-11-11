@@ -54,8 +54,8 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header bg-info text-white">
+                <div class="card card-primary">
+                    <div class="card-header text-white">
                         <div class="row">
                             <div class="col-6">
                                 <h4 class="mb-0 m-t-10">
@@ -112,7 +112,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script src="~/js/site.js"></script>
+<script src="/js/site.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $(function () {
@@ -139,6 +139,15 @@
                     },
                     {
                         "targets": [6],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [7],
+                        "visible": false,
+                        "searchable": false
+                    }, {
+                        "targets": [8],
                         "visible": false,
                         "searchable": false
                     },
@@ -222,7 +231,9 @@
             beneficiary.Address,
             beneficiary.PhoneNumber,
             beneficiary.MobileNumber,
-            beneficiary.RelationshipTypeId
+            beneficiary.RelationshipTypeId,
+            beneficiary.FisrtName,
+            beneficiary.LastName
         ]).draw();
 
         //document.getElementById("#AddBeneficiaryForm").reset();
@@ -233,9 +244,6 @@
         e.preventDefault();
         var beneficiaryTable = $("#beneficiaryList").DataTable();
         var clientParam = $("#clientForm");
-        var param = $("#AddBeneficiaryForm");
-        var name = param.find('input[name = "FisrtName"]').val();
-        var lastName = param.find('input[name = "LastName"]').val();
 
         var rowData = beneficiaryTable.rows().data().toArray();
 
@@ -243,8 +251,8 @@
 
         rowData.map(function (value, index) {
             var garanteData = {
-                FisrtName: name,
-                LastName: lastName,
+                FisrtName: value[7],
+                LastName: value[8],
                 FullName: value[0],
                 Identification: value[1],
                 RelationshipName: value[2],
@@ -266,7 +274,7 @@
             MobileNumber: clientParam.find('input[name = "MobileNumber"]').val(),
             Beneficiaries: garanteList
         }
-        debugger
+
         var userIsValid = validateLocalIdentification(client.Identification);
         var beneficiaryIsValid = false;
 

@@ -50,8 +50,8 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-info text-white">
+            <div class="card card-primary">
+                <div class="card-header text-white">
                     <div class="row">
                         <div class="col-6">
                             <h4 class="mb-0 m-t-10">
@@ -66,28 +66,32 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table id="beneficiaryList" class="table table-striped-even-light-blue">
+                                <table id="beneficiaryListDetail" class="table table-striped-even-light-blue">
                                     <thead class="text-white">
                                         <tr>
                                             <th class="no-border">Nombre</th>
                                             <th class="no-border">Identificacion</th>
                                             <th class="no-border">Parentezco</th>
-                                            <td class="no-border" width="85"></td>
-                                            <td class="no-border" width="85"></td>
-                                            <td class="no-border" width="85"></td>
-                                            <td class="no-border" width="85"></td>
+                                            <th class="no-border"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach (var beneficiary in Model.Beneficiaries)
-                                    {
-                                        <tr>
-                                            <td>@Html.DisplayFor(x => beneficiary.FullName)</td>
-                                            <td>@Html.DisplayFor(x => beneficiary.Identification)</td>
-                                            <td>@Html.DisplayFor(x => beneficiary.RelationshipType)</td>
-                                                
-                                        </tr>
-                                    }
+                                        @foreach (var beneficiary in Model.Beneficiaries)
+                                        {
+                                            <tr>
+                                                <td>@Html.DisplayFor(x => beneficiary.FullName)</td>
+                                                <td>@Html.DisplayFor(x => beneficiary.Identification)</td>
+                                                <td>@Html.DisplayFor(x => beneficiary.RelationshipType)</td>
+                                                <td>
+                                                    <a asp-action="Edit" asp-route-id="@beneficiary.Id" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                    <a asp-action="Details" asp-route-id="@beneficiary.Id" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -98,68 +102,84 @@
         </div>
     </div>
 </section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
-    $("#beneficiaryList").DataTable({
-        "responsive": true,
-        "lengthChange": false,
-        //lengthMenu: [25, 50, 100, 200],
-        "autoWidth": false,
-        "columnDefs": [
-            {
-                "targets": [3],
-                "visible": false,
-                "searchable": false
-            },
-            {
-                "targets": [4],
-                "visible": false,
-                "searchable": false
-            },
-            {
-                "targets": [5],
-                "visible": false,
-                "searchable": false
-            },
-            {
-                "targets": [6],
-                "visible": false,
-                "searchable": false
-            },
-        ],
-        "buttons": {
-            buttons: [
-                {
-                    text: '<i class="fas fa-plus fa-fw"></i>Garante',
-                    className: 'btn-outline-primary',
-                    action: function (e, dt, node, config) {
-                        $('#_AddBeneficiaryModal').modal('show')
-                    }
+    $(document).ready(function () {
+        $(function () {
+            $("#beneficiaryListDetail").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                //lengthMenu: [25, 50, 100, 200],
+                "autoWidth": false,
+                //"columnDefs": [
+                //    {
+                //        "targets": [3],
+                //        "visible": false,
+                //        "searchable": false
+                //    },
+                //    {
+                //        "targets": [4],
+                //        "visible": false,
+                //        "searchable": false
+                //    },
+                //    {
+                //        "targets": [5],
+                //        "visible": false,
+                //        "searchable": false
+                //    },
+                //    {
+                //        "targets": [6],
+                //        "visible": false,
+                //        "searchable": false
+                //    },
+                //    {
+                //        "targets": [7],
+                //        "visible": false,
+                //        "searchable": false
+                //    }, {
+                //        "targets": [8],
+                //        "visible": false,
+                //        "searchable": false
+                //    },
+                //],
+                //"buttons": {
+                //    buttons: [
+                //        {
+                //            text: '<i class="fas fa-plus fa-fw"></i>Garante',
+                //            className: 'btn-outline-primary',
+                //            action: function (e, dt, node, config) {
+                //                $('#_AddBeneficiaryModal').modal('show')
+                //            }
+                //        },
+                //    ],
+                //    dom: {
+                //        button: {
+                //            className: 'btn'
+                //        },
+                //        buttonLiner: {
+                //            tag: null
+                //        }
+                //    }
+                //},
+                "oLanguage": {
+                    "sSearch": "Filtrar en la Lista"
                 },
-            ],
-            dom: {
-                button: {
-                    className: 'btn'
-                },
-                buttonLiner: {
-                    tag: null
+                "language": {
+                    emptyTable: "No hay datos para mostrar",
+                    paginate: {
+                        "first": "Primera",
+                        "last": "Ultima",
+                        "next": "Proxima",
+                        "previous": "Anterior"
+                    },
+                    info: "Mostrando _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrados de _MAX_ registros totales)",
                 }
-            }
-        },
-        "oLanguage": {
-            "sSearch": "Filtrar en la Lista"
-        },
-        "language": {
-            emptyTable: "No hay datos para mostrar",
-            paginate: {
-                "first": "Primera",
-                "last": "Ultima",
-                "next": "Proxima",
-                "previous": "Anterior"
-            },
-            info: "Mostrando _PAGE_ de _PAGES_",
-            "infoEmpty": "No hay registros disponibles",
-            "infoFiltered": "(filtrados de _MAX_ registros totales)",
-        }
-    }).buttons().container().appendTo('#beneficiaryList_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#beneficiaryListDetail_wrapper .col-md-6:eq(0)');
+        });
+    });
 </script>
+}
 
