@@ -1,7 +1,7 @@
 ﻿@model RumarApp.Models.ClientViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalle";
 }
 
 <h1 class="text-center font-bold">Detalles del Cliente</h1>
@@ -13,7 +13,7 @@
                 <div class="card-body row">
                     <div class="col-md-4 form-group">
                         <label>Nombre</label>
-                        <input class="form-control" type="text" value="@Html.DisplayFor(model => model.FisrtName)" disabled />
+                        <input class="form-control" type="text" value="@Html.DisplayFor(model => model.FirstName)" disabled />
                     </div>
                     <div class="col-md-4 form-group">
                         <label>Apellido</label>
@@ -27,9 +27,25 @@
                         <label>Telefono</label>
                         <input class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" disabled />
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="form-group col-md-4">
+                        <label class="control-label">País</label>
+                        <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Country)" disabled />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Ciudad</label>
+                        <input class="form-control" type="text" value="@Html.DisplayFor(model => model.City)" disabled />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Nacionalidad</label>
+                        <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Nacionality)" disabled />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Direccion Postal</label>
+                        <input class="form-control" type="text" value="@Html.DisplayFor(model => model.PostalAddress)" disabled />
+                    </div>
+                    <div class="col-md-8 form-group">
                         <label>Direccion</label>
-                        <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Address)" disabled />
+                        <textarea class="form-control" type="text" disabled>@Html.DisplayFor(model => model.Address)</textarea>
                     </div>
                 </div>
             </div>
@@ -49,62 +65,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="card card-primary">
-                <div class="card-header text-white">
-                    <div class="row">
-                        <div class="col-6">
-                            <h4 class="mb-0 m-t-10">
-                                <i class="fas fa-list-ul fa-fw"></i> Garantes
-                            </h4>
-                        </div>
-                        <div class="col-6 text-right">
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="table-responsive">
-                                <table id="beneficiaryListDetail" class="table table-striped-even-light-blue">
-                                    <thead class="text-white">
-                                        <tr>
-                                            <th class="no-border">Nombre</th>
-                                            <th class="no-border">Identificacion</th>
-                                            <th class="no-border">Parentezco</th>
-                                            <th class="no-border"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var beneficiary in Model.Beneficiaries)
-                                        {
-                                            <tr>
-                                                <td>@Html.DisplayFor(x => beneficiary.FullName)</td>
-                                                <td>@Html.DisplayFor(x => beneficiary.Identification)</td>
-                                                <td>@Html.DisplayFor(x => beneficiary.RelationshipType)</td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@beneficiary.Id" class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-pencil-alt"></i>
-                                                    </a>
-                                                    <a asp-action="Details" asp-route-id="@beneficiary.Id" class="btn btn-sm btn-success">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(document).ready(function () {
         $(function () {
             $("#beneficiaryListDetail").DataTable({
@@ -177,9 +142,9 @@
                     "infoEmpty": "No hay registros disponibles",
                     "infoFiltered": "(filtrados de _MAX_ registros totales)",
                 }
-            }).buttons().container().appendTo('#beneficiaryListDetail_wrapper .col-md-6:eq(0)');
+            });
         });
     });
-</script>
+</script>*@
 }
 

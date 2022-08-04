@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Reactive;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using RumarApp.Data;
-using RumarApp.Helpers;
 using RumarApp.Models;
-using RumarApp.Parameters;
 using RumarApp.Infraestructure;
 using RumarApp.Services;
 using Core.Entities;
+using DatabaseMigrations.Data;
 
 namespace RumarApp.Controllers
 {
@@ -37,7 +29,7 @@ namespace RumarApp.Controllers
         // GET: Client
         public async Task<IActionResult> Index()
         {
-            var clients = await _clientService.GetAllClients();
+            var clients = await _clientService.GetAll();
 
             return View(clients.Data);
         }
@@ -57,27 +49,18 @@ namespace RumarApp.Controllers
 
         public IActionResult Create()
         {
-            ViewData["RelationshipTypeId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Description");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ClientViewModel param)
         {
-            if (!ValidateHelper.IsValidDrCedula(param.Identification))
-            {
-                ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
-                return View(param);
-            }
-
-            foreach (var item in param.Beneficiaries)
-            {
-                if (!ValidateHelper.IsValidDrCedula(item.Identification))
-                {
-                    ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
-                    return View(param);
-                }
-            }
+            //if (!ValidateHelper.IsValidDrCedula(param.Identification))
+            //{
+            //    ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
+            //    return View(param);
+            //}
 
             if (ModelState.IsValid)
             {
@@ -89,8 +72,9 @@ namespace RumarApp.Controllers
                     return View(param);
                 }
 
-                ShowNotification("Cliente Correctamente", "Mantenimiento de Clientes", NotificationType.success);
-                return View("Details", client.Data.Id);
+                ShowNotification("Cliente creado Correctamente", "Mantenimiento de Clientes", NotificationType.success);
+
+                return RedirectToAction("Details", new { id = client.Data.Id });
             }
 
             return View(param);
@@ -103,16 +87,18 @@ namespace RumarApp.Controllers
             if (!clientViewModel.ExecutedSuccesfully)
             {
                 ShowNotification(clientViewModel.Message, "Mantenimiento de Clientes", NotificationType.error);
-                return View(clientViewModel);
+                return View(clientViewModel.Data);
             }
+
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Description");
 
             return View(clientViewModel.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, ClientViewModel clientViewModel)
+        public async Task<IActionResult> Edit(ClientViewModel clientViewModel)
         {
-            var result = await _clientService.EditClient(id, clientViewModel);
+            var result = await _clientService.EditClient(clientViewModel);
 
             if (!result.ExecutedSuccesfully)
             {
@@ -132,7 +118,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", clientViewModel);
+            return PartialView("_DeleteClientModal", clientViewModel.Data);
         }
 
         [HttpPost, ActionName("Delete")]

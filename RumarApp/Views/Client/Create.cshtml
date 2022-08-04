@@ -13,16 +13,16 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-10">
-                                <h3 class="card-title">Cliente</h3>
+                                <h4>Cliente</h4>
                             </div>
                         </div>
                     </div>
                     <div class="card-body row">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group col-md-4">
-                            <label asp-for="FisrtName" class="control-label">Nombre<span class="text-danger">(*)</span></label>
-                            <input asp-for="FisrtName" class="form-control" />
-                            <span asp-for="FisrtName" class="text-danger"></span>
+                            <label asp-for="FirstName" class="control-label">Nombre<span class="text-danger">(*)</span></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
                             <label asp-for="LastName" class="control-label">Apellido<span class="text-danger">(*)</span></label>
@@ -38,13 +38,34 @@
                             <label asp-for="PhoneNumber" class="control-label">Telefono<span class="text-danger">(*)</span></label>
                             <input asp-for="PhoneNumber" class="form-control" />
                             <span asp-for="PhoneNumber" class="text-danger"></span>
-                        </div><div class="form-group col-md-4">
+                        </div>
+                        <div class="form-group col-md-4">
                             <label asp-for="MobileNumber" class="control-label">Celular</label>
                             <input asp-for="MobileNumber" class="form-control" />
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="Address" class="control-label">Direccion<span class="text-danger">(*)</span></label>
-                            <input asp-for="Address" class="form-control" />
+                            <label asp-for="CountryId" class="control-label">País<span class="text-danger">(*)</span></label>
+                            <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+                            <span asp-for="CountryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="City" class="control-label">Ciudad<span class="text-danger">(*)</span></label>
+                            <input asp-for="City" class="form-control" />
+                            <span asp-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Nacionality" class="control-label">Nacionalidad<span class="text-danger">(*)</span></label>
+                            <input asp-for="Nacionality" class="form-control" />
+                            <span asp-for="Nacionality" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="PostalAddress" class="control-label">Direccion Postal<span class="text-danger">(*)</span></label>
+                            <input asp-for="PostalAddress" class="form-control" />
+                            <span asp-for="PhonePostalAddressNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <label asp-for="Address">Direccion<span class="text-danger">(*)</span></label>
+                            <textarea asp-for="Address" class="form-control" type="text"></textarea>
                             <span asp-for="Address" class="text-danger"></span>
                         </div>
                     </div>
@@ -53,47 +74,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="card card-primary">
-                    <div class="card-header text-white">
-                        <div class="row">
-                            <div class="col-6">
-                                <h4 class="mb-0 m-t-10">
-                                    <i class="fas fa-list-ul fa-fw"></i> Garantes
-                                </h4>
-                            </div>
-                            <div class="col-6 text-right">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="table-responsive">
-                                    <table id="beneficiaryList" class="table table-striped-even-light-blue">
-                                        <thead class="text-white">
-                                            <tr>
-                                                <th class="no-border">Nombre</th>
-                                                <th class="no-border">Identificacion</th>
-                                                <th class="no-border">Parentezco</th>
-                                                <td class="no-border" width="85"></td>
-                                                <td class="no-border" width="85"></td>
-                                                <td class="no-border" width="85"></td>
-                                                <td class="no-border" width="85"></td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-12">
+
                 <a asp-action="Index" class="btn btn-secondary">Volver a la Consulta</a>
                 <input type="submit" value="Crear" id="submitClient" class="btn btn-success float-right">
             </div>
@@ -101,19 +83,11 @@
     </section>
 </form>
 
-<div id="_AddBeneficiaryModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <partial name="_AddBeneficiaryModal" />
-        </div>
-    </div>
-</div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script src="/js/site.js"></script>
-<script type="text/javascript">
+<!--<script type="text/javascript">
     $(document).ready(function () {
         $(function () {
             $("#beneficiaryList").DataTable({
@@ -150,27 +124,27 @@
                         "targets": [8],
                         "visible": false,
                         "searchable": false
-                    },
-                ],
-                "buttons": {
-                    buttons: [
-                        {
-                            text: '<i class="fas fa-plus fa-fw"></i>Garante',
-                            className: 'btn-outline-primary',
-                            action: function (e, dt, node, config) {
-                                $('#_AddBeneficiaryModal').modal('show')
-                            }
-                        },
-                    ],
-                    dom: {
-                        button: {
-                            className: 'btn'
-                        },
-                        buttonLiner: {
-                            tag: null
-                        }
                     }
-                },
+                ],
+                //"buttons": {
+                //    buttons: [
+                //        {
+                //            text: '<i class="fas fa-plus fa-fw"></i>Garante',
+                //            className: 'btn-outline-primary',
+                //            action: function (e, dt, node, config) {
+                //                $('#_AddBeneficiaryModal').modal('show')
+                //            }
+                //        },
+                //    ],
+                //    dom: {
+                //        button: {
+                //            className: 'btn'
+                //        },
+                //        buttonLiner: {
+                //            tag: null
+                //        }
+                //    }
+                //},
                 "oLanguage": {
                     "sSearch": "Filtrar en la Lista"
                 },
@@ -190,68 +164,67 @@
         });
     });
 
-    $("#beneficiairySubmit").click(function (e) {
-        e.preventDefault();
-        var beneficiaryTable = $("#beneficiaryList").DataTable();
-        var param = $("#AddBeneficiaryForm");
-        var name = param.find('input[name = "FisrtName"]').val();
-        var lastName = param.find('input[name = "LastName"]').val();
-        var identification = param.find('input[name="Identification"]').val();
-        var relationshipName = $("#relationshipType option:selected").text();
-        var address = param.find('input[name = "Address"]').val();
-        var phoneNumber = param.find('input[name = "PhoneNumber"]').val();
-        var mobileNumber = param.find('input[name = "MobileNumber"]').val();
-        var relationshipTypeId = parseInt($("#relationshipType option:selected").val());
+    //$("#beneficiairySubmit").click(function (e) {
+    //    e.preventDefault();
+    //    var beneficiaryTable = $("#beneficiaryList").DataTable();
+    //    var param = $("#AddBeneficiaryForm");
+    //    var name = param.find('input[name = "FirstName"]').val();
+    //    var lastName = param.find('input[name = "LastName"]').val();
+    //    var identification = param.find('input[name="Identification"]').val();
+    //    var relationshipName = $("#relationshipType option:selected").text();
+    //    var address = param.find('input[name = "Address"]').val();
+    //    var phoneNumber = param.find('input[name = "PhoneNumber"]').val();
+    //    var mobileNumber = param.find('input[name = "MobileNumber"]').val();
+    //    var relationshipTypeId = parseInt($("#relationshipType option:selected").val());
 
-        beneficiary = {
-            FisrtName: name,
-            LastName: lastName,
-            FullName: name + " " + lastName,
-            Identification: identification,
-            RelationshipName: relationshipName,
-            Address: address,
-            PhoneNumber: phoneNumber,
-            MobileNumber: mobileNumber,
-            RelationshipTypeId: relationshipTypeId
-        };
+    //    var beneficiary = {
+    //        FirstName: name,
+    //        LastName: lastName,
+    //        FullName: name + " " + lastName,
+    //        Identification: identification,
+    //        RelationshipName: relationshipName,
+    //        Address: address,
+    //        PhoneNumber: phoneNumber,
+    //        MobileNumber: mobileNumber,
+    //        RelationshipTypeId: relationshipTypeId
+    //    };
 
-        if (beneficiary.FullName == '' ||
-            beneficiary.LastName == '' ||
-            beneficiary.Identification == '' ||
-            beneficiary.Address == '' ||
-            beneficiary.PhoneNumber == '') {
+    //    if (beneficiary.FullName === '' ||
+    //        beneficiary.LastName === '' ||
+    //        beneficiary.Identification === '' ||
+    //        beneficiary.Address === '' ||
+    //        beneficiary.PhoneNumber === '') {
 
-            return toastr.error("Debe completar todos los campos marcados", "Mantenimiento de Clientes");
-        }
+    //        return toastr.error("Debe completar todos los campos marcados", "Mantenimiento de Clientes");
+    //    }
 
-        beneficiaryTable.row.add([
-            beneficiary.FullName,
-            beneficiary.Identification,
-            beneficiary.RelationshipName,
-            beneficiary.Address,
-            beneficiary.PhoneNumber,
-            beneficiary.MobileNumber,
-            beneficiary.RelationshipTypeId,
-            beneficiary.FisrtName,
-            beneficiary.LastName
-        ]).draw();
+    //    beneficiaryTable.row.add([
+    //        beneficiary.FullName,
+    //        beneficiary.Identification,
+    //        beneficiary.RelationshipName,
+    //        beneficiary.Address,
+    //        beneficiary.PhoneNumber,
+    //        beneficiary.MobileNumber,
+    //        beneficiary.RelationshipTypeId,
+    //        beneficiary.FirstName,
+    //        beneficiary.LastName
+    //    ]).draw();
 
-        //document.getElementById("#AddBeneficiaryForm").reset();
-        $("#AddBeneficiaryForm")[0].reset();
-    });
+    //    $("#AddBeneficiaryForm")[0].reset();
+    //});-->
 
-    $("#submitClient").click(function (e) {
+    @*$("#submitClient").click(function (e) {
         e.preventDefault();
         var beneficiaryTable = $("#beneficiaryList").DataTable();
         var clientParam = $("#clientForm");
 
         var rowData = beneficiaryTable.rows().data().toArray();
 
-        var garanteList = [];
+        var guaranteeList = [];
 
-        rowData.map(function (value, index) {
-            var garanteData = {
-                FisrtName: value[7],
+        rowData.map(function(value, index) {
+            var guaranteeData = {
+                FirstName: value[7],
                 LastName: value[8],
                 FullName: value[0],
                 Identification: value[1],
@@ -262,47 +235,62 @@
                 RelationshipTypeId: value[6]
             };
 
-            garanteList.push(garanteData);
-        })
+            guaranteeList.push(guaranteeData);
+        });
 
         var client = {
-            FisrtName: clientParam.find('input[name = "FisrtName"]').val(),
+            FirstName: clientParam.find('input[name = "FirstName"]').val(),
             LastName: clientParam.find('input[name = "LastName"]').val(),
             Identification: clientParam.find('input[name = "Identification"]').val(),
             Address: clientParam.find('input[name = "Address"]').val(),
             PhoneNumber: clientParam.find('input[name = "PhoneNumber"]').val(),
             MobileNumber: clientParam.find('input[name = "MobileNumber"]').val(),
-            Beneficiaries: garanteList
+            Beneficiaries: guaranteeList
         }
 
-        var userIsValid = validateLocalIdentification(client.Identification);
-        var beneficiaryIsValid = false;
+        $.ajax({
+            url: '@Url.Action("Create", "Client")',
+            type: 'POST',
+            data: client,
 
-        garanteList.map(function (value, index) {
-            beneficiaryIsValid = validateLocalIdentification(value.Identification);
-        })
+            success: function (data) {
+                var url = '@Url.Action("Details", "Client")' + data.Data.Id;
 
-        if (userIsValid && beneficiaryIsValid) {
-            $.post('@Url.Action("Create", "Client")', client)
-            .done(function (msg) {
+                if (data.hasOwnProperty("ExecutedSuccesfully") && data.ExecutedSuccesfully) {
+                    window.location.assign(url);
+                } else {
+                    toastr.error("Error al Crear Cliente");
+                }
+            },
+            error: function (data) {
+                if (data.hasOwnProperty("ExecutedSuccesfully") && !data.ExecutedSuccesfully) {
+                    toastr.error("Error al Crear Cliente");
+                } else {
+                    toastr.error("Error al Crear Cliente");
+                };
+            }
+        });*@
 
+        @*$.post('@Url.Action("Create", "Client")', client)
+            .done(function(msg) {
+                $.get('@Url.Action("Details", "Client")', client.Id);
             })
             .fail(function (xhr, status, error) {
-            })
-        }
+                toastr.error(status);
+            });
 
-    });
+    //});*@
 
-    function validateLocalIdentification(identification) {
-        var identificationIsValid = true;
+    <!--//function validateLocalIdentification(identification) {
+    //    var identificationIsValid = true;
 
-        if (!$.SDQ.validarCedula(identification)) {
-            toastr["error"](`La Cedula [${identification}] es invalida`);
-            identificationIsValid = false;
-        }
+    //    if (!$.SDQ.validarCedula(identification)) {
+    //        toastr["error"](`La Cedula [${identification}] es invalida`);
+    //        identificationIsValid = false;
+    //    }
 
-        return identificationIsValid;
-    }
+    //    return identificationIsValid;
+    //}
 
-</script>
+</script>-->
 }

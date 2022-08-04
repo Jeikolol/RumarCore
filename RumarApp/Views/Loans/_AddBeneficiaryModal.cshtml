@@ -1,0 +1,31 @@
+﻿@model RumarApp.Models.AddBeneficiaryModel
+
+@{
+    ViewData["Title"] = "Borrar";
+}
+
+<div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="AddBeneficiaryForm">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title">
+                        <span class="h3">Agregar Garante</span>
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Garante<span class="text-danger">(*)</span></label>
+                            <select class="form-control" asp-for="BeneficiaryId" asp-items="Model.Beneficiaries"></select>
+                            <span asp-for="CountryId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Agregar" class="btn btn-outline-success" id="beneficiairySubmit" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>

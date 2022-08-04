@@ -1,12 +1,12 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using RumarApp.Data;
 using RumarApp.Helpers;
 using RumarApp.Infraestructure;
 using RumarApp.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DatabaseMigrations.Data;
 
 namespace RumarApp.Services
 {
@@ -28,11 +28,12 @@ namespace RumarApp.Services
                 FirstName = parameter.FirstName,
                 LastName = parameter.LastName,
                 Identification = parameter.Identification,
-                CreationDateTime = DateTime.UtcNow,
+                CreatedOn = DateTime.UtcNow,
                 IsDeleted = false,
                 PhoneNumber = parameter.PhoneNumber,
                 MobileNumber = parameter.MobileNumber,
                 Address = parameter.Address,
+                CreatedBy = parameter.UserName
             };
 
             Database.Add(userToCreate);
