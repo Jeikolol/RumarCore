@@ -15,25 +15,29 @@ namespace RumarApp.Controllers
     {
         private readonly IClientService _clientService;
         private readonly IBeneficiaryService _beneficiaryService;
-        //private readonly ILoanService _beneficiaryService;
+        private readonly ILoanService _loanService;
 
         public HomeController(IClientService clientService, 
-                              IBeneficiaryService beneficiaryService)
+                              IBeneficiaryService beneficiaryService, 
+                              ILoanService loanService)
         {
             _clientService = clientService;
             _beneficiaryService = beneficiaryService;
+            _loanService = loanService;
         }
 
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var clients = await _clientService.GetAllClients();
+            var clients = await _clientService.GetAll();
+            var beneficiaries = await _beneficiaryService.GetAll();
+            var loans = await _loanService.GetAll();
 
             var model = new DashboardModel
             {
-                ClientsCount = clients.Count(),
-                BeneficiaryCount = 0,
-                LoansCount = 0
+                ClientsCount = clients.Data.Count(),
+                BeneficiaryCount = beneficiaries.Data.Count(),
+                LoansCount = loans.Data.Count()
             };
 
             return View(model);

@@ -1,6 +1,6 @@
 ﻿using Core.Entities;
+using Core.Security;
 using Microsoft.EntityFrameworkCore;
-using RumarApp.Data;
 using RumarApp.Infraestructure;
 using RumarApp.Models;
 using RumarApp.Parameters;
@@ -8,164 +8,159 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DatabaseMigrations.Data;
 
 namespace RumarApp.Services
 {
     public class ClientService : Service, IClientService
     {
+        private readonly IBeneficiaryService _beneficiaryService;
 
-        public ClientService(ApplicationDbContext database) : base(database)
+        public ClientService(ApplicationDbContext database, 
+            IBeneficiaryService beneficiaryService) : base(database)
         {
         }
        
-        public async Task<List<ClientViewModel>> GetAllClients()
+        public async Task<ServiceResult<List<ClientViewModel>>> GetAll()
         {
+            var result = ServiceResult<List<ClientViewModel>>.Create();
+
             var list = await Database.Clients
-                .Include(x => x.Loans)
-                .Include(x => x.Beneficiaries)
                 .Where(x => !x.IsDeleted)
                 .Select(x => new ClientViewModel
                 {
                     Id = x.Id,
-                    FisrtName = x.FisrtName,
+                    FirstName = x.FirstName,
                     LastName = x.LastName,
                     Identification = x.Identification,
                     Address = x.Address,
                     PhoneNumber = x.PhoneNumber,
-                    MobileNumber = x.MobileNumber,
-                    //Beneficiaries = x.Beneficiaries.Select(b => new BeneficiaryModel
-                    //{
-                    //    FisrtName = b.FisrtName,
-                    //    LastName = b.LastName,
-                    //    Identification = b.Identification,
-                    //    Address = b.Address,
-                    //    PhoneNumber = b.PhoneNumber,
-                    //    MobileNumber = b.MobileNumber,
-                    //    RelationshipTypeId = b.RelationshipTypeId
-                    //})
-                    //.ToList(),
-                    //Loans = x.Loans.Select(l => new LoanModel
-                    //{
-
-                    //}).ToList()
+                    MobileNumber = x.MobileNumber
                 })
                 .ToListAsync();
 
-            return list;
+            result.Data = list;
+
+            return result;
         }
 
-        public async Task<ClientViewModel> GetClientById(int id)
+        public async Task<ServiceResult<ClientViewModel>> Create(ClientViewModel param)
         {
+            var result = ServiceResult<ClientViewModel>.Create();
+
+            var currentUser = ClaimsHelper.ClaimsIdentity?.Name;
+
+            try
+            {
+                var client = new Client
+                {
+                    FirstName = param.FirstName,
+                    LastName = param.LastName,
+                    Identification = param.Identification,
+                    Address = param.Address,
+                    PostalAddress = param.PostalAddress,
+                    PhoneNumber = param.PhoneNumber,
+                    CountryId = param.CountryId,
+                    City = param.City,
+                    MobileNumber = param.MobileNumber,
+                    CreatedBy = currentUser,
+                    Nacionality = param.Nacionality,
+                    CreatedOn = DateTime.UtcNow
+                };
+
+                Database.Add(client);
+
+                await Database.SaveChangesAsync();
+
+                var data = await GetClientById(client.Id);
+
+                result.Data = data.Data;
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                result.AddErrorMessage($"{e.InnerException}");
+                return result;
+            }
+        }
+
+        public async Task<ServiceResult<ClientViewModel>> GetClientById(int id)
+        {
+            var result = ServiceResult<ClientViewModel>.Create();
+
             var client = await Database.Clients
-                .Include(x => x.Loans)
-                .Include(x => x.Beneficiaries)
                 .Where(x => x.Id == id)
                 .Select(x => new ClientViewModel
                 {
                     Id = x.Id,
-                    FisrtName = x.FisrtName,
+                    FirstName = x.FirstName,
                     LastName = x.LastName,
                     Identification = x.Identification,
                     Address = x.Address,
                     PhoneNumber = x.PhoneNumber,
                     MobileNumber = x.MobileNumber,
-                    Beneficiaries = x.Beneficiaries.Select(b => new BeneficiaryModel
-                    {
-                        FisrtName = b.FisrtName,
-                        LastName = b.LastName,
-                        Identification = b.Identification,
-                        Address = b.Address,
-                        PhoneNumber = b.PhoneNumber,
-                        MobileNumber = b.MobileNumber,
-                        RelationshipTypeId = b.RelationshipTypeId,
-                        RelationshipType = b.RelationshipType.Description
-                    })
-                    .ToList(),
-                    Loans = x.Loans.Select(l => new LoanModel
-                    {
-                        
-                    }).ToList()
+                    City = x.City,
+                    CountryId = x.CountryId,
+                    Country = x.Country.Description,
+                    PostalAddress = x.PostalAddress,
+                    Nacionality = x.Nacionality
                 })
                 .FirstOrDefaultAsync();
 
-            return client;
+            result.Data = client;
+
+            return result;
         }
 
-        public async Task<ClientViewModel> Create(ClientViewModel param)
+        public async Task<ServiceResult<int>> EditClient(ClientViewModel param)
         {
-            List<Beneficiary> beneficiaryList = new List<Beneficiary>();
-            List<Beneficiary> beneficiaries = new List<Beneficiary>();
+            var result = ServiceResult<int>.Create();
 
-            foreach (var item in param.Beneficiaries)
-            {
-                var beneficiary = new Beneficiary
-                {
-                    FisrtName = item.FisrtName,
-                    LastName = item.LastName,
-                    Identification = item.Identification,
-                    Address = item.Address,
-                    PhoneNumber = item.PhoneNumber,
-                    MobileNumber = item.MobileNumber,
-                    RelationshipTypeId = item.RelationshipTypeId,
-                };
+            var clientToUpdate = await Database.Clients
+                .Where(x => x.Id == param.Id)
+                .FirstOrDefaultAsync();
 
-                beneficiaries.Add(beneficiary);
-            }
+            clientToUpdate.FirstName = param.FirstName;
+            clientToUpdate.LastName = param.LastName;
+            clientToUpdate.PhoneNumber = param.PhoneNumber;
+            clientToUpdate.MobileNumber = param.MobileNumber;
+            clientToUpdate.Address = param.Address;
+            clientToUpdate.CountryId = param.CountryId;
+            clientToUpdate.City = param.City;
+            clientToUpdate.PostalAddress = param.PostalAddress;
+            clientToUpdate.Nacionality = param.Nacionality;
 
-            var client = new Client
-            {
-                FisrtName = param.FisrtName,
-                LastName = param.LastName,
-                Identification = param.Identification,
-                Address = param.Address,
-                PhoneNumber = param.PhoneNumber,
-                MobileNumber = param.MobileNumber,
-                Beneficiaries = beneficiaries
-            };
-            
-            Database.Add(client);
+            Database.Update(clientToUpdate);
+
             await Database.SaveChangesAsync();
 
-            foreach (var item in client.Beneficiaries)
-            {
-                var beneficiary = new Beneficiary
-                {
-                    FisrtName = item.FisrtName,
-                    LastName = item.LastName,
-                    Identification = item.Identification,
-                    Address = item.Address,
-                    PhoneNumber = item.PhoneNumber,
-                    MobileNumber = item.MobileNumber,
-                    RelationshipTypeId = item.RelationshipTypeId,
-                    ClientId = client.Id
-                };
+            result.Data = clientToUpdate.Id;
 
-                beneficiaryList.Add(beneficiary);
-            }
-
-            Database.AddRange(beneficiaryList);
-            await Database.SaveChangesAsync();
-
-            
-            return await GetClientById(client.Id);
+            return result;
         }
 
-        public async Task DeleteClient(int userId)
+        public async Task<ServiceResult> DeleteClient(int clientId)
         {
+            var result = ServiceResult.Create();
+
             var userToDelete = await Database.Clients
-                .Where(x => x.Id == userId)
+                .Where(x => x.Id == clientId)
                 .FirstOrDefaultAsync();
 
             Database.Remove(userToDelete);
             await Database.SaveChangesAsync();
+
+            return result;
         }
     }
 
     public interface IClientService : IService
     {
-        Task<List<ClientViewModel>> GetAllClients();
-        Task<ClientViewModel> GetClientById(int id);
-        Task<ClientViewModel> Create(ClientViewModel param);
-        Task DeleteClient(int userId);
+        Task<ServiceResult<List<ClientViewModel>>> GetAll();
+        Task<ServiceResult<ClientViewModel>> GetClientById(int id);
+        Task<ServiceResult<ClientViewModel>> Create(ClientViewModel param);
+        Task<ServiceResult<int>> EditClient(ClientViewModel param);
+        Task<ServiceResult> DeleteClient(int clientId);
     }
 }

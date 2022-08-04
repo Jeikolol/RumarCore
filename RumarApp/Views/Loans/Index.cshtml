@@ -1,4 +1,5 @@
-﻿@model List<RumarApp.Models.LoanModel>
+﻿@using RumarApp.Enums
+@model List<RumarApp.Models.LoanModel>
 
 @{
     ViewData["Title"] = "Consulta";
@@ -46,16 +47,16 @@
                             @Html.DisplayFor(modelItem => item.Capital)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Interest)%
+                            @Html.DisplayFor(modelItem => item.TaxType.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Quote)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TransactionPayment.Description)
+                            @EnumExtension.GetEnumDescription((TransactionPaymentEnum)item.TransactionPaymentId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Clients.FullName)
+                            @Html.DisplayFor(modelItem => item.Client.FullName)
                         </td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">

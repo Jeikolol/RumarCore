@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using RumarApp.Data;
 using RumarApp.Helpers;
 using RumarApp.Models;
 using RumarApp.Infraestructure;
@@ -17,168 +16,112 @@ using System.Dynamic;
 using RumarApp.Enums;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Core.Entities;
+using DatabaseMigrations.Data;
+using RumarApp.Parameters;
+using RumarApp.Services;
 
 namespace RumarApp.Controllers
 {
     [Authorize]
     public class LoansController : BaseController
     {
+        private readonly ILoanService _loanService;
         private readonly ApplicationDbContext _context;
+        private readonly IClientService _clientService;
+        private readonly IBeneficiaryService _beneficiaryService;
 
-        public LoansController(ApplicationDbContext context)
+        public LoansController(ApplicationDbContext context, 
+            ILoanService loanService, 
+            IClientService clientService, 
+            IBeneficiaryService beneficiaryService)
         {
             _context = context;
+            _loanService = loanService;
+            _clientService = clientService;
+            _beneficiaryService = beneficiaryService;
         }
 
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            var loans = await _context.Loans
-                    .Include(l => l.Clients)
-                    .Include(l => l.TransactionPayment)
-                    .Include(l => l.TransactionType)
-                    .ToListAsync();
+            var loans = await _loanService.GetAll();
 
-            return View(loans);
+            return View(loans.Data);
         }
 
         // GET: Loans/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var loan = await _context.Loans
-                .Include(l => l.Clients)
-                .Include(l => l.TransactionPayment)
-                .Include(l => l.TransactionType)
-                .Include(l => l.Beneficiary)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var loan = await _loanService.GetDetailById(id);
 
             if (loan == null)
             {
                 return NotFound();
             }
 
-            return View(loan);
+            switch (loan.Data.TransactionPaymentId)
+            {
+                case (int)TransactionPaymentEnum.DailyPayment:
+                    loan.Data.CalculateDailyPayment();
+                    break;
+                case (int)TransactionPaymentEnum.BiweeklyPayment:
+                    loan.Data.CalculateBiweeklyPayment();
+                    break;
+                case (int)TransactionPaymentEnum.MonthlyPayment:
+                    loan.Data.CalculateMonthlyPayment();
+                    break;
+            }
+
+            return View(loan.Data);
         }
 
         // GET: Loans/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var beneficiary = await _beneficiaryService.GetAll();
+
             ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FullName");
             ViewData["TransactionTypeId"] = new SelectList(_context.TransactionTypes, "Id", "Name");
             ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayments, "Id", "Name");
             ViewData["ClientTypeId"] = new SelectList(_context.ClientTypes, "Id", "Name");
-            
-            return View();
+            ViewData["TaxTypeId"] = new SelectList(_context.TaxTypes, "Id", "Name");
+
+            var model = new CreateLoansModel
+            {
+                Beneficiaries = beneficiary.Data.ToMultiSelectList(x=>x.Id, x => x.FullName)
+            };
+
+            return View(model);
         }
 
         // POST: Loans/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateLoansModel param)
         {
-            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FisrtName", param.Loan.ClientsId);
-            ViewData["TransactionTypeId"] = new SelectList(_context.TransactionTypes, "Id", "Name", param.Loan.TransactionTypeId);
-            ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayments, "Id", "Name", param.Loan.TransactionPaymentId);
-            ViewData["ClientTypeId"] = new SelectList(_context.ClientTypes, "Id", "Name", param.Loan.ClientTypeId);
-
             if (ModelState.IsValid)
             {
-                var loan = new Loan();
-
-                if (param.Beneficiary.Identification == null)
-                {
-                    loan.Capital = param.Loan.Capital;
-                    loan.CapitalToShow = param.Loan.Capital;
-                    loan.Interest = param.Loan.Interest;
-                    loan.Quote = param.Loan.Quote;
-                    loan.RemainingPayments = param.Loan.Quote;
-                    loan.CreationTime = DateTime.UtcNow;
-                    loan.Notes = param.Loan.Notes;
-                    loan.ClientsId = param.Loan.ClientsId;
-                    loan.TransactionTypeId = param.Loan.TransactionTypeId;
-                    loan.TransactionPaymentId = param.Loan.TransactionPaymentId;
-                    loan.ClientTypeId = param.Loan.ClientTypeId;
-                }
-                else
-                {
-                    loan.Capital = param.Loan.Capital;
-                    loan.CapitalToShow = param.Loan.Capital;
-                    loan.Interest = param.Loan.Interest;
-                    loan.Quote = param.Loan.Quote;
-                    loan.RemainingPayments = param.Loan.Quote;
-                    loan.CreationTime = DateTime.UtcNow;
-                    loan.Notes = param.Loan.Notes;
-                    loan.ClientsId = param.Loan.ClientsId;
-                    loan.TransactionTypeId = param.Loan.TransactionTypeId;
-                    loan.TransactionPaymentId = param.Loan.TransactionPaymentId;
-                    loan.ClientTypeId = param.Loan.ClientTypeId;
-                }
-
+                var result = await _loanService.Create(param);
                 
-                if (param.Loan.ClientTypeId != (int)ClientTypeEnum.RecurringCustomer && param.Beneficiary.Identification == null)
+                if (!result.ExecutedSuccesfully)
                 {
-                    ShowNotification("Debe agregar un Garante.", "Mantenimiento de Prestamos", NotificationType.error);
+                    ShowNotification(result.Message, "Mantenimiento de Prestamos", NotificationType.error);
                     return View(param);
                 }
-                else
-                {
-                    if (param.Beneficiary.Identification != null)
-                    {
 
-                        if (BeneficiaryExistByIdentification(param.Beneficiary.Identification))
-                        {
-                            ShowNotification("Esta persona ya es Garante de otro Prestamo", "Mantenimiento de Prestamos", NotificationType.error);
-                            return View(param);
-                        }
-                        else
-                        {
-                            var beneficiary = new Beneficiary
-                            {
-                                FisrtName = param.Beneficiary.FisrtName,
-                                LastName = param.Beneficiary.LastName,
-                                Identification = param.Beneficiary.Identification,
-                                Address = param.Beneficiary.Address,
-                                PhoneNumber = param.Beneficiary.PhoneNumber,
-                                MobileNumber = param.Beneficiary.MobileNumber
-                            };
-
-                            _context.Add(beneficiary);
-                        }
-                    }
-
-                    _context.Add(loan);
-
-                    await _context.SaveChangesAsync();
-                }
-
+                ShowNotification("Prestamo creado Correctamente", "Mantenimiento de Prestamos", NotificationType.success);
+                
+                return RedirectToAction("Details", new {id = result.Data.Id});
             }
-
-            ShowNotification("Prestamo creado Correctamente", "Mantenimiento de Prestamos", NotificationType.success);
 
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Loans/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var loan = await _context.Loans
-                .Include(l => l.Clients)
-                .Include(l => l.TransactionPayment)
-                .Include(l => l.TransactionType)
-                .Include(l => l.Beneficiary)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var loan = await _loanService.GetDetailById(id);
 
             if (loan == null)
             {
@@ -187,15 +130,14 @@ namespace RumarApp.Controllers
 
             ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FullName");
             
-            loan.Clients = await _context.Clients.FirstOrDefaultAsync(m=>m.Id == loan.ClientsId);
-            loan.TransactionPayment = await _context.TransactionPayments.FirstOrDefaultAsync(m=>m.Id == loan.TransactionPaymentId);
-            loan.TransactionType = await _context.TransactionTypes.FirstOrDefaultAsync(m=>m.Id == loan.TransactionTypeId);
+            //loan.Data.Client = await _clientService.GetClientById(loan.Data.ClientId);
+            //loan.Data.TransactionPayment = await _context.TransactionPayments.FirstOrDefaultAsync(m=>m.Id == loan.Data.TransactionPaymentId);
+            //loan.Data.TransactionType = await _context.TransactionTypes.FirstOrDefaultAsync(m=>m.Id == loan.Data.TransactionTypeId);
 
-            return View(loan);
+            return View(loan.Data);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Loan param)
         {
             if (id != param.Id)
@@ -209,7 +151,7 @@ namespace RumarApp.Controllers
                 {
                     var loanToUpdate = await _context.Loans.FindAsync(id);
                   
-                    param.ClientsId = loanToUpdate.ClientsId;
+                    param.ClientId = loanToUpdate.ClientId;
 
                     _context.Update(param);
                     
@@ -228,45 +170,31 @@ namespace RumarApp.Controllers
                 }
             }
 
-            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FisrtName", param.ClientsId);
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "FirstName", param.ClientId);
             ViewData["TransactionTypeId"] = new SelectList(_context.TransactionTypes, "Id", "Name", param.TransactionTypeId);
             ViewData["TransactionPaymentId"] = new SelectList(_context.TransactionPayments, "Id", "Name", param.TransactionPaymentId);
 
-            return View(param);
+            return View();
         }
 
-        public async Task<IActionResult> PayLoan(int? id)
+        public async Task<IActionResult> PayModal(PayLoanParameter loanPay)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var loan = await _context.Loans
-                .Include(l => l.Clients)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
             var payLoan = new PayLoanParameter
             {
-                LoanId = loan.Id,
-                Client = loan.Clients.FullName,
+                LoanId = loanPay.LoanId,
+                Client = loanPay.Client,
             };
-
-            if (loan == null)
-            {
-                return NotFound();
-            }
 
             return PartialView("_PaymentLoanModal", payLoan);
         }
 
-        [HttpPost, ActionName("Pay")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Pay(int id, PayLoanParameter loanPay)
+        public async Task<IActionResult> PayLoan(PayLoanParameter loanPay)
         {
             var loanToPay = await _context.Loans
-                .Include(l => l.Clients)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(l => l.Client)
+                .FirstOrDefaultAsync(m => m.Id == loanPay.LoanId);
 
             if (loanToPay == null)
             {
@@ -282,6 +210,34 @@ namespace RumarApp.Controllers
             
             return RedirectToAction(nameof(Index));
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddBeneficiaryToLoan(BeneficiaryModel beneficiary)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //if (!ValidateHelper.IsValidDrCedula(beneficiary.Identification))
+        //        //{
+        //        //    ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
+        //        //    return View(beneficiary);
+        //        //}
+
+        //        var garante = await _beneficiaryService.Create(beneficiary);
+
+        //        if (!garante.ExecutedSuccesfully)
+        //        {
+        //            ShowNotification(garante.Message, "Mantenimiento de Garantes", NotificationType.error);
+        //            return View(garante.Data);
+        //        }
+
+        //        ShowNotification("Garante creado Correctamente", "Mantenimiento de Garantes", NotificationType.success);
+
+        //        return RedirectToAction("Details", new { id = garante.Data.Id });
+        //    }
+
+        //    return View();
+        //}
 
         private bool LoanExists(int id)
         {

@@ -7,14 +7,15 @@ namespace Core.Security
 {
     public static class ClaimsHelper
     {
-        public static ClaimsIdentity ClaimsIdentity { get; private set; }
+        public static ClaimsIdentity ClaimsIdentity { get; set; }
 
         public static void BuildClaimsIdentity(User result)
         {
             var claims = new List<Claim>
             {
-                 new Claim(ClaimTypes.Name, result.UserName),
-                 new Claim(ClaimTypes.Email, result.Email),
+                 new(ClaimTypes.Name, result.UserName),
+                 new(ClaimTypes.Email, result.Email),
+                 new("UserId", $"{result.Id}"),
             };
 
             ClaimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

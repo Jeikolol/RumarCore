@@ -18,6 +18,9 @@ namespace RumarApp
                 .InstancePerLifetimeScope();
             
             builder.RegisterType<BeneficiaryService>().As<IBeneficiaryService>()
+                .InstancePerLifetimeScope(); 
+            
+            builder.RegisterType<LoanService>().As<ILoanService>()
                 .InstancePerLifetimeScope();
         }
     }

@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Reactive;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using RumarApp.Data;
-using RumarApp.Helpers;
 using RumarApp.Models;
-using RumarApp.Parameters;
 using RumarApp.Infraestructure;
 using RumarApp.Services;
 using Core.Entities;
+using DatabaseMigrations.Data;
 
 namespace RumarApp.Controllers
 {
@@ -37,9 +29,9 @@ namespace RumarApp.Controllers
         // GET: Client
         public async Task<IActionResult> Index()
         {
-            var clients = await _clientService.GetAllClients();
+            var clients = await _clientService.GetAll();
 
-            return View(clients);
+            return View(clients.Data);
         }
 
         // GET: Client/Details/5
@@ -52,47 +44,37 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            return View(clientViewModel);
+            return View(clientViewModel.Data);
         }
 
         public IActionResult Create()
         {
-            ViewData["RelationshipTypeId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Description");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ClientViewModel param)
         {
-            if (!ValidateHelper.IsValidDrCedula(param.Identification))
-            {
-                ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
-                return View(param);
-            }
-
-            foreach (var item in param.Beneficiaries)
-            {
-                if (!ValidateHelper.IsValidDrCedula(item.Identification))
-                {
-                    ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
-                    return View(param);
-                }
-            }
+            //if (!ValidateHelper.IsValidDrCedula(param.Identification))
+            //{
+            //    ShowNotification("La cedula ingresada no es valida", "Mantenimiento de Clientes", NotificationType.error);
+            //    return View(param);
+            //}
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var client = await _clientService.Create(param);
+                var client = await _clientService.Create(param);
 
-                    return View("Details", client);
-                }
-                catch (Exception ex)
+                if (!client.ExecutedSuccesfully)
                 {
-                    ShowNotification(ex.InnerException.Message, "Mantenimiento de Clientes", NotificationType.error);
+                    ShowNotification(client.Message, "Mantenimiento de Clientes", NotificationType.error);
                     return View(param);
                 }
-              
+
+                ShowNotification("Cliente creado Correctamente", "Mantenimiento de Clientes", NotificationType.success);
+
+                return RedirectToAction("Details", new { id = client.Data.Id });
             }
 
             return View(param);
@@ -102,44 +84,29 @@ namespace RumarApp.Controllers
         {
             var clientViewModel = await _clientService.GetClientById(id);
 
-            if (clientViewModel == null)
+            if (!clientViewModel.ExecutedSuccesfully)
             {
-                return NotFound();
+                ShowNotification(clientViewModel.Message, "Mantenimiento de Clientes", NotificationType.error);
+                return View(clientViewModel.Data);
             }
 
-            return View(clientViewModel);
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Description");
+
+            return View(clientViewModel.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, ClientViewModel clientViewModel)
+        public async Task<IActionResult> Edit(ClientViewModel clientViewModel)
         {
-            if (id != clientViewModel.Id)
-            {
-                return NotFound();
-            }
+            var result = await _clientService.EditClient(clientViewModel);
 
-            if (ModelState.IsValid)
+            if (!result.ExecutedSuccesfully)
             {
-                try
-                {
-                    //await _clientService.Create(clientViewModel);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    var exist = await _clientService.GetClientById(clientViewModel.Id);
-                   
-                    if (exist == null)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ShowNotification(result.Message, "Mantenimiento de Clientes", NotificationType.error);
+                return View(clientViewModel);
             }
-            return View(clientViewModel);
+            
+            return RedirectToAction("Details", new {id = clientViewModel.Id });
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -151,7 +118,7 @@ namespace RumarApp.Controllers
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", clientViewModel);
+            return PartialView("_DeleteClientModal", clientViewModel.Data);
         }
 
         [HttpPost, ActionName("Delete")]

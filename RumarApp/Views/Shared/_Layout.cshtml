@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -98,6 +99,7 @@
     <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="/plugins/select2/js/select2.min.js"></script>
     <!-- Toastr -->
     <script src="/plugins/toastr/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
@@ -146,51 +148,11 @@
             }).buttons().container().appendTo('#dataTableIndexList_wrapper .col-md-6:eq(0)');
         });
 
-        $(function () {
-            $("#dataTableAmotization").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                //lengthMenu: [25, 50, 100, 200],
-                "autoWidth": false,
-                //"buttons": {
-                //    buttons: [
-                //        {
-                //            text: '<i class="fas fa-plus fa-fw"></i>Agregar',
-                //            className: 'btn-outline-primary',
-                //            action: function navigateTo() {
-                //                window.location = url;
-                //            }
-                //        },
-                //    ],
-                //    dom: {
-                //        button: {
-                //            className: 'btn'
-                //        },
-                //        buttonLiner: {
-                //            tag: null
-                //        }
-                //    }
-                //},
-                //"oLanguage": {
-                //    "sSearch": "Filtrar en la Lista"
-                //},
-                "searching": false,
-                "language": {
-                    emptyTable: "No hay datos para mostrar",
-                    paginate: {
-                        "first": "Primera",
-                        "last": "Ultima",
-                        "next": "Proxima",
-                        "previous": "Anterior"
-                    },
-                    info: "Mostrando _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrados de _MAX_ registros totales)",
-                }
-            }).buttons().container().appendTo('#dataTableIndexList_wrapper .col-md-6:eq(0)');
+        $(".select2").select2({
+            width: 'resolve'
         });
 
-         var msg = @(TempData["Message"]!=null? Html.Raw(TempData["Message"]) : Html.Raw("undefined"));
+        var msg = @(TempData["Message"]!=null? Html.Raw(TempData["Message"]) : Html.Raw("undefined"));
 
         if (msg != null) {
             toastr[msg.type](msg.message, msg.title);
