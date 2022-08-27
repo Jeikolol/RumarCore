@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using RumarApp.Helpers;
-using RumarApp.Infraestructure;
 using RumarApp.Parameters;
 
 namespace RumarApp.Models
@@ -15,11 +12,11 @@ namespace RumarApp.Models
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:c}")]
-        public long Capital { get; set; }
+        public decimal Capital { get; set; }
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:c}")]
-        public long CapitalToShow { get; set; }
+        public decimal CapitalToShow { get; set; }
         [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:n0}")]
         public decimal Quote { get; set; }
@@ -50,6 +47,7 @@ namespace RumarApp.Models
         public void CalculateDailyPayment()
         {
             int i;
+            var capital = (double)Capital;
 
             //Generate QuoteNumber
             for (i = 1; i <= RemainingPayments; i++)
@@ -58,28 +56,29 @@ namespace RumarApp.Models
                 {
                     LoanId = Id,
                     Client = Client.FullName,
-                    Capital = Capital,
+                    Capital = capital,
                     Interest = Convert.ToDouble(TaxType.Percentage) / 1200,
                     Plazo = Convert.ToDouble(RemainingPayments),
                     PaymentDate = CreatedOn,
                     NextDate = DateTime.UtcNow,
-                    Row = i,
                 };
 
-                param.Quote = Capital *
-                              (param.Interest / (1 - Math.Pow(1 + param.Interest, -param.Plazo)));
+                param.Row = i;
                 param.InterestMontlhy = 0;
                 param.Amortization = 0;
                 param.AmortizationTotal = 0;
                 param.Mora = 0;
-                param.InterestMontlhy = (param.Interest * Capital);
-                param.Capital = (param.Capital - param.Quote + param.InterestMontlhy);
 
                 //Amortizacion totales y principales
+                param.Quote = param.Capital *
+                              (param.Interest / (1 - Math.Pow(1 + param.Interest, -param.Plazo)));
+                param.InterestMontlhy = (param.Interest * param.Capital);
 
-                param.AmortizationTotal += (param.Quote - param.InterestMontlhy);
+                capital = (param.Capital - param.Quote + param.InterestMontlhy);
+
                 param.Amortization = param.Quote - param.InterestMontlhy;
-                param.PaymentDate = param.NextDate.AddDays(param.Row);
+                param.AmortizationTotal += param.Amortization;
+                param.PaymentDate = param.NextDate.AddDays(i);
                 param.Mora = param.Quote * (double) CalculatorHelper.percentageOneValue(0.05m);
 
                 AmortizationData.Add(param);
@@ -88,40 +87,39 @@ namespace RumarApp.Models
 
         public void CalculateBiweeklyPayment()
         {
-            int i = 1;
-
-            var param = new PayLoanParameter
-            {
-                LoanId = Id,
-                Client = Client.FullName,
-                Capital = Capital,
-                Interest = Convert.ToDouble(TaxType.Percentage) / 1200,
-                Plazo = Convert.ToDouble(RemainingPayments),
-                PaymentDate = CreatedOn,
-                NextDate = DateTime.UtcNow,
-            };
-
             //Generate QuoteNumber
-
+            int i;
             int days = 15;
+            var capital = (double)Capital;
 
-            for (i = 1; i <= param.Plazo; i++, days += 15)
+            for (i = 1; i <= RemainingPayments; i++, days += 15)
             {
-                param.Row = i;
-                param.Quote = param.Capital *
-                              (param.Interest / (1 - Math.Pow(1 + param.Interest, -param.Plazo)));
+                var param = new PayLoanParameter
+                {
+                    LoanId = Id,
+                    Client = Client.FullName,
+                    Capital = capital,
+                    Interest = Convert.ToDouble(TaxType.Percentage) / 1200,
+                    Plazo = Convert.ToDouble(RemainingPayments),
+                    PaymentDate = CreatedOn,
+                    NextDate = DateTime.UtcNow,
+                    Row = i
+                };
 
                 param.InterestMontlhy = 0;
                 param.Amortization = 0;
                 param.AmortizationTotal = 0;
                 param.Mora = 0;
-                param.InterestMontlhy = (param.Interest * param.Capital);
-                param.Capital = (param.Capital - param.Quote + param.InterestMontlhy);
 
                 //Amortizacion totales y principales
+                param.Quote = param.Capital *
+                              (param.Interest / (1 - Math.Pow(1 + param.Interest, -param.Plazo)));
 
-                param.AmortizationTotal += (param.Quote - param.InterestMontlhy);
+                param.InterestMontlhy = (param.Interest * param.Capital);
+                capital = (param.Capital - param.Quote + param.InterestMontlhy);
+
                 param.Amortization = param.Quote - param.InterestMontlhy;
+                param.AmortizationTotal += param.Amortization;
                 param.PaymentDate = param.NextDate.AddDays(days);
                 param.Mora = param.Quote * (double)CalculatorHelper.percentageOneValue(0.05m);
 
@@ -131,39 +129,37 @@ namespace RumarApp.Models
 
         public void CalculateMonthlyPayment()
         {
-            int i = 1;
-
-            var param = new PayLoanParameter
-            {
-                LoanId = Id,
-                Client = Client.FullName,
-                Capital = Capital,
-                Interest = Convert.ToDouble(TaxType.Percentage) / 1200,
-                Plazo = Convert.ToDouble(RemainingPayments),
-                PaymentDate = CreatedOn,
-                NextDate = DateTime.UtcNow,
-                Row = 1
-            };
+            int i;
+            var capital = (double)Capital;
 
             //Generate QuoteNumber
-
-
-            for (i = 1; i <= param.Plazo; i++)
+            for (i = 1; i <= RemainingPayments; i++)
             {
-                param.Row = i;
-                param.Quote = param.Capital * (param.Interest / (1 - Math.Pow(1 + param.Interest, -param.Plazo)));
+                var param = new PayLoanParameter
+                {
+                    LoanId = Id,
+                    Client = Client.FullName,
+                    Capital = capital,
+                    Interest = Convert.ToDouble(TaxType.Percentage) / 1200,
+                    Plazo = Convert.ToDouble(RemainingPayments),
+                    PaymentDate = CreatedOn,
+                    NextDate = DateTime.UtcNow,
+                    Row = i
+                };
+
                 param.InterestMontlhy = 0;
                 param.Amortization = 0;
                 param.AmortizationTotal = 0;
                 param.Mora = 0;
-                param.InterestMontlhy = (param.Interest * param.Capital);
-                param.Capital = (param.Capital - param.Quote + param.InterestMontlhy);
-
+                
                 //Amortizacion totales y principales
+                param.Quote = param.Capital * (param.Interest / (1 - Math.Pow(1 + param.Interest, -param.Plazo)));
+                param.InterestMontlhy = (param.Interest * param.Capital);
+                capital = (param.Capital - param.Quote + param.InterestMontlhy);
 
-                param.AmortizationTotal += (param.Quote - param.InterestMontlhy);
                 param.Amortization = param.Quote - param.InterestMontlhy;
-                param.PaymentDate = param.NextDate.AddMonths(param.Row);
+                param.AmortizationTotal += param.Amortization;
+                param.PaymentDate = param.NextDate.AddMonths(i);
                 param.Mora = param.Quote * (double)CalculatorHelper.percentageOneValue(0.05m);
 
                 AmortizationData.Add(param);

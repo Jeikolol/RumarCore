@@ -58,7 +58,7 @@
                                         </div>   
                                         <div class="form-group col-md-4">
                                             <label asp-for="BeneficiaryIds" class="control-label">Garante</label>
-                                            @Html.ListBoxFor(x => x.BeneficiaryIds, Model.Beneficiaries, new {@class = "form-control select2" })
+                                            @Html.ListBoxFor(x => x.BeneficiaryIds, Model.Beneficiaries, new {@class = "form-control select2", data_placeholder = "Seleccione uno o varios Garantes" })
                                             <span asp-validation-for="BeneficiaryIds" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-4">
@@ -68,24 +68,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @*<div class="tab-pane fade" role="tabpanel" id="option-tabs-guarantor">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table id="beneficiaryList" class="table table-striped-even-light-blue">
-                                            <thead class="text-white">
-                                                <tr>
-                                                    <th class="no-border">Nombre</th>
-                                                    <th class="no-border">Identificacion</th>
-                                                    <th class="no-border">Parentezco</th>
-                                                    <th class="no-border">Telefono</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -108,10 +90,12 @@
     <script src="/plugins/toastr/toastr.min.js"></script>
     <script src="/js/site.js"></script>
     <script src="/js/modalDisplayItem.js"></script>
-    <script src="/plugins/select2/js/select2.full.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     
-    <script>
-        $("#BeneficiaryIds").select2();
+    <script type="text/javascript">
+        $("#BeneficiaryIds").select2({
+            placeholder: "Seleccione"
+        })
     </script>
+
 }

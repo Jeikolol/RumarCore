@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"] - RumarApp</title>
 
-    <link rel="stylesheet" href="/css/site.css">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -34,7 +33,18 @@
     <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
-    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/plugins/select2/css/select2.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+    <!-- Bootstrap4 Duallistbox -->
+    <link rel="stylesheet" href="/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <!-- BS Stepper -->
+    <link rel="stylesheet" href="/plugins/bs-stepper/css/bs-stepper.min.css">
+    <!-- dropzonejs -->
+    <link rel="stylesheet" href="/plugins/dropzone/min/dropzone.min.css">
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -99,64 +109,72 @@
     <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script src="/plugins/select2/js/select2.min.js"></script>
+    <!-- Select2 -->
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+    <!-- Bootstrap4 Duallistbox -->
+    <script src="/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
     <!-- Toastr -->
     <script src="/plugins/toastr/toastr.min.js"></script>
+    <!-- Page specific script -->
+    <script src="/js/demo.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
-<script>
-         var url = '@Url.Action("Create")';
-        $(function () {
-            $("#dataTableIndexList").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                //lengthMenu: [25, 50, 100, 200],
-                "autoWidth": false,
-                "buttons": {
-                    buttons: [
-                        {
-                            text: '<i class="fas fa-plus fa-fw"></i>Agregar',
-                            className: 'btn-outline-primary',
-                            action: function navigateTo() {
-                                window.location = url;
-                            }
-                        },
-                    ],
-                    dom: {
-                        button: {
-                            className: 'btn'
-                        },
-                        buttonLiner: {
-                            tag: null
+    <script>
+    $('.select2').select2();
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+        theme: 'bootstrap4'
+    });
+
+    var url = '@Url.Action("Create")';
+    $(function () {
+        $("#dataTableIndexList").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            //lengthMenu: [25, 50, 100, 200],
+            "autoWidth": false,
+            "buttons": {
+                buttons: [
+                    {
+                        text: '<i class="fas fa-plus fa-fw"></i>Agregar',
+                        className: 'btn-outline-primary',
+                        action: function navigateTo() {
+                            window.location = url;
                         }
                     }
-                },
-                "oLanguage": {
-                    "sSearch": "Filtrar en la Lista"
-                },
-                "language": {
-                    emptyTable: "No hay datos para mostrar",
-                    paginate: {
-                        "first": "Primera",
-                        "last": "Ultima",
-                        "next": "Proxima",
-                        "previous": "Anterior"
+                ],
+                dom: {
+                    button: {
+                        className: 'btn'
                     },
-                    info: "Mostrando _PAGE_ de _PAGES_",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                    buttonLiner: {
+                        tag: null
+                    }
                 }
-            }).buttons().container().appendTo('#dataTableIndexList_wrapper .col-md-6:eq(0)');
-        });
+            },
+            "oLanguage": {
+                "sSearch": "Filtrar en la Lista"
+            },
+            "language": {
+                emptyTable: "No hay datos para mostrar",
+                paginate: {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Proxima",
+                    "previous": "Anterior"
+                },
+                info: "Mostrando _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrados de _MAX_ registros totales)",
+            }
+        }).buttons().container().appendTo('#dataTableIndexList_wrapper .col-md-6:eq(0)');
+    });
 
-        $(".select2").select2({
-            width: 'resolve'
-        });
+    var msg = @(TempData["Message"]!=null? Html.Raw(TempData["Message"]) : Html.Raw("undefined"));
 
-        var msg = @(TempData["Message"]!=null? Html.Raw(TempData["Message"]) : Html.Raw("undefined"));
-
-        if (msg != null) {
-            toastr[msg.type](msg.message, msg.title);
-        }
-</script>
+    if (msg != null) {
+        toastr[msg.type](msg.message, msg.title);
+    }
+    </script>
 </body>
 </html>
