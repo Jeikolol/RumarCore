@@ -11,15 +11,15 @@ namespace Core.Entities
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:c}")]
-        public long Capital { get; set; }
+        public decimal Capital { get; set; }
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:c}")]
-        public long CapitalToShow { get; set; }
+        public decimal CapitalToShow { get; set; }
         [Required(ErrorMessage = "Este campo es Obligatorio")]
         [DisplayFormat(DataFormatString = "{0:n0}")]
-        public decimal Quote { get; set; }
-        public decimal RemainingPayments { get; set; }
+        public int Quote { get; set; }
+        public int RemainingPayments { get; set; }
         public string Notes { get; set; }
         [Required(ErrorMessage = "Este campo es Obligatorio")]
         public int ClientId { get; set; }

@@ -26,66 +26,48 @@
                                 <div class="col-md-12">
                                     <div class="card-body row">
                                         <div class="form-group col-md-4 text-right">
-                                            <label asp-for="Loan.Capital" class="control-label">Capital<span class="text-danger">(*)</span></label>
-                                            <input asp-for="Loan.Capital" class="form-control text-right" />
+                                            <label asp-for="Loan.Capital">Capital<span class="text-danger">(*)</span></label>
+                                            <input asp-for="Loan.Capital" class="form-control text-right" type="number" min="0" />
                                             <span asp-validation-for="Loan.Capital" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-4 text-right">
-                                            <label asp-for="Loan.TaxTypeId" class="control-label">Interes(%)<span class="text-danger">(*)</span></label>
+                                            <label asp-for="Loan.TaxTypeId">Interes(%)<span class="text-danger">(*)</span></label>
                                             <select asp-for="Loan.TaxTypeId" class="form-control text-right select2" asp-items="ViewBag.TaxTypeId"></select>
                                             <span asp-validation-for="Loan.TaxTypeId" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-4 text-right">
-                                            <label asp-for="Loan.Quote" class="control-label">Cuotas de Pagos<span class="text-danger">(*)</span></label>
-                                            <input asp-for="Loan.Quote" class="form-control text-right" />
+                                            <label asp-for="Loan.Quote">Cuotas de Pagos<span class="text-danger">(*)</span></label>
+                                            <input asp-for="Loan.Quote" class="form-control text-right" type="number" min="0" />
                                             <span asp-validation-for="Loan.Quote" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label asp-for="Loan.TransactionTypeId" class="control-label">Metodo de Pago</label>
+                                            <label asp-for="Loan.TransactionTypeId">Metodo de Pago</label>
                                             <select asp-for="Loan.TransactionTypeId" class="form-control select2" asp-items="ViewBag.TransactionTypeId"></select>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label asp-for="Loan.TransactionPaymentId" class="control-label">Cuota de Pago</label>
+                                            <label asp-for="Loan.TransactionPaymentId">Cuota de Pago</label>
                                             <select asp-for="Loan.TransactionPaymentId" class="form-control select2" asp-items="ViewBag.TransactionPaymentId"></select>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label asp-for="Loan.ClientId" class="control-label">Cliente</label>
+                                            <label asp-for="Loan.ClientId">Cliente</label>
                                             <select asp-for="Loan.ClientId" class="form-control select2" asp-items="ViewBag.ClientsId"></select>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label asp-for="Loan.ClientTypeId" class="control-label">Tipo de Cliente</label>
+                                            <label asp-for="Loan.ClientTypeId">Tipo de Cliente</label>
                                             <select asp-for="Loan.ClientTypeId" id="clientType" class="form-control select2" asp-items="ViewBag.ClientTypeId"></select>
                                         </div>   
                                         <div class="form-group col-md-4">
-                                            <label asp-for="BeneficiaryIds" class="control-label">Garante</label>
-                                            @Html.ListBoxFor(x => x.BeneficiaryIds, Model.Beneficiaries, new {@class = "form-control select2" })
+                                            <label asp-for="BeneficiaryIds">Garante</label>
+                                            @Html.ListBoxFor(x => x.BeneficiaryIds, Model.Beneficiaries, new {@class = "form-control select2", data_placeholder = "Seleccione uno o varios Garantes" })
                                             <span asp-validation-for="BeneficiaryIds" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label asp-for="Loan.Notes" class="control-label">Notas</label>
+                                            <label asp-for="Loan.Notes">Notas</label>
                                             <textarea asp-for="Loan.Notes" class="form-control" style="width: 450px"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            @*<div class="tab-pane fade" role="tabpanel" id="option-tabs-guarantor">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table id="beneficiaryList" class="table table-striped-even-light-blue">
-                                            <thead class="text-white">
-                                                <tr>
-                                                    <th class="no-border">Nombre</th>
-                                                    <th class="no-border">Identificacion</th>
-                                                    <th class="no-border">Parentezco</th>
-                                                    <th class="no-border">Telefono</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -108,10 +90,10 @@
     <script src="/plugins/toastr/toastr.min.js"></script>
     <script src="/js/site.js"></script>
     <script src="/js/modalDisplayItem.js"></script>
-    <script src="/plugins/select2/js/select2.full.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     
-    <script>
+    <script type="text/javascript">
         $("#BeneficiaryIds").select2();
     </script>
+
 }

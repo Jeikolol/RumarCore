@@ -22,53 +22,53 @@
                         @Html.HiddenFor(x => x.Id)
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group col-md-4">
-                            <label asp-for="FirstName" class="control-label">Nombre(s)<span class="text-danger">(*)</span></label>
+                            <label asp-for="FirstName">Nombre(s)<span class="text-danger">(*)</span></label>
                             <input asp-for="FirstName" class="form-control"/>
-                            <span asp-for="FirstName" class="text-danger"></span>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="LastName" class="control-label">Apellido(s)<span class="text-danger">(*)</span></label>
+                            <label asp-for="LastName">Apellido(s)<span class="text-danger">(*)</span></label>
                             <input asp-for="LastName" class="form-control"/>
-                            <span asp-for="LastName" class="text-danger"></span>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="Identification" class="control-label">Identificacion<span class="text-danger">(*)</span></label>
+                            <label asp-for="Identification">Identificacion<span class="text-danger">(*)</span></label>
                             <input asp-for="Identification" id="identification" class="form-control" disabled/>
-                            <span asp-for="Identification" class="text-danger"></span>
+                            <span asp-validation-for="Identification" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="PhoneNumber" class="control-label">Telefono<span class="text-danger">(*)</span></label>
+                            <label asp-for="PhoneNumber">Telefono<span class="text-danger">(*)</span></label>
                             <input asp-for="PhoneNumber" class="form-control"/>
-                            <span asp-for="PhoneNumber" class="text-danger"></span>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="MobileNumber" class="control-label">Celular</label>
+                            <label asp-for="MobileNumber">Celular</label>
                             <input asp-for="MobileNumber" class="form-control"/>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="CountryId" class="control-label">País<span class="text-danger">(*)</span></label>
-                            <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
-                            <span asp-for="CountryId" class="text-danger"></span>
+                            <label asp-for="CountryId">País<span class="text-danger">(*)</span></label>
+                            <select asp-for="CountryId" class="form-control select2" asp-items="ViewBag.CountryId"></select>
+                            <span asp-validation-for="CountryId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="City" class="control-label">Ciudad<span class="text-danger">(*)</span></label>
+                            <label asp-for="City">Ciudad<span class="text-danger">(*)</span></label>
                             <input asp-for="City" class="form-control"/>
-                            <span asp-for="City" class="text-danger"></span>
+                            <span asp-validation-for="City" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="Nacionality" class="control-label">Nacionalidad<span class="text-danger">(*)</span></label>
+                            <label asp-for="Nacionality">Nacionalidad<span class="text-danger">(*)</span></label>
                             <input asp-for="Nacionality" class="form-control"/>
-                            <span asp-for="Nacionality" class="text-danger"></span>
+                            <span asp-validation-for="Nacionality" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="PostalAddress" class="control-label">Direccion Postal<span class="text-danger">(*)</span></label>
+                            <label asp-for="PostalAddress">Direccion Postal<span class="text-danger">(*)</span></label>
                             <input asp-for="PostalAddress" class="form-control"/>
-                            <span asp-for="PhonePostalAddressNumber" class="text-danger"></span>
+                            <span asp-validation-for="PostalAddress" class="text-danger"></span>
                         </div>
                         <div class="col-md-8 form-group">
                             <label asp-for="Address">Direccion<span class="text-danger">(*)</span></label>
                             <textarea asp-for="Address" class="form-control" type="text"></textarea>
-                            <span asp-for="Address" class="text-danger"></span>
+                            <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-12">

@@ -1,7 +1,5 @@
 ﻿using System.IO;
-using System.Security.Claims;
 using Core.Entities;
-using Core.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,8 +10,6 @@ namespace RumarApp.Infraestructure
     [Authorize]
     public abstract class BaseController : Controller
     {
-        public ClaimsIdentity CurrentUser => ClaimsHelper.ClaimsIdentity;
-        
         protected void ShowNotification(string message, string title, NotificationType type)
         {
             var msg = new

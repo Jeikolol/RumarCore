@@ -1,7 +1,5 @@
 ﻿@model RumarApp.Models.LoanModel
 @using RumarApp.Enums
-@using RumarApp.Parameters
-@using Microsoft.Ajax.Utilities
 
 @{
     ViewData["Title"] = "Detalle";
@@ -28,7 +26,7 @@
                             <input value="@Html.DisplayFor(model => model.Client.FullName)" class="form-control" disabled />
                         </div>
                         @{
-                            var clienttransactionTypeNames = EnumExtension.GetEnumDescription((ClientTypeEnum)Model?.ClientTypeId);
+                            var clienttransactionTypeNames = EnumExtension.GetEnumDescription((ClientTypeEnum)Model.ClientTypeId);
 
                             <div class="col-md-4 form-group mb-10">
                                 <label class="text-right">Tipo de Cliente</label>
@@ -38,14 +36,14 @@
                     </div>
                     <div class="row">
                         @{
-                            var transactionTypeNames = EnumExtension.GetEnumDescription((TransactionTypeEnum)Model?.TransactionTypeId);
+                            var transactionTypeNames = EnumExtension.GetEnumDescription((TransactionTypeEnum)Model.TransactionTypeId);
 
                             <div class="col-md-4 form-group mb-10">
                                 <label class="text-right">Metodo de Pago</label>
                                 <input value="@transactionTypeNames" class="form-control" disabled />
                             </div>
 
-                            var transactionPaymentNames = EnumExtension.GetEnumDescription((TransactionPaymentEnum)Model?.TransactionPaymentId);
+                            var transactionPaymentNames = EnumExtension.GetEnumDescription((TransactionPaymentEnum)Model.TransactionPaymentId);
 
                             <div class="col-md-4 form-group mb-10">
                                 <label class="text-right">Tipo de Pago</label>
@@ -106,20 +104,20 @@
                             <div class="table-responsive">
                                 <table id="dataTableGarantes" class="table table-striped-even-light-blue">
                                     <thead>
-                                        <tr>
-                                            <th>Nombre Completo</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Nombre Completo</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        @{
-                                            foreach (var beneficiary in Model.Beneficiary)
-                                            {
-                                                <tr>
-                                                    <td>@beneficiary.FullName</td>
-                                                </tr>
-                                            }
-
+                                    @{
+                                        foreach (var beneficiary in Model.Beneficiary)
+                                        {
+                                            <tr>
+                                                <td>@beneficiary.FullName</td>
+                                            </tr>
                                         }
+
+                                    }
                                     </tbody>
                                 </table>
                             </div>
@@ -139,13 +137,12 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Fecha de Pago</th>
+                                    <th class="text-center">Fecha de Pago</th>
                                     <th class="text-right">Cuota</th>
+                                    <th class="text-right">Capital</th>
                                     <th class="text-right">Mora</th>
-                                    <th class="text-right">Interés Mensual</th>
-                                    <th class="text-right">Amortización Principal</th>
-                                    <th class="text-right">Amortización Total</th>
-                                    <th class="text-right">Capital Pendiente</th>
+                                    <th class="text-right">Interés</th>
+                                    <th class="text-right">Balance</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -159,16 +156,16 @@
         <div id="paymentModal" class="modal" tabindex="-1" role="dialog"> </div>
     </div>
 </section>
-
 <script src="/plugins/jquery/jquery.min.js"></script>
 <script src="/js/modalDisplayItem.js"></script>
+<script src="/js/htmlHelper.js"></script>
 <script>
     var body = document.body;
     body.classList.add("sidebar-collapse");
 
     var jsonData = JSON.parse('@Html.Raw(Json.Serialize(Model))');
-
-    $(function() {
+    
+    $(function () {
         var table = $("#dataTableAmotization").DataTable({
             "responsive": true,
             "lengthChange": false,
@@ -176,22 +173,65 @@
             lengthMenu: [25, 50, 100, 200],
             "autoWidth": false,
             "columns": [
-                { data: "row" },
-                { data: "paymentDateFormatted"},
-                { data: "quoteFormatted", className: "text-right"},
-                { data: "moraFormatted", className: "text-right" },
-                { data: "interestMontlhyFormatted", className: "text-right" },
-                { data: "amortizationFormatted", className: "text-right" },
-                { data: "amortizationTotalFormatted", className: "text-right" },
-                { data: "capitalFormatted", className: "text-right" },
+                {
+                    data: "row",
+                    className: "text-center",
+                    width: "5%"
+                },
+                {
+                    data: "paymentDateFormatted",
+                    className: "text-center",
+                    width: "12%"
+                },               
+                {
+                    data: "quote",
+                    render: function (data, type, dataToSet) {
+                        return `$${convertToCurrencyFormat(dataToSet.quote)}`
+                    },
+                    className: "text-right",
+                    width: "15%"
+                },
+                {
+                    data: "capital",
+                    render: function (data, type, dataToSet) {
+                        return `$${convertToCurrencyFormat(dataToSet.capital)}`
+                    },
+                    className: "text-right",
+                    width: "15%"
+                },
+                {
+                    data: "mora",
+                    render: function (data, type, dataToSet) {
+                        return `$${convertToCurrencyFormat(dataToSet.mora)}`
+                    },
+                    className: "text-right",
+                    width: "12%"
+                },
+                {
+                    data: "interestMontlhy",
+                    render: function (data, type, dataToSet) {
+                        return `$${convertToCurrencyFormat(dataToSet.interestMontlhy)}`
+                    },
+                    className: "text-right",
+                    width: "12%"
+                },
+                {
+                    data: "balance",
+                    render: function (data, type, dataToSet) {
+                        return `$${convertToCurrencyFormat(dataToSet.balance)}`
+                    },
+                    className: "text-right",
+                    width: "18%"
+                },
                 {
                     data: null,
-                    "render": function(data, type, row) {
+                    "render": function (data, type, row) {
 
                         return `<button class="btn btn-link text-left" id="pay-modal" index='${row}'>
-                                    <i class= "fa fa-check fa-fw"></i> Pagar
-                                </button >`;
-                    }
+                                        <i class= "fa fa-check fa-fw"></i> Pagar
+                                    </button >`;
+                    },
+                    width: "8%"
                 }
             ],
             "language": {
@@ -209,10 +249,10 @@
         });
 
         $("#dataTableAmotization tbody").on("click", "button", function () {
-            var param = table.row( $(this).parents('tr') ).data();
+            var param = table.row($(this).parents('tr')).data();
             var url = '@Url.Action("PayModal")';
 
-            postModal(url, param,'paymentModal');
+            postModal(url, param, 'paymentModal');
         });
     });
 

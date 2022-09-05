@@ -29,7 +29,7 @@ namespace RumarApp.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -58,11 +58,7 @@ namespace RumarApp.Controllers
                     return View();
                 }
 
-                ClaimsHelper.BuildClaimsIdentity(result);
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                                                   new ClaimsPrincipal(ClaimsHelper.ClaimsIdentity),
-                                                   new AuthenticationProperties { IsPersistent = true });
+                SignIn(result);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -70,11 +66,44 @@ namespace RumarApp.Controllers
             return View();
         }
 
+        public async void SignIn(User user)
+        {
+            ClaimsHelper.BuildClaimsIdentity(user);
+
+            var authProperties = new AuthenticationProperties
+            {
+                //AllowRefresh = <bool>,
+                // Refreshing the authentication session should be allowed.
+
+                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                // The time at which the authentication ticket expires. A 
+                // value set here overrides the ExpireTimeSpan option of 
+                // CookieAuthenticationOptions set with AddCookie.
+
+                //IsPersistent = true,
+                // Whether the authentication session is persisted across 
+                // multiple requests. When used with cookies, controls
+                // whether the cookie's lifetime is absolute (matching the
+                // lifetime of the authentication ticket) or session-based.
+
+                //IssuedUtc = <DateTimeOffset>,
+                // The time at which the authentication ticket was issued.
+
+                //RedirectUri = <string>
+                // The full path or absolute URI to be used as an http 
+                // redirect response value.
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(ClaimsHelper.CurrentUser.ClaimsIdentity),
+                new AuthenticationProperties { IsPersistent = true });
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> LogOut()
         {
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login", "Security");
         }
@@ -109,6 +138,14 @@ namespace RumarApp.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoadSession()
+        {
+            _securityService.LoadSession();
+
+            return Json(new {});
         }
     }
 }

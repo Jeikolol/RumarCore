@@ -1,12 +1,13 @@
-﻿using System;
-using Core.Constants;
-using Core.Entities;
+﻿using Core.Entities;
+using Core.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseMigrations.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        public LoginResult CurrentUser => ClaimsHelper.CurrentUser.UserData;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -60,47 +61,47 @@ namespace DatabaseMigrations.Data
             //        PhoneNumber = "8298879669",
             //        UserName = "admin",
             //        Password = PasswordHashConstants.HashedAdministratorPassword,
-            //        CreatedBy = "admin",
+            //        CreatedById = 1,
             //        CreatedOn = DateTime.UtcNow,
             //        IsDeleted = false,
             //    });
 
             //builder.Entity<RelationshipType>().HasData(
-            //    new RelationshipType() { Id = 1, Name = "FAMILIAR", Description = "RELACION FAMILIAR", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new RelationshipType() { Id = 2, Name = "RELACIONADO", Description = "RELACIONADA", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new RelationshipType() { Id = 3, Name = "COMERCIAL", Description = "RELACION COMERCIAL", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"}
+            //    new RelationshipType() { Id = 1, Name = "FAMILIAR", Description = "RELACION FAMILIAR", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new RelationshipType() { Id = 2, Name = "RELACIONADO", Description = "RELACIONADA", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new RelationshipType() { Id = 3, Name = "COMERCIAL", Description = "RELACION COMERCIAL", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1}
             //    );   
 
             //builder.Entity<Country>().HasData(
-            //    new Country() { Id = 1, Code = "RD", Description = "REPUBLICA DOMINICANA", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new Country() { Id = 2, Code = "USA", Description = "ESTADOS UNIDOS", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new Country() { Id = 3, Code = "ESP", Description = "ESPAÑA", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new Country() { Id = 4, Code = "UK", Description = "REINO UNIDO", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"}
+            //    new Country() { Id = 1, Code = "RD", Description = "REPUBLICA DOMINICANA", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new Country() { Id = 2, Code = "USA", Description = "ESTADOS UNIDOS", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new Country() { Id = 3, Code = "ESP", Description = "ESPAÑA", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new Country() { Id = 4, Code = "UK", Description = "REINO UNIDO", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1}
             //    );  
 
             //builder.Entity<TaxType>().HasData(
-            //    new TaxType() { Id = 1, Code = "01", Name = "0%", Percentage = 0.0m, IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new TaxType() { Id = 2, Code = "02", Name = "18%", Percentage = 0.18m, IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new TaxType() { Id = 3, Code = "03", Name = "25%", Percentage = 0.25m, IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"},
-            //    new TaxType() { Id = 4, Code = "04", Name = "50%", Percentage = 0.50m, IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin"}
+            //    new TaxType() { Id = 1, Code = "01", Name = "0%", Percentage = 0.0m, IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new TaxType() { Id = 2, Code = "02", Name = "18%", Percentage = 0.18m, IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new TaxType() { Id = 3, Code = "03", Name = "25%", Percentage = 0.25m, IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1},
+            //    new TaxType() { Id = 4, Code = "04", Name = "50%", Percentage = 0.50m, IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1}
             //    );
 
             //builder.Entity<ClientType>().HasData(
-            //    new ClientType() { Id = 1, Name = "RECURRENTE", Description = "CLIENTE RECURRENTE", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" },
-            //    new ClientType() { Id = 2, Name = "RECOMENDADO", Description = "CLIENTE RECOMENDADO", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" },
-            //    new ClientType() { Id = 3, Name = "NUEVO", Description = "CLIENTE NUEVO", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" }
+            //    new ClientType() { Id = 1, Name = "RECURRENTE", Description = "CLIENTE RECURRENTE", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 },
+            //    new ClientType() { Id = 2, Name = "RECOMENDADO", Description = "CLIENTE RECOMENDADO", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 },
+            //    new ClientType() { Id = 3, Name = "NUEVO", Description = "CLIENTE NUEVO", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 }
             //); 
 
             //builder.Entity<TransactionType>().HasData(
-            //    new TransactionType() { Id = 1, Name = "EFECTIVO", Description = "PAGO EN EFECTIVO", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" },
-            //    new TransactionType() { Id = 2, Name = "TRANSFERENCIA", Description = "PAGO EN TRANSFERENCIA", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" },
-            //    new TransactionType() { Id = 3, Name = "CHEQUE", Description = "PAGO EN CHEQUE", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" }
+            //    new TransactionType() { Id = 1, Name = "EFECTIVO", Description = "PAGO EN EFECTIVO", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 },
+            //    new TransactionType() { Id = 2, Name = "TRANSFERENCIA", Description = "PAGO EN TRANSFERENCIA", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 },
+            //    new TransactionType() { Id = 3, Name = "CHEQUE", Description = "PAGO EN CHEQUE", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 }
             //);
 
             //builder.Entity<TransactionPayment>().HasData(
-            //    new TransactionPayment() { Id = 1, Name = "DIARIO", Description = "PAGO DIARIO", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" },
-            //    new TransactionPayment() { Id = 2, Name = "QUINCENAL", Description = "PAGO QUINCENAL", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" },
-            //    new TransactionPayment() { Id = 3, Name = "MENSUAL", Description = "PAGO MENSUAL", IsDeleted = false, CreatedOn = DateTime.UtcNow, CreatedBy = "admin" }
+            //    new TransactionPayment() { Id = 1, Name = "DIARIO", Description = "PAGO DIARIO", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 },
+            //    new TransactionPayment() { Id = 2, Name = "QUINCENAL", Description = "PAGO QUINCENAL", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 },
+            //    new TransactionPayment() { Id = 3, Name = "MENSUAL", Description = "PAGO MENSUAL", IsDeleted = false, CreatedOn = DateTime.UtcNow,  CreatedById = 1 }
             //);
         }
 

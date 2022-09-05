@@ -157,16 +157,10 @@ namespace RumarApp.Controllers
                     
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException ex)
+                catch (Exception ex)
                 {
-                    if (!LoanExists(param.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw ex;
-                    }
+                    ShowNotification($"{ex.Message}", "", NotificationType.error);
+                    throw;
                 }
             }
 
@@ -177,38 +171,38 @@ namespace RumarApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> PayModal(PayLoanParameter loanPay)
+        public ActionResult PayModal(PayLoanParameter loanPay)
         {
-            var payLoan = new PayLoanParameter
-            {
-                LoanId = loanPay.LoanId,
-                Client = loanPay.Client,
-            };
-
-            return PartialView("_PaymentLoanModal", payLoan);
+            return PartialView("_PaymentLoanModal", loanPay);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PayLoan(PayLoanParameter loanPay)
         {
-            var loanToPay = await _context.Loans
-                .Include(l => l.Client)
-                .FirstOrDefaultAsync(m => m.Id == loanPay.LoanId);
-
-            if (loanToPay == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                try
+                {
+                    var result = await _loanService.PayLoan(loanPay);
+
+                    if (!result.ExecutedSuccesfully)
+                    {
+                        ShowNotification(result.Message, "Mantenimiento de Prestamos", NotificationType.error);
+                        return RedirectToAction("Details", new { id = loanPay.LoanId });
+                    }
+
+                    ShowNotification("Prestamo creado Correctamente", "Mantenimiento de Prestamos", NotificationType.success);
+                    return RedirectToAction("Details", new { id = loanPay.LoanId });
+                }
+                catch (Exception ex)
+                {
+                    ShowNotification($"{ex.Message}", "", NotificationType.error);
+                    throw;
+                }
             }
 
-            loanToPay.Capital = loanToPay.Capital - (long)loanPay.Quote;
-            loanToPay.RemainingPayments--;
-
-            _context.Loans.Update(loanToPay);
-            
-            await _context.SaveChangesAsync();
-            
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", new { id = loanPay.LoanId });
         }
 
         //[HttpPost]

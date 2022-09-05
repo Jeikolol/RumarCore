@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Security;
 using DatabaseMigrations.Data;
 using Microsoft.EntityFrameworkCore;
 using RumarApp.Infraestructure;
 using RumarApp.Models;
+using RumarApp.Parameters;
 
 namespace RumarApp.Services
 {
@@ -27,6 +28,7 @@ namespace RumarApp.Services
                 {
                     Id = x.Id,
                     Capital = x.Capital,
+                    CapitalToShow = x.CapitalToShow,
                     TaxTypeId = x.TaxTypeId,
                     TaxType = new TaxTypeModel
                     {
@@ -115,14 +117,14 @@ namespace RumarApp.Services
                 CapitalToShow = param.Loan.Capital,
                 Quote = param.Loan.Quote,
                 RemainingPayments = param.Loan.Quote,
-                //CreatedOn = DateTime.UtcNow,
-                CreatedBy = CurrentUser.Name,
+                CreatedOn = DateTime.UtcNow,
                 Notes = param.Loan.Notes,
                 ClientId = param.Loan.ClientId,
                 TransactionTypeId = param.Loan.TransactionTypeId,
                 TransactionPaymentId = param.Loan.TransactionPaymentId,
                 ClientTypeId = param.Loan.ClientTypeId,
                 TaxTypeId = param.Loan.TaxTypeId,
+                CreatedById = Database.CurrentUser.UserId,
             };
 
             Database.Add(loan);
@@ -144,6 +146,29 @@ namespace RumarApp.Services
 
             return result;
         }
+
+        public async Task<ServiceResult> PayLoan(PayLoanParameter param)
+        {
+            var result = ServiceResult.Create();
+
+            var loanToPay = await Database.Loans
+                .Include(l => l.Client)
+                .FirstOrDefaultAsync(m => m.Id == param.LoanId);
+
+            if (loanToPay == null)
+            {
+                result.AddErrorMessage("Este prestamo no existe");
+                return result;
+            }
+
+            loanToPay.Capital -= param.Quote;
+            loanToPay.RemainingPayments--;
+
+            Database.Update(loanToPay);
+
+            await Database.SaveChangesAsync();
+            return result;
+        }
     }
 
     public interface ILoanService : IService
@@ -151,5 +176,6 @@ namespace RumarApp.Services
         Task<ServiceResult<List<LoanModel>>> GetAll();
         Task<ServiceResult<LoanModel>> GetDetailById(int id);
         Task<ServiceResult<LoanModel>> Create(CreateLoansModel param);
+        Task<ServiceResult> PayLoan(PayLoanParameter param);
     }
 }

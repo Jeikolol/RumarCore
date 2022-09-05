@@ -33,4 +33,3 @@ C:\Users\User\Desktop\App\RumarApp\DatabaseMigrations\obj\Debug\net5.0\DatabaseM
 C:\Users\User\Desktop\App\RumarApp\DatabaseMigrations\obj\Debug\net5.0\ref\DatabaseMigrations.dll
 C:\Users\User\Desktop\App\RumarApp\DatabaseMigrations\obj\Debug\net5.0\DatabaseMigrations.pdb
 C:\Users\User\Desktop\App\RumarApp\DatabaseMigrations\obj\Debug\net5.0\DatabaseMigrations.genruntimeconfig.cache
-C:\Users\User\Desktop\App\RumarApp\DatabaseMigrations\obj\Debug\net5.0\DatabaseMigrations.csproj.CopyComplete

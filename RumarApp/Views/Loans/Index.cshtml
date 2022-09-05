@@ -17,6 +17,9 @@
                         Codigo
                     </th>
                     <th>
+                        Capital Restante
+                    </th>
+                    <th>
                         Capital
                     </th>
                     <th>
@@ -45,6 +48,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Capital)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CapitalToShow)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.TaxType.Name)

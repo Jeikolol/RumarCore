@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace DatabaseMigrations.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
@@ -15,16 +17,18 @@ namespace DatabaseMigrations.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Core.Entities.Beneficiary", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -37,8 +41,8 @@ namespace DatabaseMigrations.Migrations
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -91,7 +95,9 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Beneficiaries");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Beneficiaries", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.BeneficiaryLoan", b =>
@@ -102,8 +108,8 @@ namespace DatabaseMigrations.Migrations
                     b.Property<int>("LoanId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -125,17 +131,20 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("BeneficiaryId", "LoanId");
 
+                    b.HasIndex("CreatedById");
+
                     b.HasIndex("LoanId");
 
-                    b.ToTable("BeneficiaryLoans");
+                    b.ToTable("BeneficiaryLoans", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -148,8 +157,8 @@ namespace DatabaseMigrations.Migrations
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -202,18 +211,21 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Clients");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.ClientType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -238,21 +250,53 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClientTypes");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("ClientTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7216),
+                            Description = "CLIENTE RECURRENTE",
+                            IsDeleted = false,
+                            Name = "RECURRENTE"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7217),
+                            Description = "CLIENTE RECOMENDADO",
+                            IsDeleted = false,
+                            Name = "RECOMENDADO"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7218),
+                            Description = "CLIENTE NUEVO",
+                            IsDeleted = false,
+                            Name = "NUEVO"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -274,21 +318,62 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Countries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "RD",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7177),
+                            Description = "REPUBLICA DOMINICANA",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "USA",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7178),
+                            Description = "ESTADOS UNIDOS",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "ESP",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7179),
+                            Description = "ESPAÑA",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "UK",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7180),
+                            Description = "REINO UNIDO",
+                            IsDeleted = false
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Loan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<long>("Capital")
-                        .HasColumnType("bigint");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<long>("CapitalToShow")
-                        .HasColumnType("bigint");
+                    b.Property<decimal>("Capital")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CapitalToShow")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
@@ -296,8 +381,8 @@ namespace DatabaseMigrations.Migrations
                     b.Property<int>("ClientTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -323,11 +408,11 @@ namespace DatabaseMigrations.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Quote")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Quote")
+                        .HasColumnType("int");
 
-                    b.Property<decimal>("RemainingPayments")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("RemainingPayments")
+                        .HasColumnType("int");
 
                     b.Property<int>("TaxTypeId")
                         .HasColumnType("int");
@@ -345,24 +430,27 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasIndex("ClientTypeId");
 
+                    b.HasIndex("CreatedById");
+
                     b.HasIndex("TaxTypeId");
 
                     b.HasIndex("TransactionPaymentId");
 
                     b.HasIndex("TransactionTypeId");
 
-                    b.ToTable("Loans");
+                    b.ToTable("Loans", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.RelationshipType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -387,21 +475,53 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RelationshipTypes");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("RelationshipTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7156),
+                            Description = "RELACION FAMILIAR",
+                            IsDeleted = false,
+                            Name = "FAMILIAR"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7159),
+                            Description = "RELACIONADA",
+                            IsDeleted = false,
+                            Name = "RELACIONADO"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7160),
+                            Description = "RELACION COMERCIAL",
+                            IsDeleted = false,
+                            Name = "COMERCIAL"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TaxType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -426,18 +546,63 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TaxTypes");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("TaxTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "01",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7195),
+                            IsDeleted = false,
+                            Name = "0%",
+                            Percentage = 0.0m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "02",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7196),
+                            IsDeleted = false,
+                            Name = "18%",
+                            Percentage = 0.18m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "03",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7197),
+                            IsDeleted = false,
+                            Name = "25%",
+                            Percentage = 0.25m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "04",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7198),
+                            IsDeleted = false,
+                            Name = "50%",
+                            Percentage = 0.50m
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TransactionPayment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -462,18 +627,50 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TransactionPayments");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("TransactionPayments", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7249),
+                            Description = "PAGO DIARIO",
+                            IsDeleted = false,
+                            Name = "DIARIO"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7250),
+                            Description = "PAGO QUINCENAL",
+                            IsDeleted = false,
+                            Name = "QUINCENAL"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7251),
+                            Description = "PAGO MENSUAL",
+                            IsDeleted = false,
+                            Name = "MENSUAL"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TransactionType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -498,22 +695,54 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TransactionTypes");
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("TransactionTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7232),
+                            Description = "PAGO EN EFECTIVO",
+                            IsDeleted = false,
+                            Name = "EFECTIVO"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7233),
+                            Description = "PAGO EN TRANSFERENCIA",
+                            IsDeleted = false,
+                            Name = "TRANSFERENCIA"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7234),
+                            Description = "PAGO EN CHEQUE",
+                            IsDeleted = false,
+                            Name = "CHEQUE"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -564,22 +793,26 @@ namespace DatabaseMigrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
-                });
+                    b.HasIndex("CreatedById");
 
-            modelBuilder.Entity("BeneficiaryClient", b =>
-                {
-                    b.HasOne("Core.Entities.Beneficiary", null)
-                        .WithMany()
-                        .HasForeignKey("BeneficiariesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("Users", (string)null);
 
-                    b.HasOne("Core.Entities.Client", null)
-                        .WithMany()
-                        .HasForeignKey("ClientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "",
+                            CreatedById = 1,
+                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7028),
+                            Email = "admin@admin.com",
+                            FirstName = "Administrador",
+                            Identification = "40228341968",
+                            IsDeleted = false,
+                            LastName = "",
+                            Password = "1000:o/aziZjsVx7sr4RzrtPHNs2AkP5LGuhH:txBYU1u3kkEktiP64gKan99vXohED85c",
+                            PhoneNumber = "8298879669",
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Beneficiary", b =>
@@ -590,24 +823,40 @@ namespace DatabaseMigrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Country");
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Core.Entities.BeneficiaryLoan", b =>
                 {
                     b.HasOne("Core.Entities.Beneficiary", "Beneficiary")
-                        .WithMany("Loans")
+                        .WithMany("BeneficiaryLoan")
                         .HasForeignKey("BeneficiaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.Loan", "Loan")
-                        .WithMany("Beneficiaries")
+                        .WithMany("BeneficiaryLoan")
                         .HasForeignKey("LoanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Beneficiary");
+
+                    b.Navigation("CreatedBy");
 
                     b.Navigation("Loan");
                 });
@@ -620,7 +869,37 @@ namespace DatabaseMigrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Country");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Core.Entities.ClientType", b =>
+                {
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Core.Entities.Country", b =>
+                {
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Core.Entities.Loan", b =>
@@ -634,6 +913,12 @@ namespace DatabaseMigrations.Migrations
                     b.HasOne("Core.Entities.ClientType", "ClientType")
                         .WithMany()
                         .HasForeignKey("ClientTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -659,6 +944,8 @@ namespace DatabaseMigrations.Migrations
 
                     b.Navigation("ClientType");
 
+                    b.Navigation("CreatedBy");
+
                     b.Navigation("TaxType");
 
                     b.Navigation("TransactionPayment");
@@ -666,9 +953,64 @@ namespace DatabaseMigrations.Migrations
                     b.Navigation("TransactionType");
                 });
 
+            modelBuilder.Entity("Core.Entities.RelationshipType", b =>
+                {
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Core.Entities.TaxType", b =>
+                {
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Core.Entities.TransactionPayment", b =>
+                {
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Core.Entities.TransactionType", b =>
+                {
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Core.Entities.User", b =>
+                {
+                    b.HasOne("Core.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
             modelBuilder.Entity("Core.Entities.Beneficiary", b =>
                 {
-                    b.Navigation("Loans");
+                    b.Navigation("BeneficiaryLoan");
                 });
 
             modelBuilder.Entity("Core.Entities.Client", b =>
@@ -678,7 +1020,7 @@ namespace DatabaseMigrations.Migrations
 
             modelBuilder.Entity("Core.Entities.Loan", b =>
                 {
-                    b.Navigation("Beneficiaries");
+                    b.Navigation("BeneficiaryLoan");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,14 +1,11 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Core.Entities
-
-@if (User.Identity.IsAuthenticated)
+﻿@if (User.Identity is {IsAuthenticated: true })
 {
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="@Url.Action("Index", "Home")" class="brand-link">
-            <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">RumarApp</span>
+            <img src="/img/finance.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">Rumar Crédito</span>
         </a>
 
         <!-- Sidebar -->
