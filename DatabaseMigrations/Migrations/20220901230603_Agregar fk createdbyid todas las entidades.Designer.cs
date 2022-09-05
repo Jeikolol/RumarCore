@@ -4,6 +4,7 @@ using DatabaseMigrations.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseMigrations.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220901230603_Agregar fk createdbyid todas las entidades")]
+    partial class Agregarfkcreatedbyidtodaslasentidades
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,35 +255,6 @@ namespace DatabaseMigrations.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("ClientTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7216),
-                            Description = "CLIENTE RECURRENTE",
-                            IsDeleted = false,
-                            Name = "RECURRENTE"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7217),
-                            Description = "CLIENTE RECOMENDADO",
-                            IsDeleted = false,
-                            Name = "RECOMENDADO"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7218),
-                            Description = "CLIENTE NUEVO",
-                            IsDeleted = false,
-                            Name = "NUEVO"
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Country", b =>
@@ -321,44 +294,6 @@ namespace DatabaseMigrations.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("Countries", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "RD",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7177),
-                            Description = "REPUBLICA DOMINICANA",
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "USA",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7178),
-                            Description = "ESTADOS UNIDOS",
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "ESP",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7179),
-                            Description = "ESPAÑA",
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = "UK",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7180),
-                            Description = "REINO UNIDO",
-                            IsDeleted = false
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Loan", b =>
@@ -478,35 +413,6 @@ namespace DatabaseMigrations.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("RelationshipTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7156),
-                            Description = "RELACION FAMILIAR",
-                            IsDeleted = false,
-                            Name = "FAMILIAR"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7159),
-                            Description = "RELACIONADA",
-                            IsDeleted = false,
-                            Name = "RELACIONADO"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7160),
-                            Description = "RELACION COMERCIAL",
-                            IsDeleted = false,
-                            Name = "COMERCIAL"
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TaxType", b =>
@@ -549,48 +455,6 @@ namespace DatabaseMigrations.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("TaxTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "01",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7195),
-                            IsDeleted = false,
-                            Name = "0%",
-                            Percentage = 0.0m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "02",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7196),
-                            IsDeleted = false,
-                            Name = "18%",
-                            Percentage = 0.18m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "03",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7197),
-                            IsDeleted = false,
-                            Name = "25%",
-                            Percentage = 0.25m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Code = "04",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7198),
-                            IsDeleted = false,
-                            Name = "50%",
-                            Percentage = 0.50m
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TransactionPayment", b =>
@@ -630,35 +494,6 @@ namespace DatabaseMigrations.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("TransactionPayments", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7249),
-                            Description = "PAGO DIARIO",
-                            IsDeleted = false,
-                            Name = "DIARIO"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7250),
-                            Description = "PAGO QUINCENAL",
-                            IsDeleted = false,
-                            Name = "QUINCENAL"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7251),
-                            Description = "PAGO MENSUAL",
-                            IsDeleted = false,
-                            Name = "MENSUAL"
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TransactionType", b =>
@@ -698,35 +533,6 @@ namespace DatabaseMigrations.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("TransactionTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7232),
-                            Description = "PAGO EN EFECTIVO",
-                            IsDeleted = false,
-                            Name = "EFECTIVO"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7233),
-                            Description = "PAGO EN TRANSFERENCIA",
-                            IsDeleted = false,
-                            Name = "TRANSFERENCIA"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7234),
-                            Description = "PAGO EN CHEQUE",
-                            IsDeleted = false,
-                            Name = "CHEQUE"
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.User", b =>
@@ -796,23 +602,6 @@ namespace DatabaseMigrations.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("Users", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "",
-                            CreatedById = 1,
-                            CreatedOn = new DateTime(2022, 9, 1, 23, 18, 28, 472, DateTimeKind.Utc).AddTicks(7028),
-                            Email = "admin@admin.com",
-                            FirstName = "Administrador",
-                            Identification = "40228341968",
-                            IsDeleted = false,
-                            LastName = "",
-                            Password = "1000:o/aziZjsVx7sr4RzrtPHNs2AkP5LGuhH:txBYU1u3kkEktiP64gKan99vXohED85c",
-                            PhoneNumber = "8298879669",
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Beneficiary", b =>

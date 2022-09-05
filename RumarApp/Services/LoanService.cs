@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Security;
 using DatabaseMigrations.Data;
 using Microsoft.EntityFrameworkCore;
 using RumarApp.Infraestructure;
@@ -28,6 +28,7 @@ namespace RumarApp.Services
                 {
                     Id = x.Id,
                     Capital = x.Capital,
+                    CapitalToShow = x.CapitalToShow,
                     TaxTypeId = x.TaxTypeId,
                     TaxType = new TaxTypeModel
                     {
@@ -117,13 +118,13 @@ namespace RumarApp.Services
                 Quote = param.Loan.Quote,
                 RemainingPayments = param.Loan.Quote,
                 CreatedOn = DateTime.UtcNow,
-                CreatedBy = CurrentUser.Name,
                 Notes = param.Loan.Notes,
                 ClientId = param.Loan.ClientId,
                 TransactionTypeId = param.Loan.TransactionTypeId,
                 TransactionPaymentId = param.Loan.TransactionPaymentId,
                 ClientTypeId = param.Loan.ClientTypeId,
                 TaxTypeId = param.Loan.TaxTypeId,
+                CreatedById = Database.CurrentUser.UserId,
             };
 
             Database.Add(loan);
@@ -160,7 +161,7 @@ namespace RumarApp.Services
                 return result;
             }
 
-            loanToPay.Capital = loanToPay.Capital - (long)param.Quote;
+            loanToPay.Capital -= param.Quote;
             loanToPay.RemainingPayments--;
 
             Database.Update(loanToPay);

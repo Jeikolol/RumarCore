@@ -12,14 +12,14 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <a type="button" class="btn btn-secondary" asp-action="Create">
+        <a type="button" class="btn btn-secondary" asp-action="">
             <i class="fa fa-plus"></i>
             Rol
         </a>
     </div>
     <div class="panel-body">
         <div class="table-responsive">
-            <form asp-action="Index" method="get">
+            <form asp-action="" method="get">
                 <div class="input-group">
                     <span class="input-group-addon" id="inputGroup-sizing-default">
                         <i class="fa fa-search"></i>
@@ -54,10 +54,10 @@
                                 @Html.DisplayFor(modelItem => item.NormalizedName)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                                <a asp-action="" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                                <a asp-action="" asp-route-id="@item.Id" class="btn btn-sm btn-success">
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="@("#deleteModal-"+item.Id)">

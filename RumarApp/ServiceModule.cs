@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Http;
 using RumarApp.Infraestructure;
 using RumarApp.Services;
 
@@ -21,6 +22,9 @@ namespace RumarApp
                 .InstancePerLifetimeScope(); 
             
             builder.RegisterType<LoanService>().As<ILoanService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>()
                 .InstancePerLifetimeScope();
         }
     }

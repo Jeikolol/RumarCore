@@ -11,7 +11,8 @@ namespace Core.Entities
         public DateTime? DeletedOn { get; set; }
         public string DeletedBy { get; set; }
         public string DeletedReason { get; set; }
-        public string CreatedBy { get; set; }
+        public int CreatedById { get; set; }
+        public User CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }
 }

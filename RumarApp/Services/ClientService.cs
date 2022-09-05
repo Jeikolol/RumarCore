@@ -14,10 +14,7 @@ namespace RumarApp.Services
 {
     public class ClientService : Service, IClientService
     {
-        private readonly IBeneficiaryService _beneficiaryService;
-
-        public ClientService(ApplicationDbContext database, 
-            IBeneficiaryService beneficiaryService) : base(database)
+        public ClientService(ApplicationDbContext database) : base(database)
         {
         }
        
@@ -48,8 +45,6 @@ namespace RumarApp.Services
         {
             var result = ServiceResult<ClientViewModel>.Create();
 
-            var currentUser = ClaimsHelper.ClaimsIdentity?.Name;
-
             try
             {
                 var client = new Client
@@ -63,8 +58,8 @@ namespace RumarApp.Services
                     CountryId = param.CountryId,
                     City = param.City,
                     MobileNumber = param.MobileNumber,
-                    CreatedBy = currentUser,
                     Nacionality = param.Nacionality,
+                    CreatedById = Database.CurrentUser.UserId,
                     CreatedOn = DateTime.UtcNow
                 };
 

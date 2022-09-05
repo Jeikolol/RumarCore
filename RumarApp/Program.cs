@@ -1,12 +1,8 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Autofac.Integration.Mvc;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RumarApp.Infraestructure;
 using System.IO;
-using System.Web.Mvc;
 
 namespace RumarApp
 {

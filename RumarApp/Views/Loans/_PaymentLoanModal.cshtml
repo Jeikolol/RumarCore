@@ -8,6 +8,7 @@
     <div class="modal-content">
         @using (Html.BeginForm("PayLoan", "Loans", FormMethod.Post))
         {
+            @Html.HiddenFor(x => x.Quote)
             <div class="modal-header bg-primary">
                 <h5 class="modal-title">
                     <i class="fa fa-check fa-fw pull-left"></i>
@@ -21,9 +22,9 @@
                         <span class="form-control span-background mx-wi">@Html.DisplayFor(model => model.Client)</span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label asp-for="Quote" class="control-label">Monto a Pagar</label>
-                        <input asp-for="Quote" class="form-control" />
-                        <span asp-validation-for="Quote" class="text-danger"></span>
+                        <label asp-for="QuoteFormatted" class="control-label">Monto a Pagar</label>
+                        <input asp-for="QuoteFormatted" class="form-control" />
+                        <span asp-validation-for="QuoteFormatted" class="text-danger"></span>
                     </div>
                 </div>
             </div>

@@ -15,8 +15,9 @@ namespace RumarApp.Models
         [StringLength(60)]
         public string LastName { get; set; }
         public string FullName => $"{FirstName + " " + LastName}";
+        
         [Required(ErrorMessage = "El Campo es {0} Obligatorio")]
-        [StringLength(12)]
+        [StringLength(11)]
         public string Identification { get; set; }
         [Required(ErrorMessage = "El Campo es {0} Obligatorio")]
         [StringLength(200)]

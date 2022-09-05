@@ -173,13 +173,7 @@ namespace RumarApp.Controllers
 
         public ActionResult PayModal(PayLoanParameter loanPay)
         {
-            var payLoan = new PayLoanParameter
-            {
-                LoanId = loanPay.LoanId,
-                Client = loanPay.Client,
-            };
-
-            return PartialView("_PaymentLoanModal", payLoan);
+            return PartialView("_PaymentLoanModal", loanPay);
         }
 
         [HttpPost]
@@ -199,7 +193,6 @@ namespace RumarApp.Controllers
                     }
 
                     ShowNotification("Prestamo creado Correctamente", "Mantenimiento de Prestamos", NotificationType.success);
-
                     return RedirectToAction("Details", new { id = loanPay.LoanId });
                 }
                 catch (Exception ex)

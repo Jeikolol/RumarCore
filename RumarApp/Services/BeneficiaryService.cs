@@ -25,8 +25,6 @@ namespace RumarApp.Services
 
             try
             {
-                var currentUser = ClaimsHelper.ClaimsIdentity?.Name;
-
                 if (param.FullName == "")
                 {
                     result.AddErrorMessage("Los campos no se han enviado correctamente.");
@@ -45,8 +43,8 @@ namespace RumarApp.Services
                     CountryId = param.CountryId,
                     City = param.City,
                     MobileNumber = param.MobileNumber,
-                    CreatedBy = currentUser,
                     Nacionality = param.Nacionality,
+                    CreatedById = Database.CurrentUser.UserId,
                     CreatedOn = DateTime.UtcNow
                 };
 
